@@ -1,0 +1,5 @@
+.idea/
+phpdoc/
+vendor
+composer.phar
+*.bak
