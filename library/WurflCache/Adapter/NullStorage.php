@@ -6,7 +6,7 @@ namespace WurflCache\Adapter;
  *
  * PHP version 5
  *
- * Copyright (c) 2013 Thomas M�ller
+ * Copyright (c) 2013 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,8 +27,8 @@ namespace WurflCache\Adapter;
  * THE SOFTWARE.
  *
  * @package    Browscap
- * @author     Thomas M�ller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas M�ller
+ * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  Copyright (c) 2013 Thomas Müller
  * @version    1.0
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
@@ -46,7 +46,7 @@ class NullStorage implements AdapterInterface
      */
     public function getItem($key, & $success = null, & $casToken = null)
     {
-        $success = false;
+        $success = true;
         return null;
     }
 
@@ -60,7 +60,7 @@ class NullStorage implements AdapterInterface
      */
     public function setItem($cacheId, $content)
     {
-        // do nothing here
+        return true;
     }
 
     /**

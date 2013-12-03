@@ -42,7 +42,7 @@ class ZendCacheConnector implements AdapterInterface
     /**
      * a Zend Cache instance
      *
-     * @var AbstractAdapter
+     * @var \Zend\Cache\Storage\Adapter\AbstractAdapter
      */
     protected $cache = null;
 
@@ -50,7 +50,7 @@ class ZendCacheConnector implements AdapterInterface
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param AbstractAdapter $cache
+     * @param \Zend\Cache\Storage\Adapter\AbstractAdapter $cache
      */
     public function __construct(AbstractAdapter $cache)
     {
@@ -152,7 +152,7 @@ class ZendCacheConnector implements AdapterInterface
      */
     public function touchItem($key)
     {
-        return null;
+        return $this->cache->touchItem($key);
     }
 
     /**
@@ -163,7 +163,7 @@ class ZendCacheConnector implements AdapterInterface
      */
     public function removeItem($key)
     {
-        return null;
+        return $this->cache->removeItem($key);
     }
 
     /**
@@ -173,7 +173,7 @@ class ZendCacheConnector implements AdapterInterface
      */
     public function flush()
     {
-        return null;
+        return $this->cache->flush();
     }
 
     /**
@@ -183,6 +183,6 @@ class ZendCacheConnector implements AdapterInterface
      */
     public function clearExpired()
     {
-        return null;
+        return $this->cache->clearExpired();
     }
 }

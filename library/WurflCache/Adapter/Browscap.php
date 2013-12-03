@@ -105,14 +105,14 @@ class Browscap implements AdapterInterface
     }
 
     /**
-     * loads the content from the cache
+     * Get an item.
      *
-     * @param string  $cacheId  The cache id
-     * @param boolean &$success A flag to tell if the cache was loaded
-     *
-     * @return mixed the content that was saved before
+     * @param  string  $cacheId
+     * @param  bool $success
+     * @param  mixed   $casToken
+     * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, &$success)
+    public function getItem($cacheId, & $success = null, & $casToken = null)
     {
         $cacheFile = $this->getCacheFile($cacheId);
         $content   = null;
@@ -217,5 +217,47 @@ class Browscap implements AdapterInterface
         $cacheId = hash('sha512', $cacheId);
 
         return $this->cacheDir . $cacheId . '.php';
+    }
+
+    /**
+     * Reset lifetime of an item
+     *
+     * @param  string $key
+     * @return bool
+     */
+    public function touchItem($key)
+    {
+        return null;
+    }
+
+    /**
+     * Remove an item.
+     *
+     * @param  string $key
+     * @return bool
+     */
+    public function removeItem($key)
+    {
+        return null;
+    }
+
+    /**
+     * Flush the whole storage
+     *
+     * @return bool
+     */
+    public function flush()
+    {
+        return null;
+    }
+
+    /**
+     * Remove expired items
+     *
+     * @return bool
+     */
+    public function clearExpired()
+    {
+        return null;
     }
 }

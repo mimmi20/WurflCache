@@ -27,7 +27,7 @@ class Memcache implements AdapterInterface
     const DEFAULT_PORT          = 11211;
 
     /**
-     * @var memcache
+     * @var \Memcache
      */
     private $memcache;
     private $host;

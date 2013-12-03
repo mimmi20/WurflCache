@@ -40,7 +40,7 @@ class DesarrollaCacheConnector implements AdapterInterface
     /**
      * a Desarrolla2 Cache instance
      *
-     * @var DesarrollaInterface
+     * @var \Desarrolla2\Cache\AdapterInterface
      */
     protected $cache = null;
 
@@ -48,7 +48,7 @@ class DesarrollaCacheConnector implements AdapterInterface
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param DesarrollaInterface $cache
+     * @param \Desarrolla2\Cache\AdapterInterface $cache
      * @throws Exception
      */
     public function __construct(DesarrollaInterface $cache)

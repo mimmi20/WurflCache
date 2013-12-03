@@ -68,6 +68,7 @@ class ZetaCacheConnector implements AdapterInterface
     public function getItem($key, & $success = null, & $casToken = null)
     {
         try {
+            $success = true;
             return unserialize($this->cache->restore($key, true));
         } catch (ezcCacheException $ex) {
             $success = false;

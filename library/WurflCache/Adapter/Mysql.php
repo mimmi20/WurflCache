@@ -52,12 +52,15 @@ class Mysql implements AdapterInterface
         }
         $this->initialize();
     }
+
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
+     * @throws Exception
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
@@ -104,6 +107,8 @@ class Mysql implements AdapterInterface
      *
      * @param  string $key
      * @param  mixed  $value
+     *
+     * @throws Exception
      * @return bool
      */
     public function setItem($key, $value)
@@ -151,6 +156,7 @@ class Mysql implements AdapterInterface
     /**
      * Flush the whole storage
      *
+     * @throws Exception
      * @return bool
      */
     public function flush()
@@ -174,6 +180,9 @@ class Mysql implements AdapterInterface
         return null;
     }
 
+    /**
+     * @throws Exception
+     */
     private function initialize()
     {
         $this->ensureModuleExistance();

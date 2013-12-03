@@ -6,7 +6,7 @@ namespace WurflCache\Adapter;
  *
  * PHP version 5
  *
- * Copyright (c) 2013 Thomas Müller
+ * Copyright (c) 2013 Thomas Mï¿½ller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,8 +27,8 @@ namespace WurflCache\Adapter;
  * THE SOFTWARE.
  *
  * @package    Browscap
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas Müller
+ * @author     Thomas Mï¿½ller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  Copyright (c) 2013 Thomas Mï¿½ller
  * @version    1.0
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
@@ -41,20 +41,20 @@ class Memory implements AdapterInterface
     private $map = array();
 
     /**
-     * loads the content from the cache
+     * Get an item.
      *
-     * @param string  $cacheId  The cache id
-     * @param boolean &$success A flag to tell if the cache was loaded
-     *
-     * @return mixed The content that was saved before
+     * @param  string  $cacheId
+     * @param  bool $success
+     * @param  mixed   $casToken
+     * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, &$success)
+    public function getItem($cacheId, & $success = null, & $casToken = null)
     {
         if (isset($this->map[$cacheId])) {
             $success = true;
             return $this->map[$cacheId];
         }
-        
+
         $success = false;
         return null;
     }
@@ -70,7 +70,7 @@ class Memory implements AdapterInterface
     public function setItem($cacheId, $content)
     {
         $this->map[$cacheId] = $content;
-        
+
         return true;
     }
 
@@ -84,5 +84,51 @@ class Memory implements AdapterInterface
     public function hasItem($cacheId)
     {
         return isset($this->map[$cacheId]);
+    }
+
+    /**
+     * Reset lifetime of an item
+     *
+     * @param  string $key
+     * @return bool
+     */
+    public function touchItem($key)
+    {
+        return true;
+    }
+
+    /**
+     * Remove an item.
+     *
+     * @param  string $key
+     * @return bool
+     */
+    public function removeItem($key)
+    {
+        unset($this->map[$key]);
+
+        return true;
+    }
+
+    /**
+     * Flush the whole storage
+     *
+     * @return bool
+     */
+    public function flush()
+    {
+        $this->map = array();
+
+        return true;
+    }
+
+    /**
+     * Remove expired items
+     *
+     * @return bool
+     */
+    public function clearExpired()
+    {
+        return $this->flush();
     }
 }
