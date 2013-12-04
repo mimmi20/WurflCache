@@ -5,6 +5,9 @@ this is an splitoff of the official Wurfl PHP library updated for PHP 5.3 to be 
 to maintain cache classes separrately from the main project and to use these classes
 in other projects
 
+[![Build Status](https://secure.travis-ci.org/mimmi20/wurflcache.png?branch=master)](http://travis-ci.org/mimmi20/wurflcache)
+[![Dependency Status](http://depending.in/mimmi20/WurflCache.png)](http://depending.in/mimmi20/WurflCache)
+
 Submitting bugs and feature requests
 ------------------------------------
 
