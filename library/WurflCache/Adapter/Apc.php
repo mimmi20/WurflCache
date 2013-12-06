@@ -21,95 +21,110 @@ namespace WurflCache\Adapter;
  *
  * @package    \Wurfl\Storage
  */
-class Apc implements AdapterInterface
+/**
+ * Class Apc
+ *
+ * @package WurflCache\Adapter
+ */
+class Apc extends AbstractAdapter implements AdapterInterface
 {
+    /**
+     *
+     */
     const EXTENSION_MODULE_NAME = 'apc';
-    private $currentParams = array(
-        'namespace'  => 'wurfl',
-        'expiration' => 0
-    );
 
-    protected $is_volatile = true;
+    /**
+     * @var array
+     */
+    private $defaultParams
+        = array(
+            'namespace'       => 'wurfl',
+            'cacheExpiration' => 0
+        );
 
+    /**
+     * @param array $params
+     */
     public function __construct(array $params = array())
     {
-        if (is_array($params)) {
-            array_merge($this->currentParams, $params);
+        $this->ensureModuleExistence();
+
+        $currentParams = $this->defaultParams;
+
+        if (is_array($params) && !empty($params)) {
+            $currentParams = array_merge($this->defaultParams, $params);
         }
 
-        $this->initialize();
+        $this->namespace       = $currentParams['namespace'];
+        $this->cacheExpiration = $currentParams['cacheExpiration'];
     }
 
-    private function initialize()
-    {
-        $this->ensureModuleExistence();
-    }
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
     {
-        $value = apc_fetch($this->encode($this->apcNameSpace(), $key));
+        $cacheId = $this->normalizeKey($key);
+        $success = false;
 
-        return ($value !== false) ? $value : null;
+        $value = $this->extract(apc_fetch($cacheId));
+        if ($value === null) {
+            return null;
+        }
+
+        $success = true;
+        return $value;
     }
 
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param  string $cacheId
+     *
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem($cacheId)
     {
-        return null;
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return apc_exists($cacheId);
     }
 
     /**
      * Store an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  mixed  $value
-     * @return bool
-     */
-    public function setItem($key, $value)
-    {
-        $value = apc_store(
-            $this->encode($this->apcNameSpace(), $key), $value,
-            $this->expire()
-        );
-        if ($value === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Reset lifetime of an item
      *
-     * @param  string $key
      * @return bool
      */
-    public function touchItem($key)
+    public function setItem($cacheId, $value)
     {
-        return null;
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return apc_store(
+            $cacheId, $this->compact($value), $this->cacheExpiration
+        );
     }
 
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
+     *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        return apc_delete($this->encode($this->apcNameSpace(), $key));
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return apc_delete($cacheId);
     }
 
     /**
@@ -123,26 +138,6 @@ class Apc implements AdapterInterface
     }
 
     /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        return null;
-    }
-
-    private function apcNameSpace()
-    {
-        return $this->currentParams['namespace'];
-    }
-
-    private function expire()
-    {
-        return $this->currentParams['expiration'];
-    }
-
-    /**
      * Ensures the existence of the the PHP Extension apc
      *
      * @throws Exception required extension is unavailable
@@ -152,18 +147,5 @@ class Apc implements AdapterInterface
         if (!(extension_loaded(self::EXTENSION_MODULE_NAME) && ini_get('apc.enabled') == true)) {
             throw new Exception ('The PHP extension apc must be installed, loaded and enabled.');
         }
-    }
-
-    /**
-     * Encode the Object Id using the Persistence Identifier
-     *
-     * @param string $namespace
-     * @param string $input
-     *
-     * @return string $input with the given $namespace as a prefix
-     */
-    private function encode($namespace, $input)
-    {
-        return implode(':', array('Wurfl', $namespace, $input));
     }
 }

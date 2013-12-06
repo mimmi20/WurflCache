@@ -33,13 +33,21 @@ namespace WurflCache\Adapter;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class Browscap implements AdapterInterface
+/**
+ * Class Browscap
+ *
+ * @package WurflCache\Adapter
+ */
+class Browscap extends AbstractAdapter implements AdapterInterface
 {
     /**
      * Current version of the class.
      */
     const VERSION = '2.0b';
 
+    /**
+     *
+     */
     const CACHE_FILE_VERSION = '2.0b';
 
     /**
@@ -47,7 +55,7 @@ class Browscap implements AdapterInterface
      *
      * @var integer
      */
-    private $updateInterval = 432000;  // 5 days
+    private $updateInterval = 432000; // 5 days
 
     /**
      * Path to the cache directory
@@ -61,6 +69,7 @@ class Browscap implements AdapterInterface
      * if needed updated the definitions
      *
      * @param string $cacheDir
+     *
      * @throws Exception
      */
     public function __construct($cacheDir)
@@ -76,7 +85,10 @@ class Browscap implements AdapterInterface
 
         if (false === $cacheDir) {
             throw new Exception(
-                sprintf('The cache path %s is invalid. Are you sure that it exists and that you have permission to access it?', $oldCacheDir)
+                sprintf(
+                    'The cache path %s is invalid. Are you sure that it exists and that you have permission to access it?',
+                    $oldCacheDir
+                )
             );
         }
 
@@ -99,7 +111,7 @@ class Browscap implements AdapterInterface
      */
     public function setUpdateInterval($updateInterval)
     {
-        $this->updateInterval = (int) $updateInterval;
+        $this->updateInterval = (int)$updateInterval;
 
         return $this;
     }
@@ -107,9 +119,10 @@ class Browscap implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string  $cacheId
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $cacheId
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($cacheId, & $success = null, & $casToken = null)
@@ -167,7 +180,7 @@ class Browscap implements AdapterInterface
         $cache = $this->_buildCache($content);
 
         // Save and return
-        return (bool) file_put_contents($cacheFile, $cache, LOCK_EX);
+        return (bool)file_put_contents($cacheFile, $cache, LOCK_EX);
     }
 
     /**
@@ -182,8 +195,8 @@ class Browscap implements AdapterInterface
         $cacheFile = $this->getCacheFile($cacheId);
 
         return file_exists($cacheFile)
-            && is_file($cacheFile)
-            && is_readable($cacheFile);
+        && is_file($cacheFile)
+        && is_readable($cacheFile);
     }
 
     /**
@@ -220,20 +233,10 @@ class Browscap implements AdapterInterface
     }
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return null;
-    }
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -247,16 +250,6 @@ class Browscap implements AdapterInterface
      * @return bool
      */
     public function flush()
-    {
-        return null;
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
     {
         return null;
     }

@@ -33,7 +33,12 @@ namespace WurflCache\Adapter;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class Memory implements AdapterInterface
+/**
+ * Class Memory
+ *
+ * @package WurflCache\Adapter
+ */
+class Memory extends AbstractAdapter implements AdapterInterface
 {
     /**
      * @var array
@@ -43,20 +48,28 @@ class Memory implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string  $cacheId
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null, & $casToken = null)
     {
-        if (isset($this->map[$cacheId])) {
-            $success = true;
-            return $this->map[$cacheId];
+        $cacheId = $this->normalizeKey($key);
+        $success = false;
+
+        if (!isset($this->map[$cacheId])) {
+            return null;
         }
 
-        $success = false;
-        return null;
+        $value = $this->extract($this->map[$cacheId]);
+        if ($value === null) {
+            return null;
+        }
+
+        $success = true;
+        return $value;
     }
 
     /**
@@ -69,7 +82,9 @@ class Memory implements AdapterInterface
      */
     public function setItem($cacheId, $content)
     {
-        $this->map[$cacheId] = $content;
+        $cacheId = $this->normalizeKey($cacheId);
+
+        $this->map[$cacheId] = $this->compact($content);
 
         return true;
     }
@@ -87,20 +102,10 @@ class Memory implements AdapterInterface
     }
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return true;
-    }
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -120,15 +125,5 @@ class Memory implements AdapterInterface
         $this->map = array();
 
         return true;
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        return $this->flush();
     }
 }

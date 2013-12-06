@@ -23,54 +23,74 @@ use WurflCache\Utils\FileUtils;
  *
  * @package    \Wurfl\Storage
  */
-class File implements AdapterInterface
+class File extends AbstractAdapter implements AdapterInterface
 {
-    private $defaultParams = array(
-        'dir'        => '/tmp',
-        'expiration' => 0,
-        'readonly'   => 'false',
-    );
+    /**
+     * @var array
+     */
+    private $defaultParams
+        = array(
+            'dir'        => '/tmp',
+            'expiration' => 0,
+            'readonly'   => 'false',
+        );
 
-    private $expire;
+    /**
+     * @var
+     */
     private $root;
+    /**
+     * @var
+     */
     private $readonly;
 
+    /**
+     *
+     */
     const DIR = 'dir';
 
-    protected $supports_secondary_caching = true;
-
+    /**
+     * @param $params
+     */
     public function __construct($params)
     {
-        $currentParams = is_array($params) ? array_merge($this->defaultParams, $params) : $this->defaultParams;
+        $currentParams = $this->defaultParams;
+
+        if (is_array($params) && !empty($params)) {
+            $currentParams = array_merge($this->defaultParams, $params);
+        }
         $this->initialize($currentParams);
     }
+
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
     {
-        $path  = $this->keyPath($key);
+        $path    = $this->keyPath($key);
+        $success = false;
 
         /** @var $value Helper\StorageObject */
-        $value = FileUtils::read($path);
+        $value = $this->extract(FileUtils::read($path));
         if ($value === null) {
-            $success = false;
             return null;
         }
 
         $success = true;
-        return $this->unwrap($value, $path);
+        return $value;
     }
 
     /**
      * Test if an item exists.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function hasItem($key)
@@ -83,30 +103,20 @@ class File implements AdapterInterface
      *
      * @param  string $key
      * @param  mixed  $value
+     *
      * @return bool
      */
     public function setItem($key, $value)
     {
-        $value = new Helper\StorageObject($value, $this->expire);
-        $path  = $this->keyPath($key);
-        FileUtils::write($path, $value);
-    }
-
-    /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return null;
+        $path = $this->keyPath($key);
+        FileUtils::write($path, $this->compact($value));
     }
 
     /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -125,30 +135,27 @@ class File implements AdapterInterface
     }
 
     /**
-     * Remove expired items
-     *
-     * @return bool
+     * @param $params
      */
-    public function clearExpired()
-    {
-        return null;
-    }
-
     private function initialize($params)
     {
-        $this->root     = $params[self::DIR];
-        $this->expire   = $params['expiration'];
-        $this->readonly = ($params['readonly'] == 'true' || $params['readonly'] === true);
+        $this->root            = $params[self::DIR];
+        $this->cacheExpiration = $params['expiration'];
+        $this->readonly        = ($params['readonly'] == 'true' || $params['readonly'] === true);
 
         $this->createRootDirIfNotExist();
     }
 
+    /**
+     * @throws Exception
+     */
     private function createRootDirIfNotExist()
     {
         if (!is_dir($this->root)) {
             @mkdir($this->root, 0777, true);
             if (!is_dir($this->root)) {
-                throw new Exception("The file storage directory does not exist and could not be created. Please make sure the directory is writeable: " . $this->root);
+                throw new Exception("The file storage directory does not exist and could not be created. Please make sure the directory is writeable: "
+                    . $this->root);
             }
         }
         if (!$this->readonly && !is_writeable($this->root)) {
@@ -156,22 +163,22 @@ class File implements AdapterInterface
         }
     }
 
-    private function unwrap(Helper\StorageObject $value, $path)
-    {
-        if ($value->isExpired()) {
-            unlink($path);
-
-            return null;
-        }
-
-        return $value->value();
-    }
-
+    /**
+     * @param $key
+     *
+     * @return string
+     */
     private function keyPath($key)
     {
         return FileUtils::join(array($this->root, $this->spread(md5($key))));
     }
 
+    /**
+     * @param     $md5
+     * @param int $n
+     *
+     * @return string
+     */
     private function spread($md5, $n = 2)
     {
         $path = '';

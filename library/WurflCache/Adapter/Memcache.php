@@ -21,62 +21,102 @@ namespace WurflCache\Adapter;
  *
  * @package    \Wurfl\Storage
  */
-class Memcache implements AdapterInterface
+/**
+ * Class Memcache
+ *
+ * @package WurflCache\Adapter
+ */
+class Memcache extends AbstractAdapter implements AdapterInterface
 {
-    const EXTENSION_MODULE_NAME = "memcache";
+    /**
+     *
+     */
+    const EXTENSION_MODULE_NAME = 'memcache';
+    /**
+     *
+     */
     const DEFAULT_PORT          = 11211;
 
     /**
      * @var \Memcache
      */
     private $memcache;
+    /**
+     * @var
+     */
     private $host;
+    /**
+     * @var
+     */
     private $port;
-    private $expiration;
-    private $namespace;
 
-    private $defaultParams = array(
-        "host"       => "127.0.0.1",
-        "port"       => "11211",
-        "namespace"  => "wurfl",
-        "expiration" => 0
-    );
+    /**
+     * @var array
+     */
+    private $defaultParams
+        = array(
+            'host'            => '127.0.0.1',
+            'port'            => self::DEFAULT_PORT,
+            'namespace'       => 'wurfl',
+            'cacheExpiration' => 0
+        );
 
-    protected $is_volatile = true;
-
-    public function __construct($params = array())
+    /**
+     * @param array $params
+     */
+    public function __construct(array $params = array())
     {
-        $currentParams = is_array($params) ? array_merge($this->defaultParams, $params) : $this->defaultParams;
+        $this->ensureModuleExistence();
+
+        $currentParams = $this->defaultParams;
+
+        if (is_array($params) && !empty($params)) {
+            $currentParams = array_merge($this->defaultParams, $params);
+        }
+
         $this->toFields($currentParams);
-        $this->initialize();
+        $this->initializeMemCache();
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
         $this->memcache = null;
     }
+
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
     {
-        $value = $this->memcache->get($this->encode($this->namespace, $key));
+        $cacheId = $this->normalizeKey($key);
+        $success = false;
 
-        return ($value !== false) ? $value : null;
+        $value = $this->extract($this->memcache->get($cacheId));
+        if ($value === null) {
+            return null;
+        }
+
+        $success = true;
+        return $value;
     }
 
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param  string $cacheId
+     *
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem($cacheId)
     {
         return null;
     }
@@ -84,38 +124,30 @@ class Memcache implements AdapterInterface
     /**
      * Store an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  mixed  $value
-     * @return bool
-     */
-    public function setItem($key, $value)
-    {
-        return $this->memcache->set(
-            $this->encode($this->namespace, $key), $value, 0,
-            $this->expiration
-        );
-    }
-
-    /**
-     * Reset lifetime of an item
      *
-     * @param  string $key
      * @return bool
      */
-    public function touchItem($key)
+    public function setItem($cacheId, $value)
     {
-        return null;
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return $this->memcache->set(
+            $cacheId, $this->compact($value), 0, $this->cacheExpiration
+        );
     }
 
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
+     *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        return null;
+        return false;
     }
 
     /**
@@ -129,19 +161,12 @@ class Memcache implements AdapterInterface
     }
 
     /**
-     * Remove expired items
-     *
-     * @return bool
+     * @param $params
      */
-    public function clearExpired()
-    {
-        return null;
-    }
-
     private function toFields($params)
     {
-        foreach ($params as $key => $value) {
-            $this->$key = $value;
+        foreach ($params as $cacheId => $value) {
+            $this->$cacheId = $value;
         }
     }
 
@@ -149,28 +174,34 @@ class Memcache implements AdapterInterface
      * Initializes the Memcache Module
 
      */
-    public final function initialize()
+    private function initializeMemCache()
     {
-        $this->_ensureModuleExistence();
         $this->memcache = new \Memcache();
+
         // support multiple hosts using semicolon to separate hosts
-        $hosts = explode(";", $this->host);
+        $hosts = explode(';', $this->host);
+
         // different ports for each hosts the same way
-        $ports = explode(";", $this->port);
-        if (count($hosts) > 1) {
-            if (count($ports) < 1) {
-                $ports = array_fill(0, count($hosts), self::DEFAULT_PORT);
-            } elseif (count($ports) == 1) {
-                // if we have just one port, use it for all hosts
-                $_p    = $ports[0];
-                $ports = array_fill(0, count($hosts), $_p);
+        $ports = explode(';', $this->port);
+
+        if (count($ports) < 1) {
+            $ports = array_fill(0, count($hosts), self::DEFAULT_PORT);
+        } elseif (count($ports) === 1) {
+            // if we have just one port, use it for all hosts
+            $usedPort = $ports[0];
+            $ports    = array_fill(0, count($hosts), $usedPort);
+        }
+
+        foreach ($hosts as $i => $host) {
+            if (!isset($ports[$i])) {
+                /*
+                 * if we have a difference between the count of hosts and
+                 * the count of ports, use the default port to fill the gap
+                 */
+                $ports[$i] = self::DEFAULT_PORT;
             }
-            foreach ($hosts as $i => $host) {
-                $this->memcache->addServer($host, $ports[$i]);
-            }
-        } else {
-            // just connect to the single host
-            $this->memcache->connect($hosts[0], $ports[0]);
+
+            $this->memcache->addServer($host, $ports[$i]);
         }
     }
 
@@ -179,23 +210,12 @@ class Memcache implements AdapterInterface
      *
      * @throws Exception required extension is unavailable
      */
-    private function _ensureModuleExistence()
+    private function ensureModuleExistence()
     {
         if (!extension_loaded(self::EXTENSION_MODULE_NAME)) {
-            throw new Exception("The PHP extension memcache must be installed and loaded in order to use the Memcached.");
+            throw new Exception(
+                'The PHP extension memcache must be installed and loaded in order to use the Memcached.'
+            );
         }
-    }
-
-    /**
-     * Encode the Object Id using the Persistence Identifier
-     *
-     * @param string $namespace
-     * @param string $input
-     *
-     * @return string $input with the given $namespace as a prefix
-     */
-    private function encode($namespace, $input)
-    {
-        return implode(':', array('Wurfl', $namespace, $input));
     }
 }

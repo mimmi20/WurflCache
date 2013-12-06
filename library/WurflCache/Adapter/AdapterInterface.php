@@ -33,14 +33,20 @@ namespace WurflCache\Adapter;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
+/**
+ * Interface AdapterInterface
+ *
+ * @package WurflCache\Adapter
+ */
 interface AdapterInterface
 {
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null);
@@ -49,6 +55,7 @@ interface AdapterInterface
      * Test if an item exists.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function hasItem($key);
@@ -58,22 +65,16 @@ interface AdapterInterface
      *
      * @param  string $key
      * @param  mixed  $value
+     *
      * @return bool
      */
     public function setItem($key, $value);
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key);
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key);
@@ -86,9 +87,20 @@ interface AdapterInterface
     public function flush();
 
     /**
-     * Remove expired items
+     * set the expiration time
      *
-     * @return bool
+     * @param integer $expiration
+     *
+     * @return AdapterInterface
      */
-    public function clearExpired();
+    public function setExpiration($expiration = 86400);
+
+    /**
+     * set the cache namespace
+     *
+     * @param string $namespace
+     *
+     * @return AdapterInterface
+     */
+    public function setNamespace($namespace);
 }

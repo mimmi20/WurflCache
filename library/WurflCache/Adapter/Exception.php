@@ -16,9 +16,10 @@ namespace WurflCache\Adapter;
      * @version    $id$
      */
 /**
- * Base class for WURFL Exceptions
+ * Class Exception
  *
- * @package    WURFL
+ * @package WurflCache\Adapter
  */
 class Exception extends \WurflCache\Exception
-{}
+{
+}

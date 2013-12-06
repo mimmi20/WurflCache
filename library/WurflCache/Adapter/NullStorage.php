@@ -33,7 +33,12 @@ namespace WurflCache\Adapter;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class NullStorage implements AdapterInterface
+/**
+ * Class NullStorage
+ *
+ * @package WurflCache\Adapter
+ */
+class NullStorage extends AbstractAdapter implements AdapterInterface
 {
     /**
      * Get an item.
@@ -76,20 +81,10 @@ class NullStorage implements AdapterInterface
     }
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return true;
-    }
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -103,16 +98,6 @@ class NullStorage implements AdapterInterface
      * @return bool
      */
     public function flush()
-    {
-        return true;
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
     {
         return true;
     }

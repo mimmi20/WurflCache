@@ -1,7 +1,7 @@
 <?php
 namespace WurflCache\Adapter;
 
-use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\CacheProvider;
 
 /**
  * Interface class to use the coctrine cache with Browscap
@@ -35,22 +35,22 @@ use Doctrine\Common\Cache\Cache;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class DoctrineCacheConnector implements AdapterInterface
+class DoctrineCacheConnector extends AbstractAdapter implements AdapterInterface
 {
     /**
      * a Doctrine Cache instance
      *
-     * @var Cache
+     * @var \Doctrine\Common\Cache\CacheProvider
      */
-    protected $cache = null;
+    private $cache = null;
 
     /**
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param Cache $cache
+     * @param \Doctrine\Common\Cache\CacheProvider $cache
      */
-    public function __construct(Cache $cache)
+    public function __construct(CacheProvider $cache)
     {
         $this->cache = $cache;
     }
@@ -58,14 +58,17 @@ class DoctrineCacheConnector implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $cacheId
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($cacheId, & $success = null, & $casToken = null)
     {
-        return unserialize($this->cache->fetch($key));
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return unserialize($this->cache->fetch($cacheId));
     }
 
     /**
@@ -78,6 +81,8 @@ class DoctrineCacheConnector implements AdapterInterface
      */
     public function setItem($cacheId, $content)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         return $this->cache->save($cacheId, serialize($content));
     }
 
@@ -90,18 +95,9 @@ class DoctrineCacheConnector implements AdapterInterface
      */
     public function hasItem($cacheId)
     {
-        return $this->cache->contains($cacheId);
-    }
+        $cacheId = $this->normalizeKey($cacheId);
 
-    /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return null;
+        return $this->cache->contains($cacheId);
     }
 
     /**
@@ -113,7 +109,9 @@ class DoctrineCacheConnector implements AdapterInterface
      */
     public function removeItem($cacheId)
     {
-        return null;
+        $cacheId = $this->normalizeKey($cacheId);
+
+        return $this->cache->delete($cacheId);
     }
 
     /**
@@ -123,16 +121,6 @@ class DoctrineCacheConnector implements AdapterInterface
      */
     public function flush()
     {
-        return null;
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        return null;
+        return $this->cache->flushAll();
     }
 }

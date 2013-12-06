@@ -21,18 +21,19 @@ namespace WurflCache\Adapter;
  *
  * @package    \Wurfl\Storage
  */
-class Mysql implements AdapterInterface
+class Mysql extends AbstractAdapter implements AdapterInterface
 {
-    private $defaultParams = array(
-        "host"        => "localhost",
-        "port"        => 3306,
-        "db"          => "wurfl_persistence_db",
-        "user"        => "",
-        "pass"        => "",
-        "table"       => "wurfl_object_cache",
-        "keycolumn"   => "key",
-        "valuecolumn" => "value"
-    );
+    private $defaultParams
+        = array(
+            'host'        => 'localhost',
+            'port'        => 3306,
+            'db'          => 'wurfl_persistence_db',
+            'user'        => '',
+            'pass'        => '',
+            'table'       => 'wurfl_object_cache',
+            'keycolumn'   => 'key',
+            'valuecolumn' => 'value'
+        );
 
     private $link;
     private $host;
@@ -46,7 +47,12 @@ class Mysql implements AdapterInterface
 
     public function __construct($params)
     {
-        $currentParams = is_array($params) ? array_merge($this->defaultParams, $params) : $this->defaultParams;
+        $currentParams = $this->defaultParams;
+
+        if (is_array($params) && !empty($params)) {
+            $currentParams = array_merge($this->defaultParams, $params);
+        }
+
         foreach ($currentParams as $key => $value) {
             $this->$key = $value;
         }
@@ -69,10 +75,11 @@ class Mysql implements AdapterInterface
         $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
 
-        $sql    = "select `$this->valuecolumn` from `$this->db`.`$this->table` where `$this->keycolumn`='$objectId'";
+        $sql    = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
+            . $this->keycolumn . '`=\'' . $objectId . '\'';
         $result = mysql_query($sql, $this->link);
         if (!is_resource($result)) {
-            throw new Exception("MySql error " . mysql_error($this->link) . "in $this->db");
+            throw new Exception('MySql error ' . mysql_error($this->link) . 'in $this->db');
         }
 
         $row = mysql_fetch_assoc($result);
@@ -95,6 +102,7 @@ class Mysql implements AdapterInterface
      * Test if an item exists.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function hasItem($key)
@@ -114,38 +122,29 @@ class Mysql implements AdapterInterface
     public function setItem($key, $value)
     {
         $object   = mysql_real_escape_string(serialize($value));
-        $objectId = $this->encode("", $key);
+        $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
-        $sql      = "delete from `$this->db`.`$this->table` where `$this->keycolumn`='$objectId'";
+        $sql      = 'delete from `$this->db`.`$this->table` where `$this->keycolumn`=\'$objectId\'';
         $success  = mysql_query($sql, $this->link);
         if (!$success) {
-            throw new Exception("MySql error " . mysql_error($this->link) . "deleting $objectId in $this->db");
+            throw new Exception('MySql error ' . mysql_error($this->link) . 'deleting $objectId in $this->db');
         }
 
-        $sql     = "insert into `$this->db`.`$this->table` (`$this->keycolumn`,`$this->valuecolumn`) VALUES ('$objectId','$object')";
+        $sql
+                 = 'insert into `$this->db`.`$this->table` (`$this->keycolumn`,`$this->valuecolumn`) VALUES (\'$objectId\',\'$object\')';
         $success = mysql_query($sql, $this->link);
         if (!$success) {
-            throw new Exception("MySQL error " . mysql_error($this->link) . "setting $objectId in $this->db");
+            throw new Exception('MySQL error ' . mysql_error($this->link) . 'setting $objectId in $this->db');
         }
 
         return $success;
     }
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return null;
-    }
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -161,23 +160,13 @@ class Mysql implements AdapterInterface
      */
     public function flush()
     {
-        $sql     = "truncate table `$this->db`.`$this->table`";
+        $sql     = 'truncate table `$this->db`.`$this->table`';
         $success = mysql_query($sql, $this->link);
         if (mysql_error($this->link)) {
-            throw new Exception("MySql error " . mysql_error($this->link) . " clearing $this->db.$this->table");
+            throw new Exception('MySql error ' . mysql_error($this->link) . ' clearing $this->db.$this->table');
         }
 
         return $success;
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        return null;
     }
 
     /**
@@ -188,34 +177,35 @@ class Mysql implements AdapterInterface
         $this->ensureModuleExistance();
 
         /* Initializes link to MySql */
-        $this->link = mysql_connect("$this->host:$this->port", $this->user, $this->pass);
+        $this->link = mysql_connect('$this->host:$this->port', $this->user, $this->pass);
         if (mysql_error($this->link)) {
-            throw new Exception("Couldn't link to `$this->host` (" . mysql_error($this->link) . ")");
+            throw new Exception('Couldn\'t link to `$this->host` (' . mysql_error($this->link) . ')');
         }
 
         /* Initializes link to database */
         $success = mysql_select_db($this->db, $this->link);
         if (!$success) {
-            throw new Exception("Couldn't change to database `$this->db` (" . mysql_error($this->link) . ")");
+            throw new Exception('Couldn\'t change to database `$this->db` (' . mysql_error($this->link) . ')');
         }
 
         /* Is Table there? */
-        $test = mysql_query("SHOW TABLES FROM $this->db LIKE '$this->table'", $this->link);
+        $test = mysql_query('SHOW TABLES FROM $this->db LIKE \'$this->table\'', $this->link);
         if (!is_resource($test)) {
-            throw new Exception("Couldn't show tables from database `$this->db` (" . mysql_error($this->link) . ")");
+            throw new Exception('Couldn\'t show tables from database `$this->db` (' . mysql_error($this->link) . ')');
         }
 
         // create table if it's not there.
         if (mysql_num_rows($test) == 0) {
-            $sql     = "CREATE TABLE `$this->db`.`$this->table` (
+            $sql
+                     = 'CREATE TABLE `$this->db`.`$this->table` (
                       `$this->keycolumn` varchar(255) collate latin1_general_ci NOT NULL,
                       `$this->valuecolumn` mediumblob NOT NULL,
                       `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
                       PRIMARY KEY  (`$this->keycolumn`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci";
+                    ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci';
             $success = mysql_query($sql, $this->link);
             if (!$success) {
-                throw new Exception("Table $this->table missing in $this->db (" . mysql_error($this->link) . ")");
+                throw new Exception('Table $this->table missing in $this->db (' . mysql_error($this->link) . ')');
             }
         }
 
@@ -231,8 +221,8 @@ class Mysql implements AdapterInterface
      */
     private function ensureModuleExistance()
     {
-        if (!extension_loaded("mysql")) {
-            throw new Exception("The PHP extension mysql must be installed and loaded in order to use the mysql.");
+        if (!extension_loaded('mysql')) {
+            throw new Exception('The PHP extension mysql must be installed and loaded in order to use the mysql.');
         }
     }
 
@@ -247,5 +237,33 @@ class Mysql implements AdapterInterface
     private function encode($namespace, $input)
     {
         return implode(':', array('Wurfl', $namespace, $input));
+    }
+
+    /**
+     * set the expiration time
+     *
+     * @param integer $expiration
+     *
+     * @return AdapterInterface
+     */
+    public function setExpiration($expiration = 86400)
+    {
+        $this->cacheExpiration = $expiration;
+
+        return $this;
+    }
+
+    /**
+     * set the cache namespace
+     *
+     * @param string $namespace
+     *
+     * @return AdapterInterface
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+
+        return $this;
     }
 }

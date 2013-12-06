@@ -37,14 +37,14 @@ use Zend\Cache\Storage\StorageInterface;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class ZendCacheConnector implements AdapterInterface
+class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
 {
     /**
      * a Zend Cache instance
      *
      * @var \Zend\Cache\Storage\StorageInterface
      */
-    protected $cache = null;
+    private $cache = null;
 
     /**
      * Constructor class, checks for the existence of (and loads) the cache and
@@ -60,9 +60,10 @@ class ZendCacheConnector implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
@@ -71,7 +72,7 @@ class ZendCacheConnector implements AdapterInterface
 
         try {
             $content = $this->cache->getItem($cacheId, $success);
-        } catch (ZendException $ex) {
+        } catch (ZendException\ExceptionInterface $ex) {
             $success = false;
             return null;
         }
@@ -101,7 +102,7 @@ class ZendCacheConnector implements AdapterInterface
 
         try {
             return $this->cache->setItem($cacheId, $content);
-        } catch (ZendException $ex) {
+        } catch (ZendException\ExceptionInterface $ex) {
             return null;
         }
     }
@@ -119,7 +120,7 @@ class ZendCacheConnector implements AdapterInterface
 
         try {
             return $this->cache->hasItem($cacheId);
-        } catch (ZendException $ex) {
+        } catch (ZendException\ExceptionInterface $ex) {
             return false;
         }
     }
@@ -131,40 +132,24 @@ class ZendCacheConnector implements AdapterInterface
      *
      * @return string The formated cache id
      */
-    private function normalizeKey($cacheId)
+    protected function normalizeKey($cacheId)
     {
+        $cacheId = parent::normalizeKey($cacheId);
+
         if (($p = $this->cache->getOptions()->getKeyPattern()) && !preg_match($p, $cacheId)) {
             $p = str_replace(array('^[', '*$'), array('[^', ''), $p);
 
             $cacheId = preg_replace($p, '_', $cacheId);
         }
 
-        $cacheId = hash('sha512', $cacheId);
-
         return $cacheId;
-    }
-
-    /**
-     * Reset lifetime of an item
-     *
-     * @param  string $cacheId
-     * @return bool
-     */
-    public function touchItem($cacheId)
-    {
-        $cacheId = $this->normalizeKey($cacheId);
-
-        try {
-            return $this->cache->touchItem($cacheId);
-        } catch (ZendException $ex) {
-            return false;
-        }
     }
 
     /**
      * Remove an item.
      *
      * @param  string $cacheId
+     *
      * @return bool
      */
     public function removeItem($cacheId)
@@ -173,7 +158,7 @@ class ZendCacheConnector implements AdapterInterface
 
         try {
             return $this->cache->removeItem($cacheId);
-        } catch (ZendException $ex) {
+        } catch (ZendException\ExceptionInterface $ex) {
             return false;
         }
     }
@@ -187,24 +172,8 @@ class ZendCacheConnector implements AdapterInterface
     {
         try {
             return $this->cache->flush();
-        } catch (ZendException $ex) {
+        } catch (ZendException\ExceptionInterface $ex) {
             return false;
         }
-
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        try {
-            return $this->cache->clearExpired();
-        } catch (ZendException $ex) {
-            return false;
-        }
-
     }
 }

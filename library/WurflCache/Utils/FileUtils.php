@@ -48,7 +48,7 @@ class FileUtils
         foreach ($files as $file) {
             $file = $path . DIRECTORY_SEPARATOR . $file;
             if (is_dir($file)) {
-                self::rmdir($file);
+                self::rmdirContents($file);
                 rmdir($file);
             } else {
                 unlink($file);
@@ -77,23 +77,17 @@ class FileUtils
      */
     public static function read($file)
     {
-        if (!is_readable($file)) {
+        if (!is_readable($file) || !is_file($file)) {
             return null;
         }
 
-        $data = @file_get_contents($file);
+        $data = file_get_contents($file);
 
         if ($data === false) {
             return null;
         }
 
-        $value = @unserialize($data);
-
-        if ($value === false) {
-            return null;
-        }
-
-        return $value;
+        return $data;
     }
 
     /**
@@ -106,12 +100,13 @@ class FileUtils
     public static function write($path, $data, $mtime = 0)
     {
         if (!file_exists(dirname($path))) {
-            self::mkdir(dirname($path), 0755, true);
+            self::mkdir(dirname($path), 0755);
         }
-        if (file_put_contents($path, serialize($data), LOCK_EX)) {
+
+        if (file_put_contents($path, $data, LOCK_EX)) {
             $mtime = ($mtime > 0) ? $mtime : time();
-            @chmod($path, 0777);
-            @touch($path, $mtime);
+            chmod($path, 0777);
+            touch($path, $mtime);
         }
     }
 
@@ -130,17 +125,17 @@ class FileUtils
     /**
      * Returns a directory for storing temporary files
      *
-     * @return string
+     * @return string|boolean
      */
     public static function getTempDir()
     {
-        $temp_dir = ini_get('upload_tmp_dir');
-
-        if (!$temp_dir) {
-            $temp_dir = function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : '/tmp';
+        if (function_exists('sys_get_temp_dir')) {
+            $tempDir = sys_get_temp_dir();
+        } else {
+            $tempDir = '/tmp';
         }
 
-        return realpath($temp_dir);
+        return realpath($tempDir);
     }
 
     /**

@@ -35,20 +35,21 @@ use Desarrolla2\Cache\AdapterInterface as DesarrollaInterface;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class DesarrollaCacheConnector implements AdapterInterface
+class DesarrollaCacheConnector extends AbstractAdapter implements AdapterInterface
 {
     /**
      * a Desarrolla2 Cache instance
      *
      * @var \Desarrolla2\Cache\AdapterInterface
      */
-    protected $cache = null;
+    private $cache = null;
 
     /**
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
      * @param \Desarrolla2\Cache\AdapterInterface $cache
+     *
      * @throws Exception
      */
     public function __construct(DesarrollaInterface $cache)
@@ -59,9 +60,10 @@ class DesarrollaCacheConnector implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string  $key
-     * @param  bool $success
-     * @param  mixed   $casToken
+     * @param  string $key
+     * @param  bool   $success
+     * @param  mixed  $casToken
+     *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null, & $casToken = null)
@@ -73,7 +75,8 @@ class DesarrollaCacheConnector implements AdapterInterface
      * Store an item.
      *
      * @param string $cacheId
-     * @param mixed $content
+     * @param mixed  $content
+     *
      * @return bool
      */
     public function setItem($cacheId, $content)
@@ -94,20 +97,10 @@ class DesarrollaCacheConnector implements AdapterInterface
     }
 
     /**
-     * Reset lifetime of an item
-     *
-     * @param  string $key
-     * @return bool
-     */
-    public function touchItem($key)
-    {
-        return null;
-    }
-
-    /**
      * Remove an item.
      *
      * @param  string $key
+     *
      * @return bool
      */
     public function removeItem($key)
@@ -123,15 +116,5 @@ class DesarrollaCacheConnector implements AdapterInterface
     public function flush()
     {
         return $this->cache->dropCache();
-    }
-
-    /**
-     * Remove expired items
-     *
-     * @return bool
-     */
-    public function clearExpired()
-    {
-        return $this->cache->clearCache();
     }
 }
