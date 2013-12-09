@@ -85,7 +85,7 @@ class CloudCache implements CacheInterface
         }
 
         $cookie_data = array(
-            'date_set' => time(),
+            'date_set'     => time(),
             'capabilities' => $capabilities,
         );
         $this->setCookie(

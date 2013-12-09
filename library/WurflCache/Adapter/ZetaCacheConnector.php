@@ -1,7 +1,7 @@
 <?php
 namespace WurflCache\Adapter;
 
-use ezcCacheException;
+use ezcBaseException;
 use ezcCacheStorage;
 
 /**
@@ -72,7 +72,7 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
         try {
             $success = true;
             return unserialize($this->cache->restore($key, true));
-        } catch (ezcCacheException $ex) {
+        } catch (ezcBaseException $ex) {
             $success = false;
             return null;
         }
@@ -90,8 +90,8 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
     {
         try {
             return $this->cache->store($cacheId, serialize($content));
-        } catch (ezcCacheException $ex) {
-            return null;
+        } catch (ezcBaseException $ex) {
+            return false;
         }
     }
 
@@ -106,7 +106,7 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
     {
         try {
             return ($this->cache->countDataItems($cacheId) > 0);
-        } catch (ezcCacheException $ex) {
+        } catch (ezcBaseException $ex) {
             return false;
         }
     }
@@ -114,13 +114,17 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        return null;
+        try {
+            return ($this->cache->delete($cacheId));
+        } catch (ezcBaseException $ex) {
+            return false;
+        }
     }
 
     /**
@@ -130,6 +134,6 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
      */
     public function flush()
     {
-        return null;
+        return false;
     }
 }

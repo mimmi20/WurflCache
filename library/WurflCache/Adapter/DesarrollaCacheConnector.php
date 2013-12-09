@@ -1,7 +1,7 @@
 <?php
 namespace WurflCache\Adapter;
 
-use Desarrolla2\Cache\AdapterInterface as DesarrollaInterface;
+use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
 
 /**
  * Interface class to use the Desarrolla2 cache with Browscap
@@ -40,7 +40,7 @@ class DesarrollaCacheConnector extends AbstractAdapter implements AdapterInterfa
     /**
      * a Desarrolla2 Cache instance
      *
-     * @var \Desarrolla2\Cache\AdapterInterface
+     * @var \Desarrolla2\Cache\CacheInterface
      */
     private $cache = null;
 
@@ -48,7 +48,7 @@ class DesarrollaCacheConnector extends AbstractAdapter implements AdapterInterfa
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param \Desarrolla2\Cache\AdapterInterface $cache
+     * @param \Desarrolla2\Cache\CacheInterface $cache
      *
      * @throws Exception
      */

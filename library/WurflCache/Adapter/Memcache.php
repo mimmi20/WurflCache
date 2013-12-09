@@ -16,11 +16,11 @@ namespace WurflCache\Adapter;
      * @author     Fantayeneh Asres Gizaw
      * @version    $id$
      */
-/**
- * WURFL Storage
- *
- * @package    \Wurfl\Storage
- */
+    /**
+     * WURFL Storage
+     *
+     * @package    \Wurfl\Storage
+     */
 /**
  * Class Memcache
  *
@@ -35,7 +35,7 @@ class Memcache extends AbstractAdapter implements AdapterInterface
     /**
      *
      */
-    const DEFAULT_PORT          = 11211;
+    const DEFAULT_PORT = 11211;
 
     /**
      * @var \Memcache

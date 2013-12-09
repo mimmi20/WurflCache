@@ -17,11 +17,6 @@ namespace WurflCache\Adapter;
      * @version    $id$
      */
 /**
- * APC Storage class
- *
- * @package    \Wurfl\Storage
- */
-/**
  * Class Apc
  *
  * @package WurflCache\Adapter
