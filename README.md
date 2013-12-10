@@ -8,6 +8,13 @@ in other projects
 [![Build Status](https://api.travis-ci.org/mimmi20/WurflCache.png?branch=master)](https://travis-ci.org/mimmi20/WurflCache)
 [![Dependency Status](https://depending.in/mimmi20/WurflCache.png)](http://depending.in/mimmi20/WurflCache)
 
+[![Coverage Status](https://coveralls.io/repos/mimmi20/WurflCache/badge.png)](https://coveralls.io/r/mimmi20/WurflCache)
+[![Dependency Status](https://www.versioneye.com/php/mimmi20:wurflcache/dev-master/badge.png)](https://www.versioneye.com/php/mimmi20:wurflcache/dev-master)
+
+[![Latest Stable Version](https://poser.pugx.org/mimmi20/WurflCache/v/stable.png)](https://packagist.org/packages/mimmi20/WurflCache)
+[![Latest Unstable Version](https://poser.pugx.org/mimmi20/WurflCache/v/unstable.png)](https://packagist.org/packages/mimmi20/WurflCache)
+
+
 Submitting bugs and feature requests
 ------------------------------------
 
