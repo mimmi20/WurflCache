@@ -39,7 +39,7 @@ class CloudCache implements CacheInterface
         $success = null;
         $data    = $this->cache->getItem($userAgent, $success);
 
-        if (!$success)
+        if (!$success) {
             return false;
         }
 
@@ -56,7 +56,7 @@ class CloudCache implements CacheInterface
         $success = null;
         $data    = $this->cache->getItem($deviceId, $success);
 
-        if (!$success)
+        if (!$success) {
             return false;
         }
 
