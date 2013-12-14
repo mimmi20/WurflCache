@@ -60,11 +60,10 @@ class DoctrineCacheConnector extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $cacheId
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, & $success = null, & $casToken = null)
+    public function getItem($cacheId, & $success = null)
     {
         $cacheId = $this->normalizeKey($cacheId);
 

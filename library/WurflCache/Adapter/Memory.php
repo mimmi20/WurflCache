@@ -50,11 +50,10 @@ class Memory extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
         $cacheId = $this->normalizeKey($key);
         $success = false;

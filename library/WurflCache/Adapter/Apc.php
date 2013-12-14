@@ -59,11 +59,10 @@ class Apc extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
         $cacheId = $this->normalizeKey($key);
         $success = false;
@@ -104,7 +103,9 @@ class Apc extends AbstractAdapter implements AdapterInterface
         $cacheId = $this->normalizeKey($cacheId);
 
         return apc_store(
-            $cacheId, $this->compact($value), $this->cacheExpiration
+            $cacheId, 
+            $this->compact($value), 
+            $this->cacheExpiration
         );
     }
 
@@ -140,7 +141,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
     private function ensureModuleExistence()
     {
         if (!(extension_loaded(self::EXTENSION_MODULE_NAME) && ini_get('apc.enabled') == true)) {
-            throw new Exception ('The PHP extension apc must be installed, loaded and enabled.');
+            throw new Exception('The PHP extension apc must be installed, loaded and enabled.');
         }
     }
 }

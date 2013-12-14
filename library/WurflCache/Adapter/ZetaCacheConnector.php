@@ -63,11 +63,10 @@ class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
         try {
             $success = true;

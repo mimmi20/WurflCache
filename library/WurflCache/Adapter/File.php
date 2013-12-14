@@ -67,15 +67,19 @@ class File extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
-        $path    = $this->keyPath($key);
         $success = false;
+        
+        if (!$this->hasItem($key)) {
+            return null;
+        }
 
+        $path = $this->keyPath($key);
+        
         /** @var $value Helper\StorageObject */
         $value = $this->extract(FileUtils::read($path));
         if ($value === null) {
@@ -95,7 +99,9 @@ class File extends AbstractAdapter implements AdapterInterface
      */
     public function hasItem($key)
     {
-        return null;
+        $path = $this->keyPath($key);
+        
+        return file_exists($path) && is_file($path) && is_readable($path);
     }
 
     /**
@@ -121,7 +127,9 @@ class File extends AbstractAdapter implements AdapterInterface
      */
     public function removeItem($key)
     {
-        return null;
+        $path = $this->keyPath($key);
+        
+        return unlink($path);
     }
 
     /**
@@ -154,8 +162,11 @@ class File extends AbstractAdapter implements AdapterInterface
         if (!is_dir($this->root)) {
             @mkdir($this->root, 0777, true);
             if (!is_dir($this->root)) {
-                throw new Exception("The file storage directory does not exist and could not be created. Please make sure the directory is writeable: "
-                    . $this->root);
+                throw new Exception(
+                    'The file storage directory does not exist and could not be created. '
+                    . 'Please make sure the directory is writeable: '
+                    . $this->root
+                );
             }
         }
         if (!$this->readonly && !is_writeable($this->root)) {
@@ -174,20 +185,20 @@ class File extends AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param     $md5
-     * @param int $n
+     * @param string $md5
+     * @param int    $splitCount
      *
      * @return string
      */
-    private function spread($md5, $n = 2)
+    private function spread($md5, $splitCount = 2)
     {
         $path = '';
 
-        for ($i = 0; $i < $n; $i++) {
+        for ($i = 0; $i < $splitCount; $i++) {
             $path .= $md5 [$i] . DIRECTORY_SEPARATOR;
         }
 
-        $path .= substr($md5, $n);
+        $path .= substr($md5, $splitCount);
 
         return $path;
     }

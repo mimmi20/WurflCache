@@ -1,11 +1,13 @@
 <?php
+namespace WurflCacheTest\Adapter;
+
 /**
  * test case
  */
 /**
  * test case.
  */
-class WURFL_Storage_FileTest extends PHPUnit_Framework_TestCase
+class FileTest extends \PHPUnit_Framework_TestCase
 {
 
     const STORAGE_DIR = "../../../resources/storage";

@@ -91,11 +91,10 @@ class Memcache extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
         $cacheId = $this->normalizeKey($key);
         $success = false;
@@ -118,7 +117,20 @@ class Memcache extends AbstractAdapter implements AdapterInterface
      */
     public function hasItem($cacheId)
     {
-        return null;
+        $tempData = $this->memcache->set(
+            $cacheId, 
+            ''
+            0,
+            $this->cacheExpiration
+        );
+        
+        if (false === $tempData) {
+            return true;
+        }
+        
+        $this->removeItem($cacheId);
+        
+        return false;
     }
 
     /**
@@ -134,7 +146,10 @@ class Memcache extends AbstractAdapter implements AdapterInterface
         $cacheId = $this->normalizeKey($cacheId);
 
         return $this->memcache->set(
-            $cacheId, $this->compact($value), 0, $this->cacheExpiration
+            $cacheId, 
+            $this->compact($value), 
+            0, 
+            $this->cacheExpiration
         );
     }
 
@@ -147,7 +162,7 @@ class Memcache extends AbstractAdapter implements AdapterInterface
      */
     public function removeItem($cacheId)
     {
-        return false;
+        return $this->memcache->delete($cacheId);
     }
 
     /**
@@ -157,7 +172,7 @@ class Memcache extends AbstractAdapter implements AdapterInterface
      */
     public function flush()
     {
-        $this->memcache->flush();
+        return $this->memcache->flush();
     }
 
     /**

@@ -1,4 +1,6 @@
 <?php
+namespace WurflCacheTest\Adapter;
+
 use Wurfl\Storage\Memcache;
 
 /**
@@ -8,7 +10,7 @@ use Wurfl\Storage\Memcache;
 /**
  * test case.
  */
-class WURFL_Storage_MemcacheTest extends PHPUnit_Framework_TestCase
+class MemcacheTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testMultipleServerConfiguration()
@@ -40,7 +42,7 @@ class WURFL_Storage_MemcacheTest extends PHPUnit_Framework_TestCase
     public function testShouldRemoveTheExpiredItem()
     {
         $this->checkDeps();
-        $params  = array(\Wurfl\Configuration\Config::EXPIRATION => 1);
+        $params  = array('expiration' => 1);
         $storage = new Memcache($params);
         $storage->save("key", "value");
         sleep(2);
@@ -66,7 +68,7 @@ class WURFL_Storage_MemcacheTest extends PHPUnit_Framework_TestCase
      * @param array    $keys
      * @param Memcache $storage
      */
-    private function assertThanNoElementsAreInStorage(array $keys = array(), $storage)
+    private function assertThanNoElementsAreInStorage(array $keys = array(), Memcache $storage = null)
     {
         foreach ($keys as $key) {
             self::assertNull($storage->load($key));

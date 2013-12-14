@@ -62,16 +62,16 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
      *
      * @param  string $key
      * @param  bool   $success
-     * @param  mixed  $casToken
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null, & $casToken = null)
+    public function getItem($key, & $success = null)
     {
-        $cacheId = $this->normalizeKey($key);
+        $cacheId  = $this->normalizeKey($key);
+        $casToken = null;
 
         try {
-            $content = $this->cache->getItem($cacheId, $success);
+            $content = $this->cache->getItem($cacheId, $success, $casToken);
         } catch (ZendException\ExceptionInterface $ex) {
             $success = false;
             return null;
