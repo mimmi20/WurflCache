@@ -17,14 +17,6 @@ namespace WurflCache;
 class CloudCache implements CacheInterface
 {
     /**
-     * @var string
-     */
-    private $cookie_name = 'WurflCloud_Client';
-    /**
-     * @var int
-     */
-    private $cache_expiration = 86400;
-    /**
      * @var null|Adapter\AdapterInterface
      */
     private $cache = null;
@@ -38,75 +30,60 @@ class CloudCache implements CacheInterface
     }
 
     /**
-     * @param string $user_agent
+     * @param string $userAgent
      *
      * @return array|bool
      */
-    public function getDevice($user_agent)
+    public function getDevice($userAgent)
     {
-        if (!isset($_COOKIE[$this->cookie_name])) {
+        $success = null;
+        $data    = $this->cache->getItem($userAgent, $success);
+
+        if (!$success)
             return false;
         }
-        $cookie_data = @json_decode($_COOKIE[$this->cookie_name], true, 5);
-        if (!is_array($cookie_data) || empty($cookie_data)) {
-            return false;
-        }
-        if (!isset($cookie_data['date_set']) || ((int)$cookie_data['date_set'] + $this->cache_expiration) < time()) {
-            return false;
-        }
-        if (!isset($cookie_data['capabilities']) || !is_array($cookie_data['capabilities'])
-            || empty($cookie_data['capabilities'])
-        ) {
-            return false;
-        }
-        return $cookie_data['capabilities'];
+
+        return $data;
     }
 
     /**
-     * @param string $device_id
+     * @param string $deviceId
      *
-     * @return bool
+     * @return array|bool
      */
-    public function getDeviceFromID($device_id)
+    public function getDeviceFromID($deviceId)
     {
-        return false;
+        $success = null;
+        $data    = $this->cache->getItem($deviceId, $success);
+
+        if (!$success)
+            return false;
+        }
+
+        return $data;
     }
 
     /**
-     * @param string $user_agent
+     * @param string $userAgent
      * @param array  $capabilities
      *
      * @return bool
      */
-    public function setDevice($user_agent, $capabilities)
+    public function setDevice($userAgent, array $capabilities)
     {
-        if ($this->cookie_sent === true) {
-            return true;
-        }
-
-        $cookie_data = array(
-            'date_set'     => time(),
-            'capabilities' => $capabilities,
-        );
-        $this->setCookie(
-            $this->cookie_name, json_encode($cookie_data, JSON_FORCE_OBJECT),
-            $cookie_data['date_set'] + $this->cache_expiration
-        );
-        $this->cookie_sent = true;
-
-        return true;
+        return $this->cache->setItem($userAgent, $capabilities);
     }
 
     // Required by interface but not used for this provider
     /**
-     * @param string $device_id
+     * @param string $deviceId
      * @param array  $capabilities
      *
      * @return bool
      */
-    public function setDeviceFromID($device_id, $capabilities)
+    public function setDeviceFromID($deviceId, array $capabilities)
     {
-        return true;
+        return $this->cache->setItem($deviceId, $capabilities);
     }
 
     /**
@@ -114,7 +91,7 @@ class CloudCache implements CacheInterface
      */
     public function setCacheExpiration($time)
     {
-        $this->cache_expiration = $time;
+        $this->cache->setExpiration($time);
     }
 
     /**
@@ -122,6 +99,7 @@ class CloudCache implements CacheInterface
      */
     public function setCachePrefix($prefix)
     {
+        $this->cache->setNamespace($prefix);
     }
 
     /**
@@ -129,22 +107,5 @@ class CloudCache implements CacheInterface
      */
     public function close()
     {
-    }
-
-    /**
-     * @param      $name
-     * @param null $value
-     * @param null $expire
-     * @param null $path
-     * @param null $domain
-     * @param null $secure
-     * @param null $httponly
-     *
-     * @return bool
-     */
-    protected function setCookie(
-        $name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null
-    ) {
-        return setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
 }

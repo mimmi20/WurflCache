@@ -1,5 +1,5 @@
 <?php
-namespace WurflCache\Adapter;
+namespace WurflCache;
 
     /**
      * a outsourced cache class
@@ -36,9 +36,9 @@ namespace WurflCache\Adapter;
 /**
  * Class Browscap
  *
- * @package WurflCache\Adapter
+ * @package WurflCache
  */
-class Browscap extends AbstractAdapter implements AdapterInterface
+class BrowscapCache
 {
     /**
      * Current version of the class.
@@ -55,51 +55,28 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      *
      * @var integer
      */
-    private $updateInterval = 432000; // 5 days
+    const UPDATE_INTERVAL = 432000; // 5 days
 
     /**
      * Path to the cache directory
      *
-     * @var string
+     * @var null|Adapter\AdapterInterface
      */
-    private $cacheDir = null;
+    private $cache = null;
 
     /**
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param string $cacheDir
+     * @param Adapter\AdapterInterface $adapter
      *
      * @throws Exception
      */
-    public function __construct($cacheDir)
+    public function __construct(Adapter\AdapterInterface $adapter)
     {
-        if (!isset($cacheDir)) {
-            throw new Exception(
-                'You have to provide a path to read/store the cache file'
-            );
-        }
-
-        $oldCacheDir = $cacheDir;
-        $cacheDir    = realpath($cacheDir);
-
-        if (false === $cacheDir) {
-            throw new Exception(
-                sprintf(
-                    'The cache path %s is invalid. Are you sure that it exists and that you have permission to access it?',
-                    $oldCacheDir
-                )
-            );
-        }
-
-        // Is the cache dir really the directory or is it directly the file?
-        if (substr($cacheDir, -4) === '.php') {
-            $this->cacheDir = dirname($cacheDir);
-        } else {
-            $this->cacheDir = $cacheDir;
-        }
-
-        $this->cacheDir .= DIRECTORY_SEPARATOR;
+        $this->cache = $adapter;
+        
+        $this->setUpdateInterval(self::UPDATE_INTERVAL);
     }
 
     /**
@@ -111,7 +88,7 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      */
     public function setUpdateInterval($updateInterval)
     {
-        $this->updateInterval = (int)$updateInterval;
+        $this->cache->setExpiration((int)$updateInterval);
 
         return $this;
     }
@@ -127,41 +104,20 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      */
     public function getItem($cacheId, & $success = null, & $casToken = null)
     {
-        $cacheFile = $this->getCacheFile($cacheId);
-        $content   = null;
-        $success   = false;
+        $success = false;
+        
+        if (!$this->hasItem($cacheId)) {
+            return null;
+        }
+        
+        $success = null;
+        $data    = $this->cache->getItem($cacheId, $success);
 
-        if (!file_exists($cacheFile) || !is_readable($cacheFile) || !is_file($cacheFile)) {
+        if (!isset($data['cacheVersion']) || $data['cacheVersion'] != self::CACHE_FILE_VERSION) {
             return null;
         }
 
-        $interval = time() - filemtime($cacheFile);
-
-        if (file_exists($cacheFile) && ($interval <= $this->updateInterval)) {
-            $content = $this->_loadCache($cacheFile);
-            $success = true;
-        }
-
-        return $content;
-    }
-
-    /**
-     * Loads the cache into object's properties
-     *
-     * @param string $cacheFile
-     *
-     * @return mixed
-     */
-    private function _loadCache($cacheFile)
-    {
-        $content = null;
-        require $cacheFile;
-
-        if (!isset($cache_version) || $cache_version != self::CACHE_FILE_VERSION) {
-            return null;
-        }
-
-        return $content;
+        return $data['content'];
     }
 
     /**
@@ -174,13 +130,14 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      */
     public function setItem($cacheId, $content)
     {
-        $cacheFile = $this->getCacheFile($cacheId);
-
         // Get the whole PHP code
-        $cache = $this->_buildCache($content);
+        $data = array(
+            'cacheVersion' => self::CACHE_FILE_VERSION,
+            'content'      => var_export($content, true)
+        );
 
         // Save and return
-        return (bool)file_put_contents($cacheFile, $cache, LOCK_EX);
+        return $this->cache->setItem($cacheId, $data);
     }
 
     /**
@@ -192,56 +149,19 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      */
     public function hasItem($cacheId)
     {
-        $cacheFile = $this->getCacheFile($cacheId);
-
-        return file_exists($cacheFile)
-        && is_file($cacheFile)
-        && is_readable($cacheFile);
-    }
-
-    /**
-     * creates the PHP string to write to disk
-     *
-     * @param mixed $content The content to store
-     *
-     * @return string the PHP string to save into the cache file
-     */
-    private function _buildCache($content)
-    {
-        $cacheTpl = "<?php\n\$cache_version=%s;\n\$content=%s;\n";
-
-        return sprintf(
-            $cacheTpl,
-            "'" . self::CACHE_FILE_VERSION . "'",
-            var_export($content, true)
-        );
-    }
-
-    /**
-     * builds the full path for the cache file
-     *
-     * @param string $cacheId The cache id
-     *
-     * @return string The cache file including path
-     */
-    private function getCacheFile($cacheId)
-    {
-        $cacheId = preg_replace('/[^a-zA-Z0-9_]/', '_', $cacheId);
-        $cacheId = hash('sha512', $cacheId);
-
-        return $this->cacheDir . $cacheId . '.php';
+        return $this->cache->hasItem($cacheId);
     }
 
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param string $cacheId
      *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        return null;
+        return $this->cache->removeItem($cacheId);
     }
 
     /**
@@ -251,6 +171,6 @@ class Browscap extends AbstractAdapter implements AdapterInterface
      */
     public function flush()
     {
-        return null;
+        return $this->cache->flush();
     }
 }
