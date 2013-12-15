@@ -23,3 +23,4 @@ namespace WurflCache;
 class Exception extends \Exception
 {
 }
+

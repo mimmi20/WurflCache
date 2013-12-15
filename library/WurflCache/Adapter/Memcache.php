@@ -118,18 +118,18 @@ class Memcache extends AbstractAdapter implements AdapterInterface
     public function hasItem($cacheId)
     {
         $tempData = $this->memcache->set(
-            $cacheId, 
+            $cacheId,
             ''
             0,
             $this->cacheExpiration
         );
-        
+
         if (false === $tempData) {
             return true;
         }
-        
+
         $this->removeItem($cacheId);
-        
+
         return false;
     }
 
@@ -146,9 +146,9 @@ class Memcache extends AbstractAdapter implements AdapterInterface
         $cacheId = $this->normalizeKey($cacheId);
 
         return $this->memcache->set(
-            $cacheId, 
-            $this->compact($value), 
-            0, 
+            $cacheId,
+            $this->compact($value),
+            0,
             $this->cacheExpiration
         );
     }

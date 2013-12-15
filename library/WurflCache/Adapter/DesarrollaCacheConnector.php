@@ -60,14 +60,20 @@ class DesarrollaCacheConnector extends AbstractAdapter implements AdapterInterfa
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
-        return $this->cache->get($key);
+        if ($this->hasItem($cacheId)) {
+            $success = true;
+            return $this->cache->get($cacheId);
+        }
+
+        $success = false;
+        return null;
     }
 
     /**

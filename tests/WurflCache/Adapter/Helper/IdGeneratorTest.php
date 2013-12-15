@@ -72,6 +72,10 @@ class IdGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncode()
     {
-        self::assertSame('4ed727fa6a2dcc72e95e08559129b2cc6ca9bf7210052c4d832c7b6f4250715113cc5ef99adeb19234545febf150b9b9bdd069a16c902179e74b97fecff02018', $this->object->encode('test', 'testValue'));
+        self::assertSame(
+            '4ed727fa6a2dcc72e95e08559129b2cc6ca9bf7210052c4d832c7b6f4250715113cc5ef99adeb19234545febf150b9b9bdd069a1'
+            . '6c902179e74b97fecff02018',
+            $this->object->encode('test', 'testValue')
+        );
     }
 }

@@ -75,7 +75,7 @@ class BrowscapCache
     public function __construct(Adapter\AdapterInterface $adapter)
     {
         $this->cache = $adapter;
-        
+
         $this->setUpdateInterval(self::UPDATE_INTERVAL);
     }
 
@@ -104,11 +104,11 @@ class BrowscapCache
     public function getItem($cacheId, & $success = null)
     {
         $success = false;
-        
+
         if (!$this->hasItem($cacheId)) {
             return null;
         }
-        
+
         $success = null;
         $data    = $this->cache->getItem($cacheId, $success);
 

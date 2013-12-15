@@ -136,10 +136,10 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
     {
         $cacheId = parent::normalizeKey($cacheId);
 
-        if (($p = $this->cache->getOptions()->getKeyPattern()) && !preg_match($p, $cacheId)) {
-            $p = str_replace(array('^[', '*$'), array('[^', ''), $p);
+        if (($pattern = $this->cache->getOptions()->getKeyPattern()) && !preg_match($p, $cacheId)) {
+            $pattern = str_replace(array('^[', '*$'), array('[^', ''), $pattern);
 
-            $cacheId = preg_replace($p, '_', $cacheId);
+            $cacheId = preg_replace($pattern, '_', $cacheId);
         }
 
         return $cacheId;

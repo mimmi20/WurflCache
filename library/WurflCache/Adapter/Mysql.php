@@ -23,17 +23,16 @@ namespace WurflCache\Adapter;
  */
 class Mysql extends AbstractAdapter implements AdapterInterface
 {
-    private $defaultParams
-        = array(
-            'host'        => 'localhost',
-            'port'        => 3306,
-            'db'          => 'wurfl_persistence_db',
-            'user'        => '',
-            'pass'        => '',
-            'table'       => 'wurfl_object_cache',
-            'keycolumn'   => 'key',
-            'valuecolumn' => 'value'
-        );
+    private $defaultParams = array(
+        'host'        => 'localhost',
+        'port'        => 3306,
+        'db'          => 'wurfl_persistence_db',
+        'user'        => '',
+        'pass'        => '',
+        'table'       => 'wurfl_object_cache',
+        'keycolumn'   => 'key',
+        'valuecolumn' => 'value'
+    );
 
     private $link;
     private $host;

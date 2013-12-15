@@ -31,26 +31,11 @@ use WurflCache\Adapter\Helper\StorageObject;
 class StorageObjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \WurflCache\Adapter\Helper\StorageObject
-     */
-    private $object = null;
-
-    /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     */
-    protected function setUp()
-    {
-
-    }
-
-    /**
      * @expectedException \PHPUnit_Framework_Error_Warning
      */
     public function testConstructorError1()
     {
-        $object = new StorageObject();
+        new StorageObject();
     }
 
     /**
@@ -58,7 +43,7 @@ class StorageObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorError2()
     {
-        $object = new StorageObject('testValue');
+        new StorageObject('testValue');
     }
 
     /**

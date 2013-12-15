@@ -103,8 +103,8 @@ class Apc extends AbstractAdapter implements AdapterInterface
         $cacheId = $this->normalizeKey($cacheId);
 
         return apc_store(
-            $cacheId, 
-            $this->compact($value), 
+            $cacheId,
+            $this->compact($value),
             $this->cacheExpiration
         );
     }

@@ -65,7 +65,13 @@ class DoctrineCacheConnector extends AbstractAdapter implements AdapterInterface
      */
     public function getItem($cacheId, & $success = null)
     {
+        if (!$this->hasItem($cacheId)) {
+            $success = false;
+            return null;
+        }
+
         $cacheId = $this->normalizeKey($cacheId);
+        $success = true;
 
         return unserialize($this->cache->fetch($cacheId));
     }
