@@ -20,6 +20,8 @@ namespace WurflCache\Adapter;
  * WURFL Storage
  *
  * @package    \Wurfl\Storage
+ *
+ * @todo: rewrite to use PDO or mysqli
  */
 class Mysql extends AbstractAdapter implements AdapterInterface
 {
@@ -64,29 +66,33 @@ class Mysql extends AbstractAdapter implements AdapterInterface
      * @param  string $key
      * @param  bool   $success
      *
-     * @throws Exception
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null)
     {
-        $return   = null;
+        $result = $this->hasItem($key);
+
+        if (!$result) {
+            $success = false;
+            return null;
+        }
+
         $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
 
         $sql = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
             . $this->keycolumn . '`=\'' . $objectId . '\'';
-        $result = mysql_query($sql, $this->link);
-        
-        if (!is_resource($result)) {
-            throw new Exception('MySql error ' . mysql_error($this->link) . 'in ' . $this->db);
-        }
 
-        $row = mysql_fetch_assoc($result);
+        $result = mysql_query($sql, $this->link);
+        $row    = mysql_fetch_assoc($result);
+        $return = null;
 
         if (is_array($row)) {
             $return = @unserialize($row['value']);
+
             if ($return === false) {
-                $return = null;
+                $success = false;
+                $return  = null;
             }
         }
 
@@ -106,7 +112,19 @@ class Mysql extends AbstractAdapter implements AdapterInterface
      */
     public function hasItem($key)
     {
-        return null;
+        $return   = null;
+        $objectId = $this->encode('', $key);
+        $objectId = mysql_real_escape_string($objectId);
+
+        $sql = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
+            . $this->keycolumn . '`=\'' . $objectId . '\'';
+        $result = mysql_query($sql, $this->link);
+
+        if (!is_resource($result)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -115,7 +133,6 @@ class Mysql extends AbstractAdapter implements AdapterInterface
      * @param  string $key
      * @param  mixed  $value
      *
-     * @throws Exception
      * @return bool
      */
     public function setItem($key, $value)
@@ -123,25 +140,17 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         $object   = mysql_real_escape_string(serialize($value));
         $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
-        $sql      = 'delete from `' . $this->db . '`.`' . $this->table . '` where `' . $this->keycolumn . '`=\'' 
-            . $objectId . '\'';
-        $success  = mysql_query($sql, $this->link);
+
+        $success = $this->removeItem($key);
+
         if (!$success) {
-            throw new Exception(
-                'MySql error ' . mysql_error($this->link) . 'deleting ' . $objectId . ' in ' . $this->db
-            );
+            return false;
         }
 
-        $sql = 'insert into `' . $this->db . '`.`' . $this->table . '` (`' . $this->keycolumn . '`,`' 
+        $sql = 'insert into `' . $this->db . '`.`' . $this->table . '` (`' . $this->keycolumn . '`,`'
             . $this->valuecolumn . '`) VALUES (\'' . $objectId . '\',\'' . $object . '\')';
-        $success = mysql_query($sql, $this->link);
-        if (!$success) {
-            throw new Exception(
-                'MySQL error ' . mysql_error($this->link) . 'setting ' . $objectId . ' in ' . $this->db
-            );
-        }
 
-        return $success;
+        return (boolean) mysql_query($sql, $this->link);
     }
 
     /**
@@ -153,7 +162,13 @@ class Mysql extends AbstractAdapter implements AdapterInterface
      */
     public function removeItem($key)
     {
-        return null;
+        $objectId = $this->encode('', $key);
+        $objectId = mysql_real_escape_string($objectId);
+
+        $sql = 'delete from `' . $this->db . '`.`' . $this->table . '` where `' . $this->keycolumn . '`=\''
+            . $objectId . '\'';
+
+        return (boolean) mysql_query($sql, $this->link);
     }
 
     /**
@@ -166,7 +181,7 @@ class Mysql extends AbstractAdapter implements AdapterInterface
     {
         $sql     = 'truncate table `' . $this->db . '`.`' . $this->table . '`';
         $success = mysql_query($sql, $this->link);
-        
+
         if (mysql_error($this->link)) {
             throw new Exception(
                 'MySql error ' . mysql_error($this->link) . ' clearing ' . $this->db . '.' . $this->table

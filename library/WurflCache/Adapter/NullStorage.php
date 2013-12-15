@@ -50,7 +50,7 @@ class NullStorage extends AbstractAdapter implements AdapterInterface
      */
     public function getItem($key, & $success = null)
     {
-        $success = true;
+        $success = false;
         return null;
     }
 
