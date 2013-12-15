@@ -14,8 +14,8 @@ in other projects
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mimmi20/WurflCache/badges/quality-score.png?s=64b8e0c825b1ca4e1bd88d13367cdb36f78fd755)](https://scrutinizer-ci.com/g/mimmi20/WurflCache/) 
 [![Code Coverage](https://scrutinizer-ci.com/g/mimmi20/WurflCache/badges/coverage.png?s=8776d95dbc069fa156fc48cebbed21dd293864b3)](https://scrutinizer-ci.com/g/mimmi20/WurflCache/)
 
-[![Latest Stable Version](https://poser.pugx.org/mimmi20/WurflCache/v/stable.png)](https://packagist.org/packages/mimmi20/WurflCache)
-[![Latest Unstable Version](https://poser.pugx.org/mimmi20/WurflCache/v/unstable.png)](https://packagist.org/packages/mimmi20/WurflCache)
+[![Latest Stable Version](https://poser.pugx.org/mimmi20/wurflcache/v/stable.png)](https://packagist.org/packages/mimmi20/wurflcache)
+[![Latest Unstable Version](https://poser.pugx.org/mimmi20/wurflcache/v/unstable.png)](https://packagist.org/packages/mimmi20/wurflcache)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mimmi20/wurflcache/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
