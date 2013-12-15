@@ -150,6 +150,10 @@ abstract class AbstractAdapter implements AdapterInterface
         if ($value === $object) {
             return null;
         }
+        
+        if (!($object instanceof Helper\StorageObject)) {
+            return null;
+        }
 
         if ($object->isExpired()) {
             return null;
