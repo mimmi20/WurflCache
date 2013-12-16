@@ -18,6 +18,7 @@ in other projects
 [![Latest Unstable Version](https://poser.pugx.org/mimmi20/wurflcache/v/unstable.png)](https://packagist.org/packages/mimmi20/wurflcache)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mimmi20/wurflcache/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Total views](https://sourcegraph.com/api/repos/github.com/mimmi20/WurflCache/counters/views.png)](https://sourcegraph.com/github.com/mimmi20/WurflCache)
 
 
 Submitting bugs and feature requests
