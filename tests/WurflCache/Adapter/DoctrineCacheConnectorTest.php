@@ -62,10 +62,29 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('contains')
-            ->will(self::returnValue(false));
+            ->will(self::returnValue(true));
 
         $object = new DoctrineCacheConnector($mock);
         self::assertFalse($object->getItem('test'));
+    }
+
+    /**
+     * Get an item.
+     */
+    public function testGetItemNotFound()
+    {
+        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
+        $mock
+            ->expects(self::any())
+            ->method('fetch')
+            ->will(self::returnValue(null));
+        $mock
+            ->expects(self::once())
+            ->method('contains')
+            ->will(self::returnValue(false));
+
+        $object = new DoctrineCacheConnector($mock);
+        self::assertNull($object->getItem('test'));
     }
 
     /**
