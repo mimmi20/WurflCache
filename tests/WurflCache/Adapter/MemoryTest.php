@@ -75,6 +75,7 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
+        /** @var $object \WurflCache\Adapter\Memory */
         $object = $this->getMock('\\WurflCache\\Adapter\\Memory', array('normalizeKey'));
 
         self::assertNull($object->getItem('test'));

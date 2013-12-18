@@ -75,6 +75,7 @@ class NullStorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
+        /** @var $object \WurflCache\Adapter\NullStorage */
         $object = $this->getMock('\\WurflCache\\Adapter\\NullStorage', array('normalizeKey'));
 
         self::assertNull($object->getItem('test'));

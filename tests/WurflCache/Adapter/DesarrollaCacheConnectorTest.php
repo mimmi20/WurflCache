@@ -54,11 +54,15 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemNull()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache', array('get'), array(), '', false);
+        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache', array('get', 'has'), array(), '', false);
         $mock
-            ->expects(self::once())
+            ->expects(self::any())
             ->method('get')
             ->will(self::returnValue(null));
+        $mock
+            ->expects(self::any())
+            ->method('has')
+            ->will(self::returnValue(false));
 
         $object = new DesarrollaCacheConnector($mock);
         self::assertNull($object->getItem('test'));
@@ -69,11 +73,15 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache', array('get'), array(), '', false);
+        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache', array('get', 'has'), array(), '', false);
         $mock
-            ->expects(self::once())
+            ->expects(self::any())
             ->method('get')
             ->will(self::returnValue('test'));
+        $mock
+            ->expects(self::any())
+            ->method('has')
+            ->will(self::returnValue(true));
 
         $object = new DesarrollaCacheConnector($mock);
         self::assertSame('test', $object->getItem('test'));
