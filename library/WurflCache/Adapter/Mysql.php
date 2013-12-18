@@ -113,7 +113,6 @@ class Mysql extends AbstractAdapter implements AdapterInterface
      */
     public function hasItem($key)
     {
-        $return   = null;
         $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
 
@@ -212,10 +211,11 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         }
 
         /* Is Table there? */
-        $test = mysql_query('SHOW TABLES FROM $this->db LIKE \'' . $this->table . '\'', $this->link);
+        $test = mysql_query('SHOW TABLES FROM ' . $this->db . ' LIKE \'' . $this->table . '\'', $this->link);
         if (!is_resource($test)) {
-            throw new Exception('Couldn\'t show tables from database `' . $this->db . '` (' . mysql_error($this->link)
-                . ')');
+            throw new Exception(
+                'Couldn\'t show tables from database `' . $this->db . '` (' . mysql_error($this->link) . ')'
+            );
         }
 
         // create table if it's not there.

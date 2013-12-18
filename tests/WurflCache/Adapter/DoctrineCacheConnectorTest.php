@@ -54,7 +54,13 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemNull()
     {
-        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
+        $mock = $this->getMock(
+            '\\Doctrine\\Common\\Cache\\FilesystemCache',
+            array('fetch', 'contains'),
+            array(),
+            '',
+            false
+        );
         $mock
             ->expects(self::once())
             ->method('fetch')
@@ -73,7 +79,13 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemNotFound()
     {
-        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
+        $mock = $this->getMock(
+            '\\Doctrine\\Common\\Cache\\FilesystemCache',
+            array('fetch', 'contains'),
+            array(),
+            '',
+            false
+        );
         $mock
             ->expects(self::any())
             ->method('fetch')
@@ -92,7 +104,13 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemArray()
     {
-        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
+        $mock = $this->getMock(
+            '\\Doctrine\\Common\\Cache\\FilesystemCache',
+            array('fetch', 'contains'),
+            array(),
+            '',
+            false
+        );
         $mock
             ->expects(self::once())
             ->method('fetch')
