@@ -54,11 +54,15 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemNull()
     {
-        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch'), array(), '', false);
+        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
         $mock
             ->expects(self::once())
             ->method('fetch')
             ->will(self::returnValue(null));
+        $mock
+            ->expects(self::once())
+            ->method('contains')
+            ->will(self::returnValue(false));
 
         $object = new DoctrineCacheConnector($mock);
         self::assertFalse($object->getItem('test'));
@@ -69,11 +73,15 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemArray()
     {
-        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch'), array(), '', false);
+        $mock = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache', array('fetch', 'contains'), array(), '', false);
         $mock
             ->expects(self::once())
             ->method('fetch')
             ->will(self::returnValue('a:2:{i:0;s:4:"name";i:1;s:5:"value";}'));
+        $mock
+            ->expects(self::once())
+            ->method('contains')
+            ->will(self::returnValue(true));
 
         $object = new DoctrineCacheConnector($mock);
         self::assertSame(array('name', 'value'), $object->getItem('test'));
