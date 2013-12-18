@@ -51,7 +51,7 @@ class StorageObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testValue()
     {
-        $value = 'testValue';
+        $value  = 'testValue';
         $object = new StorageObject($value, 10);
 
         self::assertSame($value, $object->value());
@@ -77,7 +77,7 @@ class StorageObjectTest extends \PHPUnit_Framework_TestCase
     public function testExpiringOn()
     {
         $expiringTime = time() + 1000;
-        $object = new StorageObject('testValue', 1000);
+        $object       = new StorageObject('testValue', 1000);
 
         self::assertSame($expiringTime, $object->expiringOn());
     }

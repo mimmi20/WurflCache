@@ -21,20 +21,21 @@ namespace WurflCache\Adapter;
  *
  * @package    \Wurfl\Storage
  *
- * @todo: rewrite to use PDO or mysqli
+ * @todo       : rewrite to use PDO or mysqli
  */
 class Mysql extends AbstractAdapter implements AdapterInterface
 {
-    private $defaultParams = array(
-        'host'        => 'localhost',
-        'port'        => 3306,
-        'db'          => 'wurfl_persistence_db',
-        'user'        => '',
-        'pass'        => '',
-        'table'       => 'wurfl_object_cache',
-        'keycolumn'   => 'key',
-        'valuecolumn' => 'value'
-    );
+    private $defaultParams
+        = array(
+            'host'        => 'localhost',
+            'port'        => 3306,
+            'db'          => 'wurfl_persistence_db',
+            'user'        => '',
+            'pass'        => '',
+            'table'       => 'wurfl_object_cache',
+            'keycolumn'   => 'key',
+            'valuecolumn' => 'value'
+        );
 
     private $link;
     private $host;
@@ -116,7 +117,7 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         $objectId = $this->encode('', $key);
         $objectId = mysql_real_escape_string($objectId);
 
-        $sql = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
+        $sql    = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
             . $this->keycolumn . '`=\'' . $objectId . '\'';
         $result = mysql_query($sql, $this->link);
 
@@ -150,7 +151,7 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         $sql = 'insert into `' . $this->db . '`.`' . $this->table . '` (`' . $this->keycolumn . '`,`'
             . $this->valuecolumn . '`) VALUES (\'' . $objectId . '\',\'' . $object . '\')';
 
-        return (boolean) mysql_query($sql, $this->link);
+        return (boolean)mysql_query($sql, $this->link);
     }
 
     /**
@@ -168,7 +169,7 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         $sql = 'delete from `' . $this->db . '`.`' . $this->table . '` where `' . $this->keycolumn . '`=\''
             . $objectId . '\'';
 
-        return (boolean) mysql_query($sql, $this->link);
+        return (boolean)mysql_query($sql, $this->link);
     }
 
     /**
@@ -213,7 +214,8 @@ class Mysql extends AbstractAdapter implements AdapterInterface
         /* Is Table there? */
         $test = mysql_query('SHOW TABLES FROM $this->db LIKE \'' . $this->table . '\'', $this->link);
         if (!is_resource($test)) {
-            throw new Exception('Couldn\'t show tables from database `' . $this->db . '` (' . mysql_error($this->link) . ')');
+            throw new Exception('Couldn\'t show tables from database `' . $this->db . '` (' . mysql_error($this->link)
+                . ')');
         }
 
         // create table if it's not there.

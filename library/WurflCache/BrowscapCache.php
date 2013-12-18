@@ -84,7 +84,7 @@ class BrowscapCache
      *
      * @param integer $updateInterval
      *
-     * @return Browscap
+     * @return BrowscapCache
      */
     public function setUpdateInterval($updateInterval)
     {

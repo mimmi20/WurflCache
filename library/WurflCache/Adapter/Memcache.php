@@ -119,7 +119,7 @@ class Memcache extends AbstractAdapter implements AdapterInterface
     {
         $tempData = $this->memcache->set(
             $cacheId,
-            ''
+            '',
             0,
             $this->cacheExpiration
         );

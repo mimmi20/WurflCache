@@ -44,7 +44,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemError()
     {
-        $mock = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
+        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
         $object = new ZendCacheConnector($mock);
         $object->getItem();
     }
@@ -58,8 +58,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::returnValue(null))
-        ;
+            ->will(self::returnValue(null));
 
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->getItem('test'));
@@ -74,8 +73,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::returnValue('a:2:{i:0;s:4:"name";i:1;s:5:"value";}'))
-        ;
+            ->will(self::returnValue('a:2:{i:0;s:4:"name";i:1;s:5:"value";}'));
 
         $object = new ZendCacheConnector($mock);
         self::assertSame(array('name', 'value'), $object->getItem('test'));
@@ -88,7 +86,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasItemError()
     {
-        $mock = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
+        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
         $object = new ZendCacheConnector($mock);
         $object->hasItem();
     }
@@ -102,8 +100,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('hasItem')
-            ->will(self::returnValue(false))
-        ;
+            ->will(self::returnValue(false));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -115,7 +112,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError1()
     {
-        $mock = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
+        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
         $object = new ZendCacheConnector($mock);
         $object->setItem();
     }
@@ -127,7 +124,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError2()
     {
-        $mock = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
+        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
         $object = new ZendCacheConnector($mock);
         $object->setItem('test');
     }
@@ -141,8 +138,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('setItem')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new ZendCacheConnector($mock);
         self::assertTrue($object->setItem('test', 'testValue'));
     }
@@ -154,7 +150,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveItemError()
     {
-        $mock = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
+        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
         $object = new ZendCacheConnector($mock);
         $object->removeItem();
     }
@@ -168,8 +164,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('removeItem')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new ZendCacheConnector($mock);
         self::assertTrue($object->removeItem('test'));
     }
@@ -183,8 +178,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('flush')
-            ->will(self::returnValue(false))
-        ;
+            ->will(self::returnValue(false));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->flush());
     }

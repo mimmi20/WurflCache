@@ -59,8 +59,6 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     public function testGetItemMocked()
     {
         $object = $this->getMock('\\WurflCache\\Adapter\\Cookie', array('normalizeKey'));
-        //$object->once()
-        //    ->returnValue('test');
 
         $_COOKIE['test'] = 'testValue';
 

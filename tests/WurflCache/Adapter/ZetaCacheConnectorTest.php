@@ -44,7 +44,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemError()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory');
+        $mock   = $this->getMock('\\ezcCacheStorageMemory');
         $object = new ZetaCacheConnector($mock);
         $object->getItem();
     }
@@ -58,8 +58,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('restore')
-            ->will(self::returnValue(null))
-        ;
+            ->will(self::returnValue(null));
 
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->getItem('test'));
@@ -74,8 +73,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('restore')
-            ->will(self::returnValue('a:2:{i:0;s:4:"name";i:1;s:5:"value";}'))
-        ;
+            ->will(self::returnValue('a:2:{i:0;s:4:"name";i:1;s:5:"value";}'));
 
         $object = new ZetaCacheConnector($mock);
         self::assertSame(array('name', 'value'), $object->getItem('test'));
@@ -90,8 +88,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('restore')
-            ->will(self::throwException(new \ezcCacheApcException('test')))
-        ;
+            ->will(self::throwException(new \ezcCacheApcException('test')));
 
         $object = new ZetaCacheConnector($mock);
         self::assertNull($object->getItem('test'));
@@ -104,7 +101,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasItemError()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory');
+        $mock   = $this->getMock('\\ezcCacheStorageMemory');
         $object = new ZetaCacheConnector($mock);
         $object->hasItem();
     }
@@ -118,8 +115,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('countDataItems')
-            ->will(self::throwException(new \ezcCacheApcException('test')))
-        ;
+            ->will(self::throwException(new \ezcCacheApcException('test')));
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -133,8 +129,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('countDataItems')
-            ->will(self::returnValue(false))
-        ;
+            ->will(self::returnValue(false));
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -146,7 +141,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError1()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory');
+        $mock   = $this->getMock('\\ezcCacheStorageMemory');
         $object = new ZetaCacheConnector($mock);
         $object->setItem();
     }
@@ -158,7 +153,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError2()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory');
+        $mock   = $this->getMock('\\ezcCacheStorageMemory');
         $object = new ZetaCacheConnector($mock);
         $object->setItem('test');
     }
@@ -172,8 +167,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('store')
-            ->will(self::throwException(new \ezcCacheApcException('test')))
-        ;
+            ->will(self::throwException(new \ezcCacheApcException('test')));
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->setItem('test', 'testValue'));
     }
@@ -187,8 +181,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('store')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new ZetaCacheConnector($mock);
         self::assertTrue($object->setItem('test', 'testValue'));
     }
@@ -200,7 +193,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveItemError()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory');
+        $mock   = $this->getMock('\\ezcCacheStorageMemory');
         $object = new ZetaCacheConnector($mock);
         $object->removeItem();
     }
@@ -214,8 +207,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('delete')
-            ->will(self::throwException(new \ezcCacheApcException('test')))
-        ;
+            ->will(self::throwException(new \ezcCacheApcException('test')));
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->removeItem('test'));
     }
@@ -229,8 +221,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('delete')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new ZetaCacheConnector($mock);
         self::assertTrue($object->removeItem('test'));
     }
@@ -240,7 +231,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testflush()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory', array('dropCache'), array(), '', false);
+        $mock   = $this->getMock('\\ezcCacheStorageMemory', array('dropCache'), array(), '', false);
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->flush());
     }
@@ -250,7 +241,7 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testflushException()
     {
-        $mock = $this->getMock('\\ezcCacheStorageMemory', array('dropCache'), array(), '', false);
+        $mock   = $this->getMock('\\ezcCacheStorageMemory', array('dropCache'), array(), '', false);
         $object = new ZetaCacheConnector($mock);
         self::assertFalse($object->flush());
     }

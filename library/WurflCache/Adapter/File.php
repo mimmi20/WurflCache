@@ -73,13 +73,13 @@ class File extends AbstractAdapter implements AdapterInterface
     public function getItem($key, & $success = null)
     {
         $success = false;
-        
+
         if (!$this->hasItem($key)) {
             return null;
         }
 
         $path = $this->keyPath($key);
-        
+
         /** @var $value Helper\StorageObject */
         $value = $this->extract(FileUtils::read($path));
         if ($value === null) {
@@ -100,7 +100,7 @@ class File extends AbstractAdapter implements AdapterInterface
     public function hasItem($key)
     {
         $path = $this->keyPath($key);
-        
+
         return file_exists($path) && is_file($path) && is_readable($path);
     }
 
@@ -128,7 +128,7 @@ class File extends AbstractAdapter implements AdapterInterface
     public function removeItem($key)
     {
         $path = $this->keyPath($key);
-        
+
         return unlink($path);
     }
 

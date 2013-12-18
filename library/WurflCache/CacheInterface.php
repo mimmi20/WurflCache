@@ -44,7 +44,7 @@ interface CacheInterface
      *
      * @return boolean Success
      */
-    public function setDevice($key, $value);
+    public function setDevice($key, array $value);
 
     /**
      * Stores the given user agent with the given device capabilities in the cache provider for the given time period
@@ -54,7 +54,7 @@ interface CacheInterface
      *
      * @return boolean Success
      */
-    public function setDeviceFromID($key, $value);
+    public function setDeviceFromID($key, array $value);
 
     /**
      * Closes the connection to the cache provider

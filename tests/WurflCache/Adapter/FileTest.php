@@ -4,6 +4,9 @@ namespace WurflCacheTest\Adapter;
 /**
  * test case
  */
+use WurflCache\Adapter\File;
+use WurflCache\Utils\FileUtils;
+
 /**
  * test case.
  */
@@ -14,12 +17,12 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        \WurflCache\Utils\FileUtils::mkdir(self::storageDir());
+        FileUtils::mkdir(self::storageDir());
     }
 
     public function tearDown()
     {
-        \WurflCache\Utils\FileUtils::rmdir(self::storageDir());
+        FileUtils::rmdir(self::storageDir());
     }
 
     public function testShouldTryToCreateTheStorage()
@@ -28,9 +31,9 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $params    = array(
             "dir" => $cachepath
         );
-        new \WurflCache\Adapter\File($params);
+        new File($params);
         $this->assertStorageDirectoryIsCreated($cachepath);
-        \WurflCache\Utils\FileUtils::rmdir($cachepath);
+        FileUtils::rmdir($cachepath);
     }
 
     private function realpath($path)
@@ -50,7 +53,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             "expiration" => 0
         );
 
-        $storage = new \WurflCache\Adapter\File($params);
+        $storage = new File($params);
 
         $storage->setItem("foo", "foo");
         sleep(1);
@@ -65,7 +68,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             "expiration" => 1
         );
 
-        $storage = new \WurflCache\Adapter\File($params);
+        $storage = new File($params);
 
         $storage->setItem("item2", "item2");
         self::assertEquals("item2", $storage->getItem("item2"));

@@ -2,8 +2,9 @@
 namespace WurflCache\Adapter;
 
 use Zend\Cache\Exception as ZendException;
+use Zend\Cache\Storage\Adapter\AbstractAdapter as AbstractZendAdapter;
+use Zend\Cache\Storage\FlushableInterface;
 use Zend\Cache\Storage\Plugin\Serializer;
-use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Interface class to use the zend cache with Browscap
@@ -50,9 +51,9 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
-     * @param \Zend\Cache\Storage\StorageInterface $cache
+     * @param \Zend\Cache\Storage\Adapter\AbstractAdapter $cache
      */
-    public function __construct(StorageInterface $cache)
+    public function __construct(AbstractZendAdapter $cache)
     {
         $this->cache = $cache;
     }
@@ -67,17 +68,19 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
      */
     public function getItem($key, & $success = null)
     {
-        $cacheId  = $this->normalizeKey($key);
-        $casToken = null;
+        $cacheId = $this->normalizeKey($key);
+
+        /** @var $cache \Zend\Cache\Storage\Adapter\AbstractAdapter */
+        $cache = $this->cache;
 
         try {
-            $content = $this->cache->getItem($cacheId, $success, $casToken);
+            $content = $cache->getItem($cacheId, $success, $casToken);
         } catch (ZendException\ExceptionInterface $ex) {
             $success = false;
             return null;
         }
 
-        if (!$this->cache->hasPlugin(new Serializer())) {
+        if (!$cache->hasPlugin(new Serializer())) {
             $content = unserialize($content);
         }
 
@@ -96,12 +99,15 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        if (!$this->cache->hasPlugin(new Serializer())) {
+        /** @var $cache \Zend\Cache\Storage\Adapter\AbstractAdapter */
+        $cache = $this->cache;
+
+        if (!$cache->hasPlugin(new Serializer())) {
             $content = serialize($content);
         }
 
         try {
-            return $this->cache->setItem($cacheId, $content);
+            return $cache->setItem($cacheId, $content);
         } catch (ZendException\ExceptionInterface $ex) {
             return null;
         }
@@ -172,6 +178,10 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
      */
     public function flush()
     {
+        if (!($this->cache instanceof FlushableInterface)) {
+            return false;
+        }
+
         try {
             return $this->cache->flush();
         } catch (ZendException\ExceptionInterface $ex) {

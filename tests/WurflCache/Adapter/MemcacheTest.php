@@ -1,7 +1,7 @@
 <?php
 namespace WurflCacheTest\Adapter;
 
-use Wurfl\Storage\Memcache;
+use WurflCache\Adapter\Memcache;
 
 /**
  * test case
@@ -16,7 +16,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     public function testMultipleServerConfiguration()
     {
         $params = array(
-            "host" => "127.0.0.1;127.0.0.2"
+            'host' => '127.0.0.1;127.0.0.2'
         );
         $this->checkDeps();
         new Memcache($params);
@@ -30,9 +30,9 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     {
         $this->checkDeps();
         $storage = new Memcache();
-        $storage->save("foo", "foo");
+        $storage->setItem('foo', 'foo');
         sleep(2);
-        self::assertEquals("foo", $storage->load("foo"));
+        self::assertEquals('foo', $storage->getItem('foo'));
     }
 
     /**
@@ -44,9 +44,9 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
         $this->checkDeps();
         $params  = array('expiration' => 1);
         $storage = new Memcache($params);
-        $storage->save("key", "value");
+        $storage->setItem('key', 'value');
         sleep(2);
-        self::assertEquals(null, $storage->load("key"));
+        self::assertEquals(null, $storage->getItem('key'));
     }
 
     /**
@@ -58,10 +58,10 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     {
         $this->checkDeps();
         $storage = new Memcache(array());
-        $storage->save("key1", "item1");
-        $storage->save("key2", "item2");
-        $storage->clear();
-        $this->assertThanNoElementsAreInStorage(array("key1", "key2"), $storage);
+        $storage->setItem('key1', 'item1');
+        $storage->setItem('key2', 'item2');
+        $storage->flush();
+        $this->assertThanNoElementsAreInStorage(array('key1', 'key2'), $storage);
     }
 
     /**
@@ -71,7 +71,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     private function assertThanNoElementsAreInStorage(array $keys = array(), Memcache $storage = null)
     {
         foreach ($keys as $key) {
-            self::assertNull($storage->load($key));
+            self::assertNull($storage->getItem($key));
         }
     }
 
@@ -79,7 +79,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     {
         if (!extension_loaded('memcache')) {
             $this->markTestSkipped(
-                "PHP extension 'memcache' must be loaded and a local memcache server running to run this test."
+                'PHP extension \'memcache\' must be loaded and a local memcache server running to run this test.'
             );
         }
     }

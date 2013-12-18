@@ -44,7 +44,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemError()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache');
+        $mock   = $this->getMock('\\Desarrolla2\\Cache\\Cache');
         $object = new DesarrollaCacheConnector($mock);
         $object->getItem();
     }
@@ -58,8 +58,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('get')
-            ->will(self::returnValue(null))
-        ;
+            ->will(self::returnValue(null));
 
         $object = new DesarrollaCacheConnector($mock);
         self::assertNull($object->getItem('test'));
@@ -74,8 +73,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('get')
-            ->will(self::returnValue('test'))
-        ;
+            ->will(self::returnValue('test'));
 
         $object = new DesarrollaCacheConnector($mock);
         self::assertSame('test', $object->getItem('test'));
@@ -88,7 +86,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasItemError()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache');
+        $mock   = $this->getMock('\\Desarrolla2\\Cache\\Cache');
         $object = new DesarrollaCacheConnector($mock);
         $object->hasItem();
     }
@@ -102,8 +100,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('has')
-            ->will(self::returnValue(false))
-        ;
+            ->will(self::returnValue(false));
         $object = new DesarrollaCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -115,7 +112,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError1()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache');
+        $mock   = $this->getMock('\\Desarrolla2\\Cache\\Cache');
         $object = new DesarrollaCacheConnector($mock);
         $object->setItem();
     }
@@ -127,7 +124,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItemError2()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache');
+        $mock   = $this->getMock('\\Desarrolla2\\Cache\\Cache');
         $object = new DesarrollaCacheConnector($mock);
         $object->setItem('test');
     }
@@ -141,8 +138,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('set')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new DesarrollaCacheConnector($mock);
         self::assertTrue($object->setItem('test', 'testValue'));
     }
@@ -154,7 +150,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveItemError()
     {
-        $mock = $this->getMock('\\Desarrolla2\\Cache\\Cache');
+        $mock   = $this->getMock('\\Desarrolla2\\Cache\\Cache');
         $object = new DesarrollaCacheConnector($mock);
         $object->removeItem();
     }
@@ -168,8 +164,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('delete')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $object = new DesarrollaCacheConnector($mock);
         self::assertTrue($object->removeItem('test'));
     }
@@ -183,8 +178,7 @@ class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('dropCache')
-            ->will(self::returnValue(false))
-        ;
+            ->will(self::returnValue(false));
         $object = new DesarrollaCacheConnector($mock);
         self::assertFalse($object->flush());
     }
