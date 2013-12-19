@@ -91,7 +91,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function setExpiration($expiration = 86400)
     {
-        $this->cacheExpiration = $expiration;
+        $this->cacheExpiration = (int) $expiration;
 
         return $this;
     }

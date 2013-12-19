@@ -128,6 +128,20 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Store an item.
+     */
+    public function testSetGetItem()
+    {
+        $cacheId    = 'test';
+        $cacheValue = 'testValue';
+
+        self::assertTrue($this->object->setItem($cacheId,  $cacheValue));
+
+        $success = null;
+        self::assertSame($cacheValue, $this->object->getItem($cacheId, $success));
+    }
+
+    /**
      * Remove an item.
      *
      * @expectedException \PHPUnit_Framework_Error_Warning
@@ -151,5 +165,31 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
     public function testflush()
     {
         self::assertTrue($this->object->flush());
+    }
+
+    /**
+     * Store an item.
+     *
+     * @expectedException \PHPUnit_Framework_Error_Warning
+     */
+    public function testSetNamespaceError()
+    {
+        $this->object->setNamespace();
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetNamespace()
+    {
+        self::assertSame($this->object, $this->object->setNamespace('test'));
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetExpiration()
+    {
+        self::assertSame($this->object, $this->object->setExpiration('test'));
     }
 }

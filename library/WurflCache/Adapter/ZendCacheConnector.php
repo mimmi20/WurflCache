@@ -71,7 +71,8 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
         $cacheId = $this->normalizeKey($key);
 
         /** @var $cache \Zend\Cache\Storage\Adapter\AbstractAdapter */
-        $cache = $this->cache;
+        $cache    = $this->cache;
+        $casToken = null;
 
         try {
             $content = $cache->getItem($cacheId, $success, $casToken);
@@ -109,7 +110,7 @@ class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
         try {
             return $cache->setItem($cacheId, $content);
         } catch (ZendException\ExceptionInterface $ex) {
-            return null;
+            return false;
         }
     }
 
