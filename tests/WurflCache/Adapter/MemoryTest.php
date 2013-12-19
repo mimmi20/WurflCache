@@ -135,7 +135,7 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
         $cacheId    = 'test';
         $cacheValue = 'testValue';
 
-        self::assertTrue($this->object->setItem($cacheId,  $cacheValue));
+        self::assertTrue($this->object->setItem($cacheId, $cacheValue));
 
         $success = null;
         self::assertSame($cacheValue, $this->object->getItem($cacheId, $success));
