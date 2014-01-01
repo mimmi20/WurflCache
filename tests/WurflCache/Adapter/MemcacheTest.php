@@ -12,23 +12,30 @@ use WurflCache\Adapter\Memcache;
  */
 class MemcacheTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!extension_loaded('memcache')) {
+            $this->markTestSkipped(
+                'PHP extension \'memcache\' must be loaded and a local memcache server running to run this test.'
+            );
+        }
+    }
 
     public function testMultipleServerConfiguration()
     {
         $params = array(
             'host' => '127.0.0.1;127.0.0.2'
         );
-        $this->checkDeps();
+
         new Memcache($params);
     }
 
     /**
-     * @covers Memcache::save
-     * @covers Memcache::load
+     * @covers \WurflCache\Adapter\Memcache::setItem
+     * @covers \WurflCache\Adapter\Memcache::getItem
      */
     public function testNeverToExpireItems()
     {
-        $this->checkDeps();
         $storage = new Memcache();
         $storage->setItem('foo', 'foo');
         sleep(2);
@@ -36,12 +43,11 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Memcache::save
-     * @covers Memcache::load
+     * @covers \WurflCache\Adapter\Memcache::setItem
+     * @covers \WurflCache\Adapter\Memcache::getItem
      */
     public function testShouldRemoveTheExpiredItem()
     {
-        $this->checkDeps();
         $params  = array('expiration' => 1);
         $storage = new Memcache($params);
         $storage->setItem('key', 'value');
@@ -50,13 +56,12 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Memcache::save
-     * @covers Memcache::load
-     * @covers Memcache::clear
+     * @covers \WurflCache\Adapter\Memcache::setItem
+     * @covers \WurflCache\Adapter\Memcache::getItem
+     * @covers \WurflCache\Adapter\Memcache::flush
      */
     public function testShouldClearAllItems()
     {
-        $this->checkDeps();
         $storage = new Memcache(array());
         $storage->setItem('key1', 'item1');
         $storage->setItem('key2', 'item2');
@@ -72,15 +77,6 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($keys as $key) {
             self::assertNull($storage->getItem($key));
-        }
-    }
-
-    private function checkDeps()
-    {
-        if (!extension_loaded('memcache')) {
-            $this->markTestSkipped(
-                'PHP extension \'memcache\' must be loaded and a local memcache server running to run this test.'
-            );
         }
     }
 }
