@@ -26,8 +26,11 @@ before_script:
   - composer require --no-update mikey179/vfsStream:1.3.*@dev
   - composer require --no-update satooshi/php-coveralls:dev-master
   - composer require --no-update phpunit/phpcov:2.0.*@dev
-  - composer require --no-update zetacomponents/cache:*
+  - composer require --no-update zetacomponents/cache:dev-master
   - composer require --no-update doctrine/cache:${DOCTRINE_VERSION}
+  - composer require --no-update zendframework/zend-stdlib:${ZEND_VERSION}
+  - composer require --no-update zendframework/zend-eventmanagerb:${ZEND_VERSION}
+  - composer require --no-update zendframework/zend-servicemanagerb:${ZEND_VERSION}
   - composer require --no-update zendframework/zend-cache:${ZEND_VERSION}
   - composer require --no-update desarrolla2/cache:${DESARROLLA_VERSION}
   - composer update --no-dev --prefer-source
