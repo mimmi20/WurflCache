@@ -96,6 +96,8 @@ class FileUtils
      * @param string  $path  filename to save data in
      * @param mixed   $data  data to be serialized and saved
      * @param integer $mtime Last modified date in epoch time
+     *
+     * @return bool
      */
     public static function write($path, $data, $mtime = 0)
     {
@@ -114,11 +116,19 @@ class FileUtils
             }
         }
 
-        if (file_put_contents($path, $data, $lock)) {
-            $mtime = ($mtime > 0) ? $mtime : time();
+        $contentWritten = file_put_contents($path, $data, $lock);
+
+        if ($contentWritten && LOCK_EX === $lock) {
+            // does not work with vfs stream
             chmod($path, 0777);
+        }
+
+        if ($contentWritten) {
+            $mtime = ($mtime > 0) ? $mtime : time();
             touch($path, $mtime);
         }
+
+        return (boolean) $contentWritten;
     }
 
     /**

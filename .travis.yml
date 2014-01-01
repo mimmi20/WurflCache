@@ -7,6 +7,9 @@ php:
   - 5.5
   - hhvm
 
+services:
+  - memcached # will start memcached
+
 env:
   - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1.* DESARROLLA_VERSION=1.5.0
   - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2.* DESARROLLA_VERSION=1.6.0
@@ -20,6 +23,7 @@ matrix:
 before_script:
   - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update
   - composer require --no-update phpunit/phpunit:*
