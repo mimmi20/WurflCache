@@ -106,28 +106,30 @@ class FileUtils
         }
 
         $lock = LOCK_EX;
+        $stream = 'file';
 
         if (false !== strpos($path, '://')) {
-            $parts = explode('://', $path);
+            $parts  = explode('://', $path);
+            $stream = $parts[0];
 
             // workaround for vfsStream
-            if ($parts[0] === 'vfs') {
+            if ($stream === 'vfs') {
                 $lock = 0;
             }
         }
 
         $contentWritten = file_put_contents($path, $data, $lock);
-var_dump(\org\bovigo\vfs\vfsStream::inspect(new \org\bovigo\vfs\visitor\vfsStreamStructureVisitor())->getStructure());
+
         if (!file_exists($path)) {
             return false;
         }
 
-        if ($contentWritten && LOCK_EX === $lock) {
+        if ($contentWritten && !in_array($stream, array('vfs'))) {
             // does not work with vfs stream
             chmod($path, 0777);
         }
 
-        if ($contentWritten) {
+        if ($contentWritten && (!in_array($stream, array('vfs')) || version_compare(PHP_VERSION, '5.4.0', '>='))) {
             $mtime = ($mtime > 0) ? $mtime : time();
             touch($path, $mtime);
         }
