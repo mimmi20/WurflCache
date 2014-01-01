@@ -57,10 +57,11 @@ class File extends AbstractAdapter
 
         if (is_array($params) && !empty($params)) {
             $currentParams = array_merge(
-                $this->defaultParams,
+                $currentParams,
                 $params
             );
         }
+
         $this->initialize($currentParams);
     }
 
@@ -149,7 +150,7 @@ class File extends AbstractAdapter
      */
     public function flush()
     {
-        FileUtils::rmdirContents($this->root);
+        return FileUtils::rmdirContents($this->root);
     }
 
     /**
@@ -159,7 +160,7 @@ class File extends AbstractAdapter
     {
         $this->root            = $params[self::DIR];
         $this->cacheExpiration = $params['expiration'];
-        $this->readonly        = ($params['readonly'] == 'true' || $params['readonly'] === true);
+        $this->readonly        = ($params['readonly'] === 'true' || $params['readonly'] === true);
 
         $this->createRootDirIfNotExist();
     }
@@ -201,7 +202,7 @@ class File extends AbstractAdapter
             );
         }
 
-        if (!is_writable($this->root)) {
+        if (!$this->readonly && !is_writable($this->root)) {
             throw new Exception(
                 'Its not possible to write to the given cache path "' . $this->root . '"',
                 Exception::CACHE_DIR_NOT_WRITABLE

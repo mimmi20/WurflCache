@@ -28,19 +28,32 @@ class FileTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testShouldTryToCreateTheStorage()
-    {//var_dump(stream_get_wrappers(), vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
-        $params    = array(
+    {
+        $params = array(
             'dir' => vfsStream::url(self::STORAGE_DIR)
         );
 
         new File($params);
 
-        $this->assertStorageDirectoryIsCreated(vfsStream::url(self::STORAGE_DIR));
+        $dir = vfsStream::url(self::STORAGE_DIR);
+
+        self::assertTrue(file_exists($dir));
+        self::assertTrue(is_writable($dir));
     }
 
-    private function assertStorageDirectoryIsCreated($dir)
+    public function testShouldTryToCreateTheReadonlyStorage()
     {
-        self::assertTrue(file_exists($dir) && is_writable($dir));
+        $params = array(
+            'dir'      => vfsStream::url(self::STORAGE_DIR . DIRECTORY_SEPARATOR . 'test'),
+            'readonly' => true
+        );
+
+        new File($params);
+
+        $dir = vfsStream::url(self::STORAGE_DIR);
+
+        self::assertTrue(file_exists($dir));
+        self::assertTrue(is_writable($dir));
     }
 
     public function testNeverToExpireItems()
@@ -59,7 +72,6 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldRemoveTheExpiredItem()
     {
-
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
             'expiration' => 1
@@ -71,5 +83,20 @@ class FileTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('item2', $storage->getItem('item2'));
         sleep(2);
         self::assertEquals(null, $storage->getItem('item2'));
+    }
+
+    /**
+     * Flush the whole storage
+     */
+    public function testflush()
+    {
+        $params = array(
+            'dir'        => vfsStream::url(self::STORAGE_DIR),
+            'expiration' => 0
+        );
+
+        $storage = new File($params);
+
+        self::assertTrue($storage->flush());
     }
 }

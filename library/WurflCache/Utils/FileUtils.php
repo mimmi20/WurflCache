@@ -1,20 +1,21 @@
 <?php
+/**
+ * Copyright (c) 2012 ScientiaMobile, Inc.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * Refer to the COPYING.txt file distributed with this package.
+ *
+ * @category   WURFL
+ * @package    WURFL
+ * @copyright  ScientiaMobile, Inc.
+ * @license    GNU Affero General Public License
+ * @version    $id$
+ */
+
 namespace WurflCache\Utils;
 
-    /**
-     * Copyright (c) 2012 ScientiaMobile, Inc.
-     * This program is free software: you can redistribute it and/or modify
-     * it under the terms of the GNU Affero General Public License as
-     * published by the Free Software Foundation, either version 3 of the
-     * License, or (at your option) any later version.
-     * Refer to the COPYING.txt file distributed with this package.
-     *
-     * @category   WURFL
-     * @package    WURFL
-     * @copyright  ScientiaMobile, Inc.
-     * @license    GNU Affero General Public License
-     * @version    $id$
-     */
 /**
  * WURFL File Utilities
  *
@@ -38,22 +39,24 @@ class FileUtils
      * specified directory itself
      *
      * @param string $path Directory to be cleaned out
+     *
+     * @return bool
      */
     public static function rmdirContents($path)
     {
-        $files = scandir($path);
-        array_shift($files); // remove '.' from array
-        array_shift($files); // remove '..' from array
+        $files = array_diff(scandir($path), array('.', '..'));
 
         foreach ($files as $file) {
             $file = $path . DIRECTORY_SEPARATOR . $file;
+
             if (is_dir($file)) {
                 self::rmdirContents($file);
-                rmdir($file);
             } else {
                 unlink($file);
             }
         }
+
+        return rmdir($path);
     }
 
     /**
@@ -105,31 +108,22 @@ class FileUtils
             self::mkdir(dirname($path), 0755);
         }
 
-        $lock = LOCK_EX;
-        $stream = 'file';
-
-        if (false !== strpos($path, '://')) {
-            $parts  = explode('://', $path);
-            $stream = $parts[0];
-
-            // workaround for vfsStream
-            if ($stream === 'vfs') {
-                $lock = 0;
-            }
-        }
+        list($stream, $lock) = self::detectStream($path);
 
         $contentWritten = file_put_contents($path, $data, $lock);
+        $limitedStreams = array('vfs');
 
-        if (!file_exists($path)) {
+        if (!file_exists($path) || !$contentWritten) {
             return false;
         }
 
-        if ($contentWritten && !in_array($stream, array('vfs'))) {
+        if (!in_array($stream, $limitedStreams)) {
             // does not work with vfs stream
             chmod($path, 0777);
         }
 
-        if ($contentWritten && (!in_array($stream, array('vfs')) || version_compare(PHP_VERSION, '5.4.0', '>='))) {
+        if (!in_array($stream, $limitedStreams) || version_compare(PHP_VERSION, '5.4.0', '>=')) {
+            // does not work with vfs stream on PHP 5.3
             $mtime = ($mtime > 0) ? $mtime : time();
             touch($path, $mtime);
         }
@@ -144,8 +138,33 @@ class FileUtils
      *
      * @return string Proper filesystem path
      */
-    public static function join($strings = array())
+    public static function join(array $strings = array())
     {
         return implode(DIRECTORY_SEPARATOR, $strings);
+    }
+
+    /**
+     * detects if the the path is linked to an file stream
+     *
+     * @param $path
+     *
+     * @return array
+     */
+    private static function detectStream($path)
+    {
+        $lock   = LOCK_EX;
+        $stream = 'file';
+
+        if (false !== strpos($path, '://')) {
+            $parts  = explode('://', $path);
+            $stream = $parts[0];
+
+            // workaround for vfsStream
+            if ($stream === 'vfs') {
+                $lock = 0;
+            }
+        }
+
+        return array($stream, $lock);
     }
 }
