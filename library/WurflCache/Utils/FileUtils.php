@@ -117,6 +117,10 @@ class FileUtils
         }
 
         $contentWritten = file_put_contents($path, $data, $lock);
+var_dump(vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
+        if (!file_exists($path)) {
+            return false;
+        }
 
         if ($contentWritten && LOCK_EX === $lock) {
             // does not work with vfs stream
