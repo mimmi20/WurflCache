@@ -23,8 +23,7 @@ use WurflCache\Utils\FileUtils;
  *
  * @package    \Wurfl\Storage
  */
-class File
-    extends AbstractAdapter
+class File extends AbstractAdapter
 {
     /**
      * @var array
@@ -177,22 +176,6 @@ class File
             );
         }
 
-        $filename = '';
-
-        if (false === realpath($this->root)) {
-            /*
-             * the cache path is mostly invalid
-             * -> check if its really a filename
-             */
-            if (substr($this->root, -4) === '.php' || substr($this->root, -4) === '.ini') {
-                // extract file name
-                $filename   = basename($this->root);
-                $this->root = dirname($this->root);
-            }
-        }
-
-        $oldCacheDir = $this->root;
-
         // Is the cache dir really the directory or is it directly the file?
         if (is_file($this->root)) {
             $this->root = dirname($this->root);
@@ -206,7 +189,7 @@ class File
             if (!is_dir($this->root)) {
                 throw new Exception(
                     'The file storage directory does not exist and could not be created. '
-                    . 'Please make sure the directory is writeable: ' . $this->root
+                    . 'Please make sure the directory is writeable: "' . $this->root . '"'
                 );
             }
         }
