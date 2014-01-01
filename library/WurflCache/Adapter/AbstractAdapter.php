@@ -45,26 +45,36 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @return mixed Data on success, null on failure
      */
-    abstract public function getItem($key, & $success = null);
+    public function getItem($key, & $success = null)
+    {
+        $success = false;
+        return null;
+    }
+
+    /**
+     * save the content into the zend cache
+     *
+     * @param string $cacheId The cache id
+     * @param mixed  $content The content to store
+     *
+     * @return boolean whether the content was stored
+     */
+    public function setItem($cacheId, $content)
+    {
+        return true;
+    }
 
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    abstract public function hasItem($key);
-
-    /**
-     * Store an item.
-     *
-     * @param  string $key
-     * @param  mixed  $value
-     *
-     * @return bool
-     */
-    abstract public function setItem($key, $value);
+    public function hasItem($cacheId)
+    {
+        return false;
+    }
 
     /**
      * Remove an item.
@@ -73,14 +83,20 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @return bool
      */
-    abstract public function removeItem($key);
+    public function removeItem($key)
+    {
+        return true;
+    }
 
     /**
      * Flush the whole storage
      *
      * @return bool
      */
-    abstract public function flush();
+    public function flush()
+    {
+        return true;
+    }
 
     /**
      * set the cacheExpiration time
