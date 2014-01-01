@@ -23,17 +23,18 @@ use WurflCache\Utils\FileUtils;
  *
  * @package    \Wurfl\Storage
  */
-class File extends AbstractAdapter implements AdapterInterface
+class File
+    extends AbstractAdapter
+    implements AdapterInterface
 {
     /**
      * @var array
      */
-    private $defaultParams
-        = array(
-            'dir'        => '/tmp',
-            'expiration' => 0,
-            'readonly'   => 'false',
-        );
+    private $defaultParams = array(
+        'dir'        => '/tmp',
+        'expiration' => 0,
+        'readonly'   => 'false',
+    );
 
     /**
      * @var
@@ -57,7 +58,10 @@ class File extends AbstractAdapter implements AdapterInterface
         $currentParams = $this->defaultParams;
 
         if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($this->defaultParams, $params);
+            $currentParams = array_merge(
+                $this->defaultParams,
+                $params
+            );
         }
         $this->initialize($currentParams);
     }
@@ -70,8 +74,10 @@ class File extends AbstractAdapter implements AdapterInterface
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
-    {
+    public function getItem(
+        $key,
+        & $success = null
+    ) {
         $success = false;
 
         if (!$this->hasItem($key)) {
@@ -87,6 +93,7 @@ class File extends AbstractAdapter implements AdapterInterface
         }
 
         $success = true;
+
         return $value;
     }
 
@@ -112,10 +119,15 @@ class File extends AbstractAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function setItem($key, $value)
-    {
+    public function setItem(
+        $key,
+        $value
+    ) {
         $path = $this->keyPath($key);
-        FileUtils::write($path, $this->compact($value));
+        FileUtils::write(
+            $path,
+            $this->compact($value)
+        );
     }
 
     /**
@@ -159,18 +171,59 @@ class File extends AbstractAdapter implements AdapterInterface
      */
     private function createRootDirIfNotExist()
     {
-        if (!is_dir($this->root)) {
-            @mkdir($this->root, 0777, true);
+        if (!isset($this->root)) {
+            throw new Exception(
+                'You have to provide a path to read/store the browscap cache file',
+                Exception::CACHE_DIR_MISSING
+            );
+        }
+
+        $filename = '';
+
+        if (false === realpath($this->root)) {
+            /*
+             * the cache path is mostly invalid
+             * -> check if its really a filename
+             */
+            if (substr($this->root, -4) === '.php' || substr($this->root, -4) === '.ini') {
+                // extract file name
+                $filename   = basename($this->root);
+                $this->root = dirname($this->root);
+            }
+        }
+
+        $oldCacheDir = $this->root;
+
+        // Is the cache dir really the directory or is it directly the file?
+        if (is_file($this->root)) {
+            $this->root = dirname($this->root);
+        } elseif (!is_dir($this->root)) {
+            @mkdir(
+                $this->root,
+                0777,
+                true
+            );
+
             if (!is_dir($this->root)) {
                 throw new Exception(
                     'The file storage directory does not exist and could not be created. '
-                    . 'Please make sure the directory is writeable: '
-                    . $this->root
+                    . 'Please make sure the directory is writeable: ' . $this->root
                 );
             }
         }
-        if (!$this->readonly && !is_writeable($this->root)) {
-            throw new Exception("The file storage directory is not writeable: " . $this->root);
+
+        if (!is_readable($this->root)) {
+            throw new Exception(
+                'Its not possible to read from the given cache path "' . $this->root . '"',
+                Exception::CACHE_DIR_NOT_READABLE
+            );
+        }
+
+        if (!is_writable($this->root)) {
+            throw new Exception(
+                'Its not possible to write to the given cache path "' . $this->root . '"',
+                Exception::CACHE_DIR_NOT_WRITABLE
+            );
         }
     }
 
@@ -190,15 +243,20 @@ class File extends AbstractAdapter implements AdapterInterface
      *
      * @return string
      */
-    private function spread($md5, $splitCount = 2)
-    {
+    private function spread(
+        $md5,
+        $splitCount = 2
+    ) {
         $path = '';
 
         for ($i = 0; $i < $splitCount; $i++) {
             $path .= $md5 [$i] . DIRECTORY_SEPARATOR;
         }
 
-        $path .= substr($md5, $splitCount);
+        $path .= substr(
+            $md5,
+            $splitCount
+        );
 
         return $path;
     }

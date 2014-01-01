@@ -4,8 +4,10 @@ namespace WurflCacheTest\Adapter;
 /**
  * test case
  */
+use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use WurflCache\Adapter\File;
 use WurflCache\Utils\FileUtils;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * test case.
@@ -13,32 +15,27 @@ use WurflCache\Utils\FileUtils;
 class FileTest extends \PHPUnit_Framework_TestCase
 {
 
-    const STORAGE_DIR = "../../../resources/storage";
+    const STORAGE_DIR = 'storage';
+
+    /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    private $root = null;
 
     public function setUp()
     {
-        FileUtils::mkdir(self::storageDir());
-    }
-
-    public function tearDown()
-    {
-        FileUtils::rmdir(self::storageDir());
+        $this->root = vfsStream::setup(self::STORAGE_DIR);
     }
 
     public function testShouldTryToCreateTheStorage()
-    {
-        $cachepath = $this->realpath(self::STORAGE_DIR . "/cache");
+    {//var_dump(stream_get_wrappers(), vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
         $params    = array(
-            "dir" => $cachepath
+            'dir' => vfsStream::url(self::STORAGE_DIR)
         );
-        new File($params);
-        $this->assertStorageDirectoryIsCreated($cachepath);
-        FileUtils::rmdir($cachepath);
-    }
 
-    private function realpath($path)
-    {
-        return __DIR__ . DIRECTORY_SEPARATOR . $path;
+        new File($params);
+
+        $this->assertStorageDirectoryIsCreated(vfsStream::url(self::STORAGE_DIR));
     }
 
     private function assertStorageDirectoryIsCreated($dir)
@@ -49,35 +46,30 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testNeverToExpireItems()
     {
         $params = array(
-            "dir"        => self::storageDir(),
-            "expiration" => 0
+            'dir'        => vfsStream::url(self::STORAGE_DIR),
+            'expiration' => 0
         );
 
         $storage = new File($params);
 
-        $storage->setItem("foo", "foo");
+        $storage->setItem('foo', 'foo');
         sleep(1);
-        self::assertEquals("foo", $storage->getItem("foo"));
+        self::assertEquals('foo', $storage->getItem('foo'));
     }
 
     public function testShouldRemoveTheExpiredItem()
     {
 
         $params = array(
-            "dir"        => self::storageDir(),
-            "expiration" => 1
+            'dir'        => vfsStream::url(self::STORAGE_DIR),
+            'expiration' => 1
         );
 
         $storage = new File($params);
 
-        $storage->setItem("item2", "item2");
-        self::assertEquals("item2", $storage->getItem("item2"));
+        $storage->setItem('item2', 'item2');
+        self::assertEquals('item2', $storage->getItem('item2'));
         sleep(2);
-        self::assertEquals(null, $storage->getItem("item2"));
-    }
-
-    public static function storageDir()
-    {
-        return __DIR__ . DIRECTORY_SEPARATOR . self::STORAGE_DIR;
+        self::assertEquals(null, $storage->getItem('item2'));
     }
 }

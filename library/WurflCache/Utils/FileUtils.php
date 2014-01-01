@@ -103,7 +103,18 @@ class FileUtils
             self::mkdir(dirname($path), 0755);
         }
 
-        if (file_put_contents($path, $data, LOCK_EX)) {
+        $lock = LOCK_EX;
+
+        if (false !== strpos($path, '://')) {
+            $parts = explode('://', $path);
+
+            // workaround for vfsStream
+            if ($parts[0] === 'vfs') {
+                $lock = 0;
+            }
+        }
+
+        if (file_put_contents($path, $data, $lock)) {
             $mtime = ($mtime > 0) ? $mtime : time();
             chmod($path, 0777);
             touch($path, $mtime);
@@ -120,33 +131,5 @@ class FileUtils
     public static function join($strings = array())
     {
         return implode(DIRECTORY_SEPARATOR, $strings);
-    }
-
-    /**
-     * Returns a directory for storing temporary files
-     *
-     * @return string|boolean
-     */
-    public static function getTempDir()
-    {
-        if (function_exists('sys_get_temp_dir')) {
-            $tempDir = sys_get_temp_dir();
-        } else {
-            $tempDir = '/tmp';
-        }
-
-        return realpath($tempDir);
-    }
-
-    /**
-     * Cleans the filename by removing duplicate directory separators and normalizing them for the current OS
-     *
-     * @param string $fileName
-     *
-     * @return string
-     */
-    public static function cleanFilename($fileName)
-    {
-        return preg_replace('#[/\\\]+#', DIRECTORY_SEPARATOR, $fileName);
     }
 }
