@@ -14,7 +14,7 @@ namespace WurflCache\Adapter;
  *
  * @package WurflCache\Adapter
  */
-class Cookie extends AbstractAdapter implements AdapterInterface
+class Cookie extends AbstractAdapter
 {
 
     /**

@@ -23,7 +23,7 @@ namespace WurflCache\Adapter;
  *
  * @todo       : rewrite to use PDO or mysqli
  */
-class Mysql extends AbstractAdapter implements AdapterInterface
+class Mysql extends AbstractAdapter
 {
     private $defaultParams
         = array(

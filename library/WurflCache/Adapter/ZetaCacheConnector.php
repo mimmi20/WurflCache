@@ -36,7 +36,7 @@ use ezcCacheStorage;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class ZetaCacheConnector extends AbstractAdapter implements AdapterInterface
+class ZetaCacheConnector extends AbstractAdapter
 {
     /**
      * a Zend Cache instance

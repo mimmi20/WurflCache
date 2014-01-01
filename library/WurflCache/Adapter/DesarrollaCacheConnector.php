@@ -35,7 +35,7 @@ use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class DesarrollaCacheConnector extends AbstractAdapter implements AdapterInterface
+class DesarrollaCacheConnector extends AbstractAdapter
 {
     /**
      * a Desarrolla2 Cache instance

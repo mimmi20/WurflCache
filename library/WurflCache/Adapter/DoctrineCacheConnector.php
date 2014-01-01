@@ -35,7 +35,7 @@ use Doctrine\Common\Cache\CacheProvider;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class DoctrineCacheConnector extends AbstractAdapter implements AdapterInterface
+class DoctrineCacheConnector extends AbstractAdapter
 {
     /**
      * a Doctrine Cache instance

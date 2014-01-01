@@ -38,7 +38,7 @@ namespace WurflCache\Adapter;
  *
  * @package WurflCache\Adapter
  */
-class NullStorage extends AbstractAdapter implements AdapterInterface
+class NullStorage extends AbstractAdapter
 {
     /**
      * Get an item.

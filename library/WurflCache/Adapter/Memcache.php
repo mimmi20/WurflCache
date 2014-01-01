@@ -26,7 +26,7 @@ namespace WurflCache\Adapter;
  *
  * @package WurflCache\Adapter
  */
-class Memcache extends AbstractAdapter implements AdapterInterface
+class Memcache extends AbstractAdapter
 {
     /**
      *

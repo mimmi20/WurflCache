@@ -38,7 +38,7 @@ use Zend\Cache\Storage\Plugin\Serializer;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
-class ZendCacheConnector extends AbstractAdapter implements AdapterInterface
+class ZendCacheConnector extends AbstractAdapter
 {
     /**
      * a Zend Cache instance

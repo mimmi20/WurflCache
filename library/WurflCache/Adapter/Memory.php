@@ -38,7 +38,7 @@ namespace WurflCache\Adapter;
  *
  * @package WurflCache\Adapter
  */
-class Memory extends AbstractAdapter implements AdapterInterface
+class Memory extends AbstractAdapter
 {
     /**
      * @var array

@@ -25,7 +25,6 @@ use WurflCache\Utils\FileUtils;
  */
 class File
     extends AbstractAdapter
-    implements AdapterInterface
 {
     /**
      * @var array
