@@ -117,7 +117,7 @@ class FileUtils
         }
 
         $contentWritten = file_put_contents($path, $data, $lock);
-var_dump(vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
+var_dump(\org\bovigo\vfs\vfsStream::inspect(new \org\bovigo\vfs\visitor\vfsStreamStructureVisitor())->getStructure());
         if (!file_exists($path)) {
             return false;
         }
