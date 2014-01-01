@@ -58,7 +58,7 @@ class Memcache extends AbstractAdapter
             'host'            => '127.0.0.1',
             'port'            => self::DEFAULT_PORT,
             'namespace'       => 'wurfl',
-            'cacheExpiration' => 0
+            'expiration' => 0
         );
 
     /**
@@ -121,7 +121,7 @@ class Memcache extends AbstractAdapter
             $cacheId,
             '',
             0,
-            $this->cacheExpiration
+            $this->expiration
         );
 
         if (false === $tempData) {
@@ -149,7 +149,7 @@ class Memcache extends AbstractAdapter
             $cacheId,
             $this->compact($value),
             0,
-            $this->cacheExpiration
+            $this->expiration
         );
     }
 
