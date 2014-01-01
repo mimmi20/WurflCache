@@ -8,33 +8,10 @@ php:
   - hhvm
 
 env:
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.1* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.2* DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.5.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.1* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.2* DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.6.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.1* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.1* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.2* DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.7.*
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.3*@dev DESARROLLA_VERSION=1.7.*
+  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1.* DESARROLLA_VERSION=1.5.0
+  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2.* DESARROLLA_VERSION=1.6.0
+  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.3.*@dev DESARROLLA_VERSION=1.7.0
+  - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master
 
 matrix:
   allow_failures:
@@ -45,7 +22,6 @@ before_script:
   - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update
-  - composer install --no-dev --prefer-source
   - composer require --no-update phpunit/phpunit:*
   - composer require --no-update mikey179/vfsStream:1.3.*@dev
   - composer require --no-update satooshi/php-coveralls:dev-master
@@ -54,6 +30,7 @@ before_script:
   - composer require --no-update doctrine/cache:${DOCTRINE_VERSION}
   - composer require --no-update zendframework/zend-cache:${ZEND_VERSION}
   - composer require --no-update desarrolla2/cache:${DESARROLLA_VERSION}
+  - composer install --no-dev --prefer-source
   - php vendor/autoload.php
   - mkdir -p build/logs
 
