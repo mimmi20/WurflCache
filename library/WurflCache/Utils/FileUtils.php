@@ -44,6 +44,19 @@ class FileUtils
      */
     public static function rmdirContents($path)
     {
+
+    }
+
+    /**
+     * Recursiely remove all files from the given directory NOT including the
+     * specified directory itself
+     *
+     * @param string $path Directory to be cleaned out
+     *
+     * @return bool
+     */
+    public static function rmdir($path)
+    {
         $files = array_diff(scandir($path), array('.', '..'));
 
         foreach ($files as $file) {
@@ -51,24 +64,13 @@ class FileUtils
 
             if (is_dir($file)) {
                 self::rmdirContents($file);
+                rmdir($file);
             } else {
                 unlink($file);
             }
         }
 
         return rmdir($path);
-    }
-
-    /**
-     * Alias to rmdirContents()
-     *
-     * @param string $path Directory to be cleaned out
-     *
-     * @see rmdirContents()
-     */
-    public static function rmdir($path)
-    {
-        self::rmdirContents($path);
     }
 
     /**

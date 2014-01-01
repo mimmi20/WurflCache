@@ -4,9 +4,7 @@ namespace WurflCacheTest\Adapter;
 /**
  * test case
  */
-use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use WurflCache\Adapter\File;
-use WurflCache\Utils\FileUtils;
 use org\bovigo\vfs\vfsStream;
 
 /**
@@ -56,6 +54,18 @@ class FileTest extends \PHPUnit_Framework_TestCase
         self::assertTrue(is_writable($dir));
     }
 
+    public function testNotFoundItems()
+    {
+        $params = array(
+            'dir'        => vfsStream::url(self::STORAGE_DIR),
+            'expiration' => 0
+        );
+
+        $storage = new File($params);
+
+        self::assertNull($storage->getItem('foo'));
+    }
+
     public function testNeverToExpireItems()
     {
         $params = array(
@@ -89,6 +99,25 @@ class FileTest extends \PHPUnit_Framework_TestCase
      * Flush the whole storage
      */
     public function testflush()
+    {
+        $params = array(
+            'dir'        => vfsStream::url(self::STORAGE_DIR),
+            'expiration' => 0
+        );
+
+        $storage = new File($params);
+
+        $storage->setItem('foo', 'foo');
+        $storage->setItem('bar', 'bar');
+        $storage->setItem('foobar', 'foobar');
+
+        self::assertTrue($storage->flush());
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testRemoveItemException()
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),

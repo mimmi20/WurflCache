@@ -35,7 +35,12 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @var string
      */
-    protected $namespace;
+    protected $namespace = '';
+
+    /**
+     * @var int
+     */
+    protected $expiration = 0;
 
     /**
      * Get an item.

@@ -53,13 +53,12 @@ class Memcache extends AbstractAdapter
     /**
      * @var array
      */
-    private $defaultParams
-        = array(
-            'host'            => '127.0.0.1',
-            'port'            => self::DEFAULT_PORT,
-            'namespace'       => 'wurfl',
-            'expiration' => 0
-        );
+    private $defaultParams = array(
+        'host'       => '127.0.0.1',
+        'port'       => self::DEFAULT_PORT,
+        'namespace'  => 'wurfl',
+        'expiration' => 0
+    );
 
     /**
      * @param array $params

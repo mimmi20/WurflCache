@@ -35,16 +35,17 @@ class File extends AbstractAdapter
     );
 
     /**
-     * @var
+     * @var string
      */
     private $root;
-    /**
-     * @var
-     */
-    private $readonly;
 
     /**
-     *
+     * @var boolean
+     */
+    private $readonly = false;
+
+    /**
+     * @var string
      */
     const DIR = 'dir';
 
@@ -150,7 +151,7 @@ class File extends AbstractAdapter
      */
     public function flush()
     {
-        return FileUtils::rmdirContents($this->root);
+        return FileUtils::rmdir($this->root);
     }
 
     /**

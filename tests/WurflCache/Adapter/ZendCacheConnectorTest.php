@@ -2,6 +2,7 @@
 namespace WurflCacheTest\Adapter;
 
 use WurflCache\Adapter\ZendCacheConnector;
+use Zend\Cache\Exception\LogicException;
 
 /**
  * Interface class to use the zend cache with Browscap
@@ -88,7 +89,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::throwException(new \Zend\Cache\Exception\LogicException));
+            ->will(self::throwException(new LogicException));
 
         $object = new ZendCacheConnector($mock);
         self::assertNull($object->getItem('test'));
@@ -143,7 +144,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('hasItem')
-            ->will(self::throwException(new \Zend\Cache\Exception\LogicException));
+            ->will(self::throwException(new LogicException));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -195,7 +196,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('setItem')
-            ->will(self::throwException(new \Zend\Cache\Exception\LogicException));
+            ->will(self::throwException(new LogicException));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->setItem('test', 'testValue'));
     }
@@ -235,7 +236,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('removeItem')
-            ->will(self::throwException(new \Zend\Cache\Exception\LogicException));
+            ->will(self::throwException(new LogicException));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->removeItem('test'));
     }
@@ -277,7 +278,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('flush')
-            ->will(self::throwException(new \Zend\Cache\Exception\LogicException));
+            ->will(self::throwException(new LogicException));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->flush());
     }
