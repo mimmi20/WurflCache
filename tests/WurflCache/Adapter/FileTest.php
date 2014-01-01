@@ -126,6 +126,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         $storage = new File($params);
 
-        self::assertTrue($storage->flush());
+        $storage->setItem('foo', 'foo');
+
+        self::assertTrue($storage->removeItem('foo'));
     }
 }
