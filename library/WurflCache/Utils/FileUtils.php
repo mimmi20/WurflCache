@@ -49,6 +49,10 @@ class FileUtils
         foreach ($files as $file) {
             $file = $path . DIRECTORY_SEPARATOR . $file;
 
+            if (!file_exists($file)) {
+                continue;
+            }
+
             if (is_dir($file)) {
                 self::rmdir($file);
                 rmdir($file);
