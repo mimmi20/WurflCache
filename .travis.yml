@@ -6,6 +6,7 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - hhvm
 
 services:
   - memcached # will start memcached
@@ -17,10 +18,10 @@ env:
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master
 
 before_script:
-  - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - if [ "`phpenv version-name`" != "hhvm" ]; then echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - composer self-update
   - composer require --no-update phpunit/phpunit:*
   - composer require --no-update mikey179/vfsStream:1.3.*@dev
@@ -40,3 +41,10 @@ script:
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
       - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+matrix:
+  allow_failures:
+    - php: hhvm
+  exclude:
+    - php: 5.3.3
+      env: ZEND_VERSION=2.3.*@dev
