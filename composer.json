@@ -29,9 +29,7 @@
         "desarrolla2/cache": "*",
         "doctrine/cache": "1.4.*@dev",
         "zetacomponents/cache": "dev-master",
-        "mikey179/vfsStream": "1.3.*@dev",
-        "satooshi/php-coveralls": "dev-master",
-        "phpunit/phpcov": "2.0.*@dev"
+        "mikey179/vfsStream": "1.3.*@dev"
     },
     "suggest": {
         "zendframework/zend-cache": "to use other caches handled by zend",
