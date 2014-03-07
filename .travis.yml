@@ -36,7 +36,7 @@ before_script:
   - php vendor/autoload.php
 
 script:
-  - phpunit --coverage-text --coverage-clover=coverage.clover --colors --verbose
+  - phpunit --configuration tests/phpunit.xml --coverage-text --coverage-clover=coverage.clover --colors --verbose
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
