@@ -44,13 +44,6 @@ class FileUtils
      */
     public static function rmdir($path)
     {
-        $path = realpath($path);
-
-        if (false === $path) {
-            // the path does not exist
-            return false;
-        }
-
         $files = array_diff(scandir($path), array('.', '..'));
 
         foreach ($files as $file) {
