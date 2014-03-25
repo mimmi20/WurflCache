@@ -29,9 +29,9 @@ class FileUtils
      * @param string $path
      * @param int    $mode
      */
-    public static function mkdir($path, $mode = 0755)
+    public static function mkdir($path, $mode = 0644)
     {
-        @mkdir($path, $mode, true);
+        mkdir($path, $mode, true);
     }
 
     /**
@@ -44,6 +44,13 @@ class FileUtils
      */
     public static function rmdir($path)
     {
+        $path = realpath($path);
+
+        if (false === $path) {
+            // the path does not exist
+            return false;
+        }
+
         $files = array_diff(scandir($path), array('.', '..'));
 
         foreach ($files as $file) {
@@ -61,7 +68,7 @@ class FileUtils
             }
         }
 
-        return rmdir($path);
+        return true;
     }
 
     /**
@@ -98,7 +105,7 @@ class FileUtils
     public static function write($path, $data, $mtime = 0)
     {
         if (!file_exists(dirname($path))) {
-            self::mkdir(dirname($path), 0755);
+            self::mkdir(dirname($path), 0644);
         }
 
         list($stream, $lock) = self::detectStream($path);
@@ -112,7 +119,7 @@ class FileUtils
 
         if (!in_array($stream, $limitedStreams)) {
             // does not work with vfs stream
-            chmod($path, 0777);
+            chmod($path, 0755);
         }
 
         if (!in_array($stream, $limitedStreams) || version_compare(PHP_VERSION, '5.4.0', '>=')) {
