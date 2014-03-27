@@ -16,6 +16,9 @@
 
 namespace WurflCache\Utils;
 
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
  * WURFL File Utilities
  *
@@ -46,6 +49,8 @@ class FileUtils
     {
         $files = array_diff(scandir($path), array('.', '..'));
 
+        $filesystem = new Filesystem();
+
         foreach ($files as $file) {
             $file = $path . DIRECTORY_SEPARATOR . $file;
 
@@ -53,11 +58,10 @@ class FileUtils
                 continue;
             }
 
-            if (is_dir($file)) {
-                self::rmdir($file);
-                rmdir($file);
-            } else {
-                unlink($file);
+            try {
+                $filesystem->remove($file);
+            } catch (IOException $exception) {
+                return false;
             }
         }
 
@@ -101,27 +105,39 @@ class FileUtils
             self::mkdir(dirname($path), 0644);
         }
 
-        list($stream, $lock) = self::detectStream($path);
-
-        $contentWritten = file_put_contents($path, $data, $lock);
+        $stream         = self::detectStream($path);
         $limitedStreams = array('vfs');
 
-        if (!file_exists($path) || !$contentWritten) {
+        if (!in_array($stream, $limitedStreams)) {
+            $mode = 0755;
+        } else {
+            // does not work with vfs stream
+            $mode = null;
+        }
+
+        $filesystem = new Filesystem();
+        try {
+            $filesystem->dumpFile($path, $data, $mode);
+        } catch (IOException $exception) {
             return false;
         }
 
-        if (!in_array($stream, $limitedStreams)) {
-            // does not work with vfs stream
-            chmod($path, 0755);
+        if (!file_exists($path)) {
+            return false;
         }
 
         if (!in_array($stream, $limitedStreams) || version_compare(PHP_VERSION, '5.4.0', '>=')) {
             // does not work with vfs stream on PHP 5.3
             $mtime = ($mtime > 0) ? $mtime : time();
-            touch($path, $mtime);
+
+            try {
+                $filesystem->touch($path, $mtime);
+            } catch (IOException $exception) {
+                return false;
+            }
         }
 
-        return (boolean) $contentWritten;
+        return true;
     }
 
     /**
@@ -141,23 +157,17 @@ class FileUtils
      *
      * @param $path
      *
-     * @return array
+     * @return string
      */
     private static function detectStream($path)
     {
-        $lock   = LOCK_EX;
         $stream = 'file';
 
         if (false !== strpos($path, '://')) {
             $parts  = explode('://', $path);
             $stream = $parts[0];
-
-            // workaround for vfsStream
-            if ($stream === 'vfs') {
-                $lock = 0;
-            }
         }
 
-        return array($stream, $lock);
+        return $stream;
     }
 }

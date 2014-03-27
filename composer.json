@@ -21,7 +21,8 @@
         "source": "https://github.com/mimmi20/WurflCache"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "symfony/filesystem": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
