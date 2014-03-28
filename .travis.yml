@@ -10,9 +10,10 @@ services:
   - memcached # will start memcached
 
 env:
-  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.1.* DESARROLLA_VERSION=1.5.0
-  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.2.* DESARROLLA_VERSION=1.6.0
-  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.3.*@dev DESARROLLA_VERSION=1.7.0
+  - DOCTRINE_VERSION=v1.1 ZEND_VERSION=2.1.* DESARROLLA_VERSION=1.4.0
+  - DOCTRINE_VERSION=v1.2.0 ZEND_VERSION=2.2.* DESARROLLA_VERSION=1.5.0
+  - DOCTRINE_VERSION=v1.3.0 ZEND_VERSION=2.3.* DESARROLLA_VERSION=1.6.0
+  - DOCTRINE_VERSION=1.4.*@dev ZEND_VERSION=2.4.*@dev DESARROLLA_VERSION=1.7.0
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master
 
 before_script:
@@ -38,4 +39,4 @@ script:
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-      - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
