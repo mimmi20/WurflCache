@@ -39,8 +39,8 @@
         "zetacomponents/cache": "to use other caches handled by zeta"
     },
     "autoload": {
-        "psr-0": {
-            "WurflCache\\": "library/",
+        "psr-4": {
+            "WurflCache\\": "src/",
             "WurflCacheTest\\": "tests/"
         }
     }
