@@ -31,10 +31,20 @@ class FileUtils
      *
      * @param string $path
      * @param int    $mode
+     *
+     * @return bool
      */
     public static function mkdir($path, $mode = 0644)
     {
-        mkdir($path, $mode, true);
+        $filesystem = new Filesystem();
+
+        try {
+            $filesystem->mkdir($path, $mode);
+        } catch (IOException $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -93,19 +103,23 @@ class FileUtils
     /**
      * Serializes and saves $data in the file $path and sets the last modified time to $mtime
      *
-     * @param string  $path  filename to save data in
-     * @param mixed   $data  data to be serialized and saved
-     * @param integer $mtime Last modified date in epoch time
+     * @param string  $filename filename to save data in
+     * @param mixed   $data     data to be serialized and saved
+     * @param integer $mtime    Last modified date in epoch time
      *
      * @return bool
      */
-    public static function write($path, $data, $mtime = 0)
+    public static function write($filename, $data, $mtime = 0)
     {
-        if (!file_exists(dirname($path))) {
-            self::mkdir(dirname($path), 0644);
+        $dir = dirname($filename);
+
+        if (!is_dir($dir)) {
+            self::mkdir($dir, 0644);
+        } elseif (!is_writable($dir)) {
+            return false;
         }
 
-        $stream         = self::detectStream($path);
+        $stream         = self::detectStream($filename);
         $limitedStreams = array('vfs');
 
         if (!in_array($stream, $limitedStreams)) {
@@ -116,13 +130,25 @@ class FileUtils
         }
 
         $filesystem = new Filesystem();
+
+        // $filesystem->dumpFile($path, $data, $mode);
+        $tmpFile = $dir . '/temp_' . md5(basename($filename));
+
+        if (false === file_put_contents($tmpFile, $data)) {
+            return false;
+        }
+
         try {
-            $filesystem->dumpFile($path, $data, $mode);
+            $filesystem->rename($tmpFile, $filename, true);
+
+            if (null !== $mode) {
+                $filesystem->chmod($filename, $mode);
+            }
         } catch (IOException $exception) {
             return false;
         }
 
-        if (!file_exists($path)) {
+        if (!file_exists($filename)) {
             return false;
         }
 
@@ -131,7 +157,7 @@ class FileUtils
             $mtime = ($mtime > 0) ? $mtime : time();
 
             try {
-                $filesystem->touch($path, $mtime);
+                $filesystem->touch($filename, $mtime);
             } catch (IOException $exception) {
                 return false;
             }
@@ -149,7 +175,7 @@ class FileUtils
      */
     public static function join(array $strings = array())
     {
-        return implode(DIRECTORY_SEPARATOR, $strings);
+        return implode('/', $strings);
     }
 
     /**
@@ -169,5 +195,19 @@ class FileUtils
         }
 
         return $stream;
+    }
+
+    /**
+     * Returns TRUE, if the file exists, FALSE otherwise
+     *
+     * @param string $file filename
+     *
+     * @return boolean
+     */
+    public static function exists($file)
+    {
+        $filesystem = new Filesystem();
+
+        return $filesystem->exists($file);
     }
 }

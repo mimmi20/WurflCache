@@ -108,7 +108,7 @@ class File extends AbstractAdapter
     {
         $path = $this->keyPath($key);
 
-        return file_exists($path) && is_file($path) && is_readable($path);
+        return FileUtils::exists($path);
     }
 
     /**
@@ -124,7 +124,8 @@ class File extends AbstractAdapter
         $value
     ) {
         $path = $this->keyPath($key);
-        FileUtils::write(
+
+        return FileUtils::write(
             $path,
             $this->compact($value)
         );
@@ -234,7 +235,7 @@ class File extends AbstractAdapter
         $path = '';
 
         for ($i = 0; $i < $splitCount; $i++) {
-            $path .= $md5 [$i] . DIRECTORY_SEPARATOR;
+            $path .= $md5 [$i] . '/';
         }
 
         $path .= substr(

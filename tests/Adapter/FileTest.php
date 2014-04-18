@@ -75,7 +75,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         $storage = new File($params);
 
-        $storage->setItem('foo', 'foo');
+        self::assertTrue($storage->setItem('foo', 'foo'), 'Could not write "foo" to Item "foo"');
         sleep(1);
         self::assertEquals('foo', $storage->getItem('foo'));
     }
