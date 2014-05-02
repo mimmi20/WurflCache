@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "zendframework/zend-cache": "2.2.*",
+        "zendframework/zend-cache": "2.3.*",
         "desarrolla2/cache": "*",
         "doctrine/cache": "1.4.*@dev",
         "zetacomponents/cache": "dev-master",
