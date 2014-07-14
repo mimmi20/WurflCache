@@ -219,7 +219,9 @@ class File extends AbstractAdapter
      */
     private function keyPath($key)
     {
-        return FileUtils::join(array($this->root, $this->spread(md5($key))));
+        $cacheId = $this->normalizeKey($key);
+
+        return FileUtils::join(array($this->root, $this->spread($cacheId)));
     }
 
     /**
