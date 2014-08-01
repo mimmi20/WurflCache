@@ -117,7 +117,7 @@ class Memcache extends AbstractAdapter
     public function hasItem($cacheId)
     {
         $tempData = $this->memcache->set(
-            $cacheId,
+            $this->normalizeKey($cacheId),
             '',
             0,
             $this->expiration
@@ -161,6 +161,8 @@ class Memcache extends AbstractAdapter
      */
     public function removeItem($cacheId)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         return $this->memcache->delete($cacheId);
     }
 
