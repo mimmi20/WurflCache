@@ -88,14 +88,14 @@ class Memcache extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
-        $cacheId = $this->normalizeKey($key);
+        $cacheId = $this->normalizeKey($cacheId);
         $success = false;
 
         $value = $this->extract($this->memcache->get($cacheId));

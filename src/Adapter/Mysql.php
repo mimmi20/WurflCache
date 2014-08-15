@@ -25,17 +25,16 @@ namespace WurflCache\Adapter;
  */
 class Mysql extends AbstractAdapter
 {
-    private $defaultParams
-        = array(
-            'host'        => 'localhost',
-            'port'        => 3306,
-            'db'          => 'wurfl_persistence_db',
-            'user'        => '',
-            'pass'        => '',
-            'table'       => 'wurfl_object_cache',
-            'keycolumn'   => 'key',
-            'valuecolumn' => 'value'
-        );
+    private $defaultParams = array(
+        'host'        => 'localhost',
+        'port'        => 3306,
+        'db'          => 'wurfl_persistence_db',
+        'user'        => '',
+        'pass'        => '',
+        'table'       => 'wurfl_object_cache',
+        'keycolumn'   => 'key',
+        'valuecolumn' => 'value'
+    );
 
     private $link;
     private $host;
@@ -44,7 +43,7 @@ class Mysql extends AbstractAdapter
     private $pass;
     private $port;
     private $table;
-    private $keycolumn;
+    private $cacheIdcolumn;
     private $valuecolumn;
 
     public function __construct($params)
@@ -55,8 +54,8 @@ class Mysql extends AbstractAdapter
             $currentParams = array_merge($this->defaultParams, $params);
         }
 
-        foreach ($currentParams as $key => $value) {
-            $this->$key = $value;
+        foreach ($currentParams as $cacheId => $value) {
+            $this->$cacheId = $value;
         }
         $this->initialize();
     }
@@ -64,21 +63,21 @@ class Mysql extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
-        $result = $this->hasItem($key);
+        $result = $this->hasItem($cacheId);
 
         if (!$result) {
             $success = false;
             return null;
         }
 
-        $objectId = $this->encode('', $key);
+        $objectId = $this->encode('', $cacheId);
         $objectId = mysql_real_escape_string($objectId);
 
         $sql = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
@@ -107,13 +106,13 @@ class Mysql extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem($cacheId)
     {
-        $objectId = $this->encode('', $key);
+        $objectId = $this->encode('', $cacheId);
         $objectId = mysql_real_escape_string($objectId);
 
         $sql    = 'select `' . $this->valuecolumn . '` from `' . $this->db . '`.`' . $this->table . '` where `'
@@ -130,18 +129,18 @@ class Mysql extends AbstractAdapter
     /**
      * Store an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  mixed  $value
      *
      * @return bool
      */
-    public function setItem($key, $value)
+    public function setItem($cacheId, $value)
     {
         $object   = mysql_real_escape_string(serialize($value));
-        $objectId = $this->encode('', $key);
+        $objectId = $this->encode('', $cacheId);
         $objectId = mysql_real_escape_string($objectId);
 
-        $success = $this->removeItem($key);
+        $success = $this->removeItem($cacheId);
 
         if (!$success) {
             return false;
@@ -156,13 +155,13 @@ class Mysql extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        $objectId = $this->encode('', $key);
+        $objectId = $this->encode('', $cacheId);
         $objectId = mysql_real_escape_string($objectId);
 
         $sql = 'delete from `' . $this->db . '`.`' . $this->table . '` where `' . $this->keycolumn . '`=\''

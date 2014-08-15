@@ -31,11 +31,10 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * @var array
      */
-    private $defaultParams
-        = array(
-            'namespace'       => 'wurfl',
-            'cacheExpiration' => 0
-        );
+    private $defaultParams = array(
+        'namespace'       => 'wurfl',
+        'cacheExpiration' => 0
+    );
 
     /**
      * @param array $params
@@ -57,14 +56,14 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
-        $cacheId = $this->normalizeKey($key);
+        $cacheId = $this->normalizeKey($cacheId);
         $success = false;
 
         $value = $this->extract(apc_fetch($cacheId));

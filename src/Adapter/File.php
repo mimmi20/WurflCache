@@ -69,22 +69,20 @@ class File extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem(
-        $key,
-        & $success = null
-    ) {
+    public function getItem($cacheId, & $success = null)
+    {
         $success = false;
 
-        if (!$this->hasItem($key)) {
+        if (!$this->hasItem($cacheId)) {
             return null;
         }
 
-        $path = $this->keyPath($key);
+        $path = $this->keyPath($cacheId);
 
         /** @var $value Helper\StorageObject */
         $value = $this->extract(FileUtils::read($path));
@@ -100,13 +98,13 @@ class File extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem($cacheId)
     {
-        $path = $this->keyPath($key);
+        $path = $this->keyPath($cacheId);
 
         return FileUtils::exists($path);
     }
@@ -114,16 +112,16 @@ class File extends AbstractAdapter
     /**
      * Store an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  mixed  $value
      *
      * @return bool
      */
     public function setItem(
-        $key,
+        $cacheId,
         $value
     ) {
-        $path = $this->keyPath($key);
+        $path = $this->keyPath($cacheId);
 
         return FileUtils::write(
             $path,
@@ -134,13 +132,13 @@ class File extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        $path = $this->keyPath($key);
+        $path = $this->keyPath($cacheId);
 
         return unlink($path);
     }
@@ -213,13 +211,13 @@ class File extends AbstractAdapter
     }
 
     /**
-     * @param $key
+     * @param $cacheId
      *
      * @return string
      */
-    private function keyPath($key)
+    private function keyPath($cacheId)
     {
-        $cacheId = $this->normalizeKey($key);
+        $cacheId = $this->normalizeKey($cacheId);
 
         return FileUtils::join(array($this->root, $this->spread($cacheId)));
     }

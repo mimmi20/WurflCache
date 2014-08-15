@@ -104,13 +104,13 @@ class DesarrollaCacheConnector extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      *
      * @return bool
      */
-    public function removeItem($key)
+    public function removeItem($cacheId)
     {
-        return $this->cache->delete($key);
+        return $this->cache->delete($cacheId);
     }
 
     /**

@@ -20,15 +20,15 @@ class Cookie extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
         $success = false;
-        $cacheId = $this->normalizeKey($key);
+        $cacheId = $this->normalizeKey($cacheId);
 
         if (!isset($_COOKIE[$cacheId])) {
             return null;
@@ -53,6 +53,7 @@ class Cookie extends AbstractAdapter
     public function hasItem($cacheId)
     {
         $success = false;
+        $cacheId = $this->normalizeKey($cacheId);
 
         $this->getItem($cacheId, $success);
 

@@ -61,16 +61,16 @@ class ZetaCacheConnector extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $key
+     * @param  string $cacheId
      * @param  bool   $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($key, & $success = null)
+    public function getItem($cacheId, & $success = null)
     {
         try {
             $success = true;
-            return unserialize($this->cache->restore($key, true));
+            return unserialize($this->cache->restore($cacheId, true));
         } catch (ezcBaseException $ex) {
             $success = false;
             return null;
