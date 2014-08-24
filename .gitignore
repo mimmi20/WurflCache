@@ -1,4 +1,5 @@
 phpdoc/
+.idea/
 composer.phar
 *.bak
 result.txt

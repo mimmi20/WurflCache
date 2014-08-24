@@ -1,17 +1,6 @@
 <?php
-namespace WurflCache\Adapter;
-
-use Zend\Cache\Exception as ZendException;
-use Zend\Cache\Storage\Adapter\AbstractAdapter as AbstractZendAdapter;
-use Zend\Cache\Storage\FlushableInterface;
-use Zend\Cache\Storage\Plugin\Serializer;
-
 /**
- * Interface class to use the zend cache with Browscap
- *
- * PHP version 5
- *
- * Copyright (c) 2006-2012 Jonathan Stoppani
+ * Copyright (c) 2013-2014 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,19 +20,36 @@ use Zend\Cache\Storage\Plugin\Serializer;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas Müller
- * @version    1.0
+ * @category   WurflCache
+ * @package    Adapter
+ * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
- * @link       https://github.com/mimmi20/phpbrowscap/
+ * @link       https://github.com/mimmi20/WurflCache/
+ */
+
+namespace WurflCache\Adapter;
+
+use Zend\Cache\Exception as ZendException;
+use Zend\Cache\Storage\Adapter\AbstractAdapter as AbstractZendAdapter;
+use Zend\Cache\Storage\FlushableInterface;
+use Zend\Cache\Storage\Plugin\Serializer;
+
+/**
+ * Connector class to use the Zend Cache
+ *
+ * @category   WurflCache
+ * @package    Adapter
+ * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  2013-2014 Thomas Müller
+ * @license    http://www.opensource.org/licenses/MIT MIT License
+ * @link       https://github.com/mimmi20/WurflCache/
  */
 class ZendCacheConnector extends AbstractAdapter
 {
     /**
-     * a Zend Cache instance
+     * a Zend CacheAdapter Instance
      *
-     * @var \Zend\Cache\Storage\StorageInterface
+     * @var \Zend\Cache\Storage\Adapter\AbstractAdapter
      */
     private $cache = null;
 

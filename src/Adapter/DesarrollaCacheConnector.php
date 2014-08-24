@@ -1,14 +1,6 @@
 <?php
-namespace WurflCache\Adapter;
-
-use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
-
 /**
- * Interface class to use the Desarrolla2 cache with Browscap
- *
- * PHP version 5
- *
- * Copyright (c) 2006-2012 Jonathan Stoppani
+ * Copyright (c) 2013-2014 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,12 +20,26 @@ use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas Müller
- * @version    1.0
+ * @category   WurflCache
+ * @package    Adapter
+ * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
- * @link       https://github.com/mimmi20/phpbrowscap/
+ * @link       https://github.com/mimmi20/WurflCache/
+ */
+
+namespace WurflCache\Adapter;
+
+use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
+
+/**
+ * Connector class to use the Desarrolla2 cache
+ *
+ * @category   WurflCache
+ * @package    Adapter
+ * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  2013-2014 Thomas Müller
+ * @license    http://www.opensource.org/licenses/MIT MIT License
+ * @link       https://github.com/mimmi20/WurflCache/
  */
 class DesarrollaCacheConnector extends AbstractAdapter
 {
@@ -69,6 +75,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
     {
         if ($this->hasItem($cacheId)) {
             $success = true;
+            $cacheId = $this->normalizeKey($cacheId);
+
             return $this->cache->get($cacheId);
         }
 
@@ -86,6 +94,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
      */
     public function setItem($cacheId, $content)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         return $this->cache->set($cacheId, $content);
     }
 
@@ -98,6 +108,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         return $this->cache->has($cacheId);
     }
 
@@ -110,6 +122,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
      */
     public function removeItem($cacheId)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         return $this->cache->delete($cacheId);
     }
 

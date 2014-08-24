@@ -1,15 +1,6 @@
 <?php
-namespace WurflCache\Adapter;
-
-use ezcBaseException;
-use ezcCacheStorage;
-
 /**
- * Interface class to use the zeta cache with Browscap
- *
- * PHP version 5
- *
- * Copyright (c) 2006-2012 Jonathan Stoppani
+ * Copyright (c) 2013-2014 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,12 +20,27 @@ use ezcCacheStorage;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas Müller
- * @version    1.0
+ * @category   WurflCache
+ * @package    Adapter
+ * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
- * @link       https://github.com/mimmi20/phpbrowscap/
+ * @link       https://github.com/mimmi20/WurflCache/
+ */
+
+namespace WurflCache\Adapter;
+
+use ezcBaseException;
+use ezcCacheStorage;
+
+/**
+ * Connector class to use the zeta cache
+ *
+ * @category   WurflCache
+ * @package    Adapter
+ * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  2013-2014 Thomas Müller
+ * @license    http://www.opensource.org/licenses/MIT MIT License
+ * @link       https://github.com/mimmi20/WurflCache/
  */
 class ZetaCacheConnector extends AbstractAdapter
 {
@@ -68,6 +74,8 @@ class ZetaCacheConnector extends AbstractAdapter
      */
     public function getItem($cacheId, & $success = null)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         try {
             $success = true;
             return unserialize($this->cache->restore($cacheId, true));
@@ -87,6 +95,8 @@ class ZetaCacheConnector extends AbstractAdapter
      */
     public function setItem($cacheId, $content)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         try {
             return $this->cache->store($cacheId, serialize($content));
         } catch (ezcBaseException $ex) {
@@ -103,6 +113,8 @@ class ZetaCacheConnector extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         try {
             return ($this->cache->countDataItems($cacheId) > 0);
         } catch (ezcBaseException $ex) {
@@ -119,6 +131,8 @@ class ZetaCacheConnector extends AbstractAdapter
      */
     public function removeItem($cacheId)
     {
+        $cacheId = $this->normalizeKey($cacheId);
+
         try {
             return ($this->cache->delete($cacheId));
         } catch (ezcBaseException $ex) {

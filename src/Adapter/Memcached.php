@@ -44,16 +44,16 @@ class Memcache extends AbstractAdapter
     /**
      *
      */
-    const EXTENSION_MODULE_NAME = 'memcache';
+    const EXTENSION_MODULE_NAME = 'memcached';
     /**
      *
      */
     const DEFAULT_PORT = 11211;
 
     /**
-     * @var \Memcache
+     * @var \Memcached
      */
-    private $memcache;
+    private $memcached;
     /**
      * @var
      */
@@ -87,7 +87,7 @@ class Memcache extends AbstractAdapter
         }
 
         $this->toFields($currentParams);
-        $this->initializeMemCache();
+        $this->initializeMemCached();
     }
 
     /**
@@ -95,7 +95,7 @@ class Memcache extends AbstractAdapter
      */
     public function __destruct()
     {
-        $this->memcache = null;
+        $this->memcached = null;
     }
 
     /**
@@ -111,7 +111,7 @@ class Memcache extends AbstractAdapter
         $cacheId = $this->normalizeKey($cacheId);
         $success = false;
 
-        $value = $this->extract($this->memcache->get($cacheId));
+        $value = $this->extract($this->memcached->get($cacheId));
         if ($value === null) {
             return null;
         }
@@ -129,7 +129,7 @@ class Memcache extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
-        $tempData = $this->memcache->set(
+        $tempData = $this->memcached->set(
             $this->normalizeKey($cacheId),
             '',
             0,
@@ -157,7 +157,7 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return $this->memcache->set(
+        return $this->memcached->set(
             $cacheId,
             $this->compact($value),
             0,
@@ -176,7 +176,7 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return $this->memcache->delete($cacheId);
+        return $this->memcached->delete($cacheId);
     }
 
     /**
@@ -186,9 +186,7 @@ class Memcache extends AbstractAdapter
      */
     public function flush()
     {
-        $this->memcache->flush();
-
-        return true;
+        return $this->memcached->flush();
     }
 
     /**
@@ -205,9 +203,9 @@ class Memcache extends AbstractAdapter
      * Initializes the Memcache Module
 
      */
-    private function initializeMemCache()
+    private function initializeMemCached()
     {
-        $this->memcache = new \Memcache();
+        $this->memcached = new \Memcached();
 
         // support multiple hosts using semicolon to separate hosts
         $hosts = explode(';', $this->host);
@@ -232,7 +230,7 @@ class Memcache extends AbstractAdapter
                 $ports[$i] = self::DEFAULT_PORT;
             }
 
-            $this->memcache->addServer($host, $ports[$i]);
+            $this->memcached->addServer($host, $ports[$i]);
         }
     }
 
@@ -245,7 +243,7 @@ class Memcache extends AbstractAdapter
     {
         if (!extension_loaded(self::EXTENSION_MODULE_NAME)) {
             throw new Exception(
-                'The PHP extension memcache must be installed and loaded in order to use the Memcache.'
+                'The PHP extension memcached must be installed and loaded in order to use the Memcached.'
             );
         }
     }
