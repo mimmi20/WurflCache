@@ -37,7 +37,7 @@ before_script:
   - composer require --no-update zendframework/zend-servicemanager:${ZEND_VERSION}
   - composer require --no-update zendframework/zend-cache:${ZEND_VERSION}
   - composer require --no-update desarrolla2/cache:${DESARROLLA_VERSION}
-  - composer update --no-dev --prefer-source
+  - composer update --no-dev -o --prefer-source
   - php vendor/autoload.php
 
 script:
