@@ -39,18 +39,6 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $mock   = $this->getMock('\\ezcCacheStorageMemory');
-        $object = new ZetaCacheConnector($mock);
-        $object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
@@ -96,18 +84,6 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $mock   = $this->getMock('\\ezcCacheStorageMemory');
-        $object = new ZetaCacheConnector($mock);
-        $object->hasItem();
-    }
-
-    /**
-     * Test if an item exists.
      */
     public function testHasItemException()
     {
@@ -136,30 +112,6 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $mock   = $this->getMock('\\ezcCacheStorageMemory');
-        $object = new ZetaCacheConnector($mock);
-        $object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $mock   = $this->getMock('\\ezcCacheStorageMemory');
-        $object = new ZetaCacheConnector($mock);
-        $object->setItem('test');
-    }
-
-    /**
-     * Store an item.
      */
     public function testSetItemException()
     {
@@ -184,18 +136,6 @@ class ZetaCacheConnectorTest extends \PHPUnit_Framework_TestCase
             ->will(self::returnValue(true));
         $object = new ZetaCacheConnector($mock);
         self::assertTrue($object->setItem('test', 'testValue'));
-    }
-
-    /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $mock   = $this->getMock('\\ezcCacheStorageMemory');
-        $object = new ZetaCacheConnector($mock);
-        $object->removeItem();
     }
 
     /**

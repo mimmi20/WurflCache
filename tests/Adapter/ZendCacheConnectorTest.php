@@ -40,18 +40,6 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
-        $object = new ZendCacheConnector($mock);
-        $object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
@@ -93,18 +81,6 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
         $object = new ZendCacheConnector($mock);
         self::assertNull($object->getItem('test'));
-    }
-
-    /**
-     * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
-        $object = new ZendCacheConnector($mock);
-        $object->hasItem();
     }
 
     /**
@@ -151,30 +127,6 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
-        $object = new ZendCacheConnector($mock);
-        $object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
-        $object = new ZendCacheConnector($mock);
-        $object->setItem('test');
-    }
-
-    /**
-     * Store an item.
      */
     public function testSetItem()
     {
@@ -199,18 +151,6 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
             ->will(self::throwException(new LogicException));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->setItem('test', 'testValue'));
-    }
-
-    /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $mock   = $this->getMock('\\Zend\Cache\\Storage\\Adapter\\Filesystem');
-        $object = new ZendCacheConnector($mock);
-        $object->removeItem();
     }
 
     /**

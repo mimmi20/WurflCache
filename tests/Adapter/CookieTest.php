@@ -37,16 +37,6 @@ class CookieTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $this->object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
@@ -69,40 +59,10 @@ class CookieTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $this->object->hasItem();
-    }
-
-    /**
-     * Test if an item exists.
      */
     public function testHasItem()
     {
         self::assertFalse($this->object->hasItem('test'));
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $this->object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $this->object->setItem('test');
     }
 
     /**
@@ -112,16 +72,6 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped('Test will result in an error because output already startet');
         self::assertTrue($this->object->setItem('test', 'testValue'));
-    }
-
-    /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $this->object->removeItem();
     }
 
     /**

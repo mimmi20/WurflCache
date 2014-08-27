@@ -39,18 +39,6 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $mock   = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache');
-        $object = new DoctrineCacheConnector($mock);
-        $object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
@@ -126,18 +114,6 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $mock   = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache');
-        $object = new DoctrineCacheConnector($mock);
-        $object->hasItem();
-    }
-
-    /**
-     * Test if an item exists.
      */
     public function testHasItem()
     {
@@ -152,30 +128,6 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $mock   = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache');
-        $object = new DoctrineCacheConnector($mock);
-        $object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $mock   = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache');
-        $object = new DoctrineCacheConnector($mock);
-        $object->setItem('test');
-    }
-
-    /**
-     * Store an item.
      */
     public function testSetItem()
     {
@@ -186,18 +138,6 @@ class DoctrineCacheConnectorTest extends \PHPUnit_Framework_TestCase
             ->will(self::returnValue(true));
         $object = new DoctrineCacheConnector($mock);
         self::assertTrue($object->setItem('test', 'testValue'));
-    }
-
-    /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $mock   = $this->getMock('\\Doctrine\\Common\\Cache\\FilesystemCache');
-        $object = new DoctrineCacheConnector($mock);
-        $object->removeItem();
     }
 
     /**

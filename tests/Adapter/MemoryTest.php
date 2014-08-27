@@ -8,7 +8,7 @@ use WurflCache\Adapter\Memory;
  *
  * PHP version 5
  *
- * Copyright (c) 2013 Thomas M�ller
+ * Copyright (c) 2013 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,8 +29,8 @@ use WurflCache\Adapter\Memory;
  * THE SOFTWARE.
  *
  * @package    Browscap
- * @author     Thomas M�ller <t_mueller_stolzenhain@yahoo.de>
- * @copyright  Copyright (c) 2013 Thomas M�ller
+ * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
+ * @copyright  Copyright (c) 2013 Thomas Müller
  * @version    1.0
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/phpbrowscap/
@@ -54,16 +54,6 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $this->object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
@@ -83,40 +73,10 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $this->object->hasItem();
-    }
-
-    /**
-     * Test if an item exists.
      */
     public function testHasItem()
     {
         self::assertFalse($this->object->hasItem('test'));
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $this->object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $this->object->setItem('test');
     }
 
     /**
@@ -142,16 +102,6 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $this->object->removeItem();
-    }
-
-    /**
      * Store an item.
      */
     public function testRemoveItem()
@@ -165,16 +115,6 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
     public function testflush()
     {
         self::assertTrue($this->object->flush());
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetNamespaceError()
-    {
-        $this->object->setNamespace();
     }
 
     /**

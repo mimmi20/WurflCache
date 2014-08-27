@@ -12,7 +12,7 @@ use WurflCache\Adapter\Apc;
 class ApcTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \WurflCache\Adapter\Memory
+     * @var \WurflCache\Adapter\Apc
      */
     private $object = null;
 
@@ -27,20 +27,10 @@ class ApcTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testGetItemError()
-    {
-        $this->object->getItem();
-    }
-
-    /**
-     * Get an item.
      */
     public function testGetItemNull()
     {
-        self::markTestIncomplete('need to implement');
+        self::assertNull($this->object->getItem('test'));
     }
 
     /**
@@ -48,17 +38,10 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
-        self::markTestIncomplete('need to implement');
-    }
+        /** @var $object \WurflCache\Adapter\Memory */
+        $object = $this->getMock('\\WurflCache\\Adapter\\Memory', array('normalizeKey'));
 
-    /**
-     * Test if an item exists.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testHasItemError()
-    {
-        $this->object->hasItem();
+        self::assertNull($object->getItem('test'));
     }
 
     /**
@@ -66,27 +49,7 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasItem()
     {
-        self::markTestIncomplete('need to implement');
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError1()
-    {
-        $this->object->setItem();
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetItemError2()
-    {
-        $this->object->setItem('test');
+        self::assertFalse($this->object->hasItem('test'));
     }
 
     /**
@@ -94,7 +57,7 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetItem()
     {
-        self::markTestIncomplete('need to implement');
+        self::assertTrue($this->object->setItem('test', 'testValue'));
     }
 
     /**
@@ -102,17 +65,13 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetItem()
     {
-        self::markTestIncomplete('need to implement');
-    }
+        $cacheId    = 'test';
+        $cacheValue = 'testValue';
 
-    /**
-     * Remove an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testRemoveItemError()
-    {
-        $this->object->removeItem();
+        self::assertTrue($this->object->setItem($cacheId, $cacheValue));
+
+        $success = null;
+        self::assertSame($cacheValue, $this->object->getItem($cacheId, $success));
     }
 
     /**
@@ -120,7 +79,7 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveItem()
     {
-        self::markTestIncomplete('need to implement');
+        self::assertTrue($this->object->removeItem('test'));
     }
 
     /**
@@ -128,17 +87,7 @@ class ApcTest extends \PHPUnit_Framework_TestCase
      */
     public function testflush()
     {
-        self::markTestIncomplete('need to implement');
-    }
-
-    /**
-     * Store an item.
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testSetNamespaceError()
-    {
-        $this->object->setNamespace();
+        self::assertTrue($this->object->flush());
     }
 
     /**
