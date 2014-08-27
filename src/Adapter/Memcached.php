@@ -134,9 +134,7 @@ class Memcached extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
-        $tempData = $this->memcached->get(
-            $this->normalizeKey($cacheId)
-        );
+        $this->memcached->get($this->normalizeKey($cacheId));
 
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }

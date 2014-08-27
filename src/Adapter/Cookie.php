@@ -41,7 +41,6 @@ namespace WurflCache\Adapter;
  */
 class Cookie extends AbstractAdapter
 {
-
     /**
      * Get an item.
      *
@@ -96,7 +95,7 @@ class Cookie extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return setcookie($cacheId, $this->compact($value), time() + $this->cacheExpiration);
+        return setcookie($cacheId, $this->compact($value), time() + $this->expiration);
     }
 
     /**

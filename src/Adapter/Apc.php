@@ -64,11 +64,10 @@ class Apc extends AbstractAdapter implements AdapterInterface
         $currentParams = $this->defaultParams;
 
         if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($this->defaultParams, $params);
+            $currentParams = array_merge($currentParams, $params);
         }
 
-        $this->namespace       = $currentParams['namespace'];
-        $this->cacheExpiration = $currentParams['cacheExpiration'];
+        $this->toFields($currentParams);
     }
 
     /**
@@ -82,10 +81,15 @@ class Apc extends AbstractAdapter implements AdapterInterface
     public function getItem($cacheId, & $success = null)
     {
         $cacheId = $this->normalizeKey($cacheId);
-        $success = false;
 
-        $value = $this->extract(apc_fetch($cacheId));
+        $storedValue = apc_fetch($cacheId, $success);
+        if (false === $success) {
+            return null;
+        }
+
+        $value = $this->extract($storedValue);
         if ($value === null) {
+            $success = false;
             return null;
         }
 
@@ -122,7 +126,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
         return apc_store(
             $cacheId,
             $this->compact($value),
-            $this->cacheExpiration
+            $this->expiration
         );
     }
 

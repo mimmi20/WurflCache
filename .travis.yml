@@ -15,7 +15,6 @@ os:
 services:
   - memcache  # will start memcache
   - memcached # will start memcached
-  - apc       # will enable APC cache
 
 env:
   - DOCTRINE_VERSION=v1.1 ZEND_VERSION=2.1.* DESARROLLA_VERSION=1.4.0
