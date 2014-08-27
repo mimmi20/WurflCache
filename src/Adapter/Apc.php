@@ -165,4 +165,14 @@ class Apc extends AbstractAdapter implements AdapterInterface
             throw new Exception('The PHP extension apc must be installed, loaded and enabled.');
         }
     }
+
+    /**
+     * @param $params
+     */
+    private function toFields($params)
+    {
+        foreach ($params as $cacheId => $value) {
+            $this->$cacheId = $value;
+        }
+    }
 }
