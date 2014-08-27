@@ -83,7 +83,7 @@ class Memcache extends AbstractAdapter
         $currentParams = $this->defaultParams;
 
         if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($this->defaultParams, $params);
+            $currentParams = array_merge($currentParams, $params);
         }
 
         $this->toFields($currentParams);
@@ -110,8 +110,13 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
         $success = false;
+        
+        $storedValue = $this->memcached->get($cacheId);
+        if (\Memcached::RES_SUCCESS !== $this->memcached->getResultCode()) {
+            return null;
+        }
 
-        $value = $this->extract($this->memcached->get($cacheId));
+        $value = $this->extract($storedValue);
         if ($value === null) {
             return null;
         }
@@ -129,20 +134,11 @@ class Memcache extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
-        $tempData = $this->memcached->set(
-            $this->normalizeKey($cacheId),
-            '',
-            0,
-            $this->expiration
+        $tempData = $this->memcached->get(
+            $this->normalizeKey($cacheId)
         );
 
-        if (false === $tempData) {
-            return true;
-        }
-
-        $this->removeItem($cacheId);
-
-        return false;
+        return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
     /**
@@ -157,12 +153,13 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return $this->memcached->set(
+        $this->memcached->set(
             $cacheId,
             $this->compact($value),
-            0,
             $this->expiration
         );
+        
+        return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
     /**
@@ -176,7 +173,9 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return $this->memcached->delete($cacheId);
+        $this->memcached->delete($cacheId);
+        
+        return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
     /**
@@ -186,7 +185,9 @@ class Memcache extends AbstractAdapter
      */
     public function flush()
     {
-        return $this->memcached->flush();
+        $this->memcached->flush();
+        
+        return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
     /**
