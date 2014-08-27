@@ -39,7 +39,7 @@ namespace WurflCache\Adapter;
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/mimmi20/WurflCache/
  */
-class Memcache extends AbstractAdapter
+class Memcached extends AbstractAdapter
 {
     /**
      *
@@ -110,7 +110,7 @@ class Memcache extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
         $success = false;
-        
+
         $storedValue = $this->memcached->get($cacheId);
         if (\Memcached::RES_SUCCESS !== $this->memcached->getResultCode()) {
             return null;
@@ -158,7 +158,7 @@ class Memcache extends AbstractAdapter
             $this->compact($value),
             $this->expiration
         );
-        
+
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
@@ -174,7 +174,7 @@ class Memcache extends AbstractAdapter
         $cacheId = $this->normalizeKey($cacheId);
 
         $this->memcached->delete($cacheId);
-        
+
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
@@ -186,7 +186,7 @@ class Memcache extends AbstractAdapter
     public function flush()
     {
         $this->memcached->flush();
-        
+
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
     }
 
