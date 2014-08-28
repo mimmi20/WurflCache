@@ -29,6 +29,8 @@
 
 namespace WurflCache;
 
+use WurflCache\Adapter\Memory;
+
 /**
  * Class to use with the Wurfl Cloud
  *
@@ -42,30 +44,50 @@ namespace WurflCache;
 class CloudCache implements CacheInterface
 {
     /**
-     * @var null|Adapter\AdapterInterface
+     * @var Adapter\AdapterInterface
      */
     private $cache = null;
 
     /**
-     * @param Adapter\AdapterInterface $adapter
+     * Gets a cache instance
+     *
+     * @return \WurflCache\Adapter\AdapterInterface
      */
-    public function __construct(Adapter\AdapterInterface $adapter)
+    public function getAdapter()
+    {
+        if (null === $this->cache) {
+            $this->cache = new Memory();
+        }
+
+        return $this->cache;
+    }
+
+    /**
+     * Sets a cache instance
+     *
+     * @param \WurflCache\Adapter\AdapterInterface $adapter
+     *
+     * @return \WurflCache\CloudCache
+     */
+    public function setAdapter(Adapter\AdapterInterface $adapter)
     {
         $this->cache = $adapter;
+
+        return $this;
     }
 
     /**
      * @param string $userAgent
      *
-     * @return array|bool
+     * @return array|null
      */
     public function getDevice($userAgent)
     {
         $success = null;
-        $data    = $this->cache->getItem($userAgent, $success);
+        $data    = $this->getAdapter()->getItem($userAgent, $success);
 
         if (!$success) {
-            return false;
+            return null;
         }
 
         return $data;
@@ -79,10 +101,10 @@ class CloudCache implements CacheInterface
     public function getDeviceFromID($deviceId)
     {
         $success = null;
-        $data    = $this->cache->getItem($deviceId, $success);
+        $data    = $this->getAdapter()->getItem($deviceId, $success);
 
         if (!$success) {
-            return false;
+            return null;
         }
 
         return $data;
@@ -96,7 +118,7 @@ class CloudCache implements CacheInterface
      */
     public function setDevice($userAgent, array $capabilities)
     {
-        return $this->cache->setItem($userAgent, $capabilities);
+        return $this->getAdapter()->setItem($userAgent, $capabilities);
     }
 
     // Required by interface but not used for this provider
@@ -108,29 +130,44 @@ class CloudCache implements CacheInterface
      */
     public function setDeviceFromID($deviceId, array $capabilities)
     {
-        return $this->cache->setItem($deviceId, $capabilities);
+        return $this->getAdapter()->setItem($deviceId, $capabilities);
     }
 
     /**
-     * @param int $time
+     * Sets the expiration time of the cached items
+     *
+     * @param int $time Expiration time in seconds
+     *
+     * @return \WurflCache\CloudCache
      */
     public function setCacheExpiration($time)
     {
-        $this->cache->setExpiration($time);
+        $this->getAdapter()->setExpiration($time);
+        
+        return $this;
     }
 
     /**
+     * Sets the string that is prefixed to the keys stored in this cache provider (to prevent collisions)
+     *
      * @param string $prefix
+     *
+     * @return \WurflCache\CloudCache
      */
     public function setCachePrefix($prefix)
     {
-        $this->cache->setNamespace($prefix);
+        $this->getAdapter()->setNamespace($prefix);
+        
+        return $this;
     }
 
     /**
+     * Closes the connection to the cache provider
      *
+     * @return \WurflCache\CloudCache
      */
     public function close()
     {
+        return $this;
     }
 }

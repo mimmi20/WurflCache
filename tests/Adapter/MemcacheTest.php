@@ -79,4 +79,85 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
             self::assertNull($storage->getItem($key));
         }
     }
+
+    /**
+     * Get an item.
+     */
+    public function testGetItemNull()
+    {
+        self::assertNull($this->object->getItem('test'));
+    }
+
+    /**
+     * Get an item.
+     */
+    public function testGetItemMocked()
+    {
+        /** @var $object \WurflCache\Adapter\Memory */
+        $object = $this->getMock('\\WurflCache\\Adapter\\Memory', array('normalizeKey'));
+
+        self::assertNull($object->getItem('test'));
+    }
+
+    /**
+     * Test if an item exists.
+     */
+    public function testHasItem()
+    {
+        self::assertFalse($this->object->hasItem('test'));
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetItem()
+    {
+        self::assertTrue($this->object->setItem('test', 'testValue'));
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetGetItem()
+    {
+        $cacheId    = 'test';
+        $cacheValue = 'testValue';
+
+        self::assertTrue($this->object->setItem($cacheId, $cacheValue));
+
+        $success = null;
+        self::assertSame($cacheValue, $this->object->getItem($cacheId, $success));
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testRemoveItem()
+    {
+        self::assertTrue($this->object->removeItem('test'));
+    }
+
+    /**
+     * Flush the whole storage
+     */
+    public function testflush()
+    {
+        self::assertTrue($this->object->flush());
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetNamespace()
+    {
+        self::assertSame($this->object, $this->object->setNamespace('test'));
+    }
+
+    /**
+     * Store an item.
+     */
+    public function testSetExpiration()
+    {
+        self::assertSame($this->object, $this->object->setExpiration('test'));
+    }
 }
