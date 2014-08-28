@@ -12,6 +12,11 @@ use WurflCache\Adapter\Memcache;
  */
 class MemcacheTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \WurflCache\Adapter\Memcache
+     */
+    private $object = null;
+
     public function setUp()
     {
         if (!extension_loaded('memcache')) {
@@ -19,6 +24,8 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
                 'PHP extension \'memcache\' must be loaded and a local memcache server running to run this test.'
             );
         }
+
+        $this->object = new Memcache();
     }
 
     public function testMultipleServerConfiguration()
@@ -36,10 +43,9 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testNeverToExpireItems()
     {
-        $storage = new Memcache();
-        $storage->setItem('foo', 'foo');
+        $this->object->setItem('foo', 'foo');
         sleep(2);
-        self::assertEquals('foo', $storage->getItem('foo'));
+        self::assertEquals('foo', $this->object->getItem('foo'));
     }
 
     /**
@@ -62,11 +68,10 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldClearAllItems()
     {
-        $storage = new Memcache(array());
-        $storage->setItem('key1', 'item1');
-        $storage->setItem('key2', 'item2');
-        $storage->flush();
-        $this->assertThanNoElementsAreInStorage(array('key1', 'key2'), $storage);
+        $this->object->setItem('key1', 'item1');
+        $this->object->setItem('key2', 'item2');
+        $this->object->flush();
+        $this->assertThanNoElementsAreInStorage(array('key1', 'key2'), $this->object);
     }
 
     /**
@@ -94,7 +99,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
     public function testGetItemMocked()
     {
         /** @var $object \WurflCache\Adapter\Memory */
-        $object = $this->getMock('\\WurflCache\\Adapter\\Memory', array('normalizeKey'));
+        $object = $this->getMock('\WurflCache\Adapter\Memcache', array('normalizeKey'));
 
         self::assertNull($object->getItem('test'));
     }
