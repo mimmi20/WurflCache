@@ -18,7 +18,7 @@ class ApcTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (!extension_loaded('apc')) {
+        if (!extension_loaded('apc') || ini_get('apc.enabled') !== true) {
             self::markTestSkipped('PHP must have APC support.');
         }
 

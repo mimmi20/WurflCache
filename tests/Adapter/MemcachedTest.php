@@ -75,8 +75,8 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array    $keys
-     * @param Memcached $storage
+     * @param array                         $keys
+     * @param \WurflCache\Adapter\Memcached $storage
      */
     private function assertThanNoElementsAreInStorage(array $keys = array(), Memcached $storage = null)
     {
@@ -98,8 +98,12 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
-        /** @var $object \WurflCache\Adapter\Memory */
+        /** @var $object \WurflCache\Adapter\Memcached */
         $object = $this->getMock('\WurflCache\Adapter\Memcached', array('normalizeKey'));
+        $object
+            ->expects(self::once())
+            ->method('normalizeKey')
+            ->will(self::returnValue(null));
 
         self::assertNull($object->getItem('test'));
     }
