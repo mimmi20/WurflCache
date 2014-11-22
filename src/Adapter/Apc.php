@@ -161,7 +161,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
      */
     private function ensureModuleExistence()
     {
-        if (!(extension_loaded(self::EXTENSION_MODULE_NAME) && ini_get('apc.enabled') == true)) {
+        if (!(extension_loaded(self::EXTENSION_MODULE_NAME) && ini_get('apc.enabled') === true)) {
             throw new Exception('The PHP extension apc must be installed, loaded and enabled.');
         }
     }

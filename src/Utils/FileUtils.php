@@ -153,9 +153,7 @@ class FileUtils
         }
 
         $filesystem = new Filesystem();
-
-        // $filesystem->dumpFile($path, $data, $mode);
-        $tmpFile = $dir . '/temp_' . md5(basename($filename));
+        $tmpFile    = $dir . '/temp_' . md5(basename($filename));
 
         if (false === file_put_contents($tmpFile, $data)) {
             return false;
