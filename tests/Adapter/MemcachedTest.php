@@ -98,21 +98,14 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetItemMocked()
     {
-        /** @var $object \WurflCache\Adapter\Memcached */
-        $object = $this->getMock('\WurflCache\Adapter\Memcached', array('normalizeKey'));
-        $object
-            ->expects(self::once())
-            ->method('normalizeKey')
-            ->will(self::returnValue(null));
-
-        /** @var $object \Memcache */
+        /** @var $object \Memcached */
         $mock = $this->getMock('\Memcached', array('get'));
         $mock
             ->expects(self::once())
             ->method('get')
             ->will(self::returnValue(null));
 
-        $object = new Memcache(array(), $mock);
+        $object = new Memcached(array(), $mock);
 
         self::assertNull($object->getItem('test'));
     }
