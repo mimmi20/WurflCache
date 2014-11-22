@@ -105,6 +105,15 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
             ->method('normalizeKey')
             ->will(self::returnValue(null));
 
+        /** @var $object \Memcache */
+        $mock = $this->getMock('\Memcached', array('get'));
+        $mock
+            ->expects(self::once())
+            ->method('get')
+            ->will(self::returnValue(null));
+
+        $object = new Memcache(array(), $mock);
+
         self::assertNull($object->getItem('test'));
     }
 

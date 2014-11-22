@@ -45,6 +45,7 @@ class Memcache extends AbstractAdapter
      *
      */
     const EXTENSION_MODULE_NAME = 'memcache';
+
     /**
      *
      */
@@ -54,10 +55,12 @@ class Memcache extends AbstractAdapter
      * @var \Memcache
      */
     private $memcache;
+
     /**
      * @var
      */
     private $host;
+
     /**
      * @var
      */
@@ -74,9 +77,12 @@ class Memcache extends AbstractAdapter
     );
 
     /**
-     * @param array $params
+     * @param array     $params
+     * @param \Memcache $memCache
+     *
+     * @throws \WurflCache\Adapter\Exception
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = array(), \Memcache $memCache = null)
     {
         $this->ensureModuleExistence();
 
@@ -87,7 +93,12 @@ class Memcache extends AbstractAdapter
         }
 
         $this->toFields($currentParams);
-        $this->initializeMemCache();
+
+        if (null === $memCache) {
+            $this->initializeMemCache();
+        } else {
+            $this->memcache = $memCache;
+        }
     }
 
     /**

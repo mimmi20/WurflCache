@@ -74,9 +74,12 @@ class Memcached extends AbstractAdapter
     );
 
     /**
-     * @param array $params
+     * @param array      $params
+     * @param \Memcached $memCache
+     *
+     * @throws \WurflCache\Adapter\Exception
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = array(), \Memcached $memCache = null)
     {
         $this->ensureModuleExistence();
 
@@ -87,7 +90,12 @@ class Memcached extends AbstractAdapter
         }
 
         $this->toFields($currentParams);
-        $this->initializeMemCached();
+
+        if (null === $memCache) {
+            $this->initializeMemCached();
+        } else {
+            $this->memcached = $memCache;
+        }
     }
 
     /**
