@@ -57,7 +57,7 @@ class FileUtils
      *
      * @return bool
      */
-    public static function mkdir($path, $mode = 0644)
+    public static function mkdir($path, $mode = 0755)
     {
         $filesystem = new Filesystem();
 
@@ -137,7 +137,7 @@ class FileUtils
         $dir = dirname($filename);
 
         if (!is_dir($dir)) {
-            self::mkdir($dir, 0644);
+            self::mkdir($dir, 0755);
         } elseif (!is_writable($dir)) {
             return false;
         }
