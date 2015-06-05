@@ -7,6 +7,7 @@ php:
   - 5.5
   - 5.6
   - 7
+  - hhvm
 
 os:
   - linux
@@ -24,8 +25,13 @@ env:
   - DOCTRINE_VERSION=1.4.0 ZEND_VERSION=2.4.1 DESARROLLA_VERSION=1.7.1 ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=1.4.1 ZEND_VERSION=2.4.2 DESARROLLA_VERSION=1.8.0 ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=1.5.*@dev ZEND_VERSION=2.5.0 DESARROLLA_VERSION=1.8.0 ZETA_VERSION=dev-master
-  - DOCTRINE_VERSION=1.5.*@dev ZEND_VERSION=2.5.1 DESARROLLA_VERSION=1.8.0 ZETA_VERSION=dev-master
+  - DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.1 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+
+matrix:
+  allow_failures:
+    - php: hhvm
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
 
 before_script:
   - if [ "`phpenv version-name`" != "hhvm" ] && [ "`phpenv version-name`" != "hhvm-nightly" ]; then echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
