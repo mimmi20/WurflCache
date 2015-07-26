@@ -8,7 +8,6 @@ php:
   - 5.6
   - 7.0
   - hhvm
-  - hhvm-nightly
 
 os:
   - linux
@@ -32,8 +31,7 @@ env:
 
 matrix:
   allow_failures:
-    - php: hhvm
-    - php: hhvm-nightly
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.2 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
     - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
 
 before_script:
