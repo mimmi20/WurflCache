@@ -46,7 +46,7 @@ before_script:
 
 #   Install dependencies
   - travis_retry composer require --no-update phpunit/phpunit:*
-  - travis_retry composer require --no-update mikey179/vfsStream:dev-master
+  - travis_retry composer require --no-update mikey179/vfsStream:1.3.*
   - travis_retry composer require --no-update zetacomponents/cache:${ZETA_VERSION}
   - travis_retry composer require --no-update doctrine/cache:${DOCTRINE_VERSION}
   - travis_retry composer require --no-update zendframework/zend-cache:${ZEND_VERSION}

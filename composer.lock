@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "372764f9f0c5de86d840c7b53567fe7d",
+    "hash": "3b000f0f0d3cec382122cbf1f596f292",
     "packages": [
         {
             "name": "symfony/filesystem",
@@ -1674,8 +1674,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "zetacomponents/cache": 20,
-        "mikey179/vfsstream": 20
+        "zetacomponents/cache": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
