@@ -49,12 +49,9 @@ before_script:
   - travis_retry composer require --no-update mikey179/vfsStream:dev-master
   - travis_retry composer require --no-update zetacomponents/cache:${ZETA_VERSION}
   - travis_retry composer require --no-update doctrine/cache:${DOCTRINE_VERSION}
-#  - travis_retry composer require --no-update zendframework/zend-stdlib:${ZEND_VERSION}
-#  - travis_retry composer require --no-update zendframework/zend-eventmanager:${ZEND_VERSION}
-#  - travis_retry composer require --no-update zendframework/zend-servicemanager:${ZEND_VERSION}
   - travis_retry composer require --no-update zendframework/zend-cache:${ZEND_VERSION}
   - travis_retry composer require --no-update desarrolla2/cache:${DESARROLLA_VERSION}
-  - travis_retry composer update --no-dev -o --prefer-source
+  - travis_retry composer install --no-dev -o --prefer-source
 
 script:
   - phpunit --configuration tests/phpunit.xml --coverage-text --coverage-clover=coverage.clover --colors --verbose
