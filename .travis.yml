@@ -51,6 +51,8 @@ before_script:
   - travis_retry composer require --no-update doctrine/cache:${DOCTRINE_VERSION}
   - travis_retry composer require --no-update zendframework/zend-cache:${ZEND_VERSION}
   - travis_retry composer require --no-update desarrolla2/cache:${DESARROLLA_VERSION}
+  - travis_retry composer require --no-update squizlabs/php_codesniffer:2.*
+  - travis_retry composer require --no-update fabpot/php-cs-fixer:*
   - travis_retry composer update --no-dev -o --prefer-source
 
 script:
