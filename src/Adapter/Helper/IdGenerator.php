@@ -45,9 +45,7 @@ class IdGenerator
      * Encode the Object Id using the Persistence Identifier
      *
      * @param string $namespace
-     * @param        $cacheId
-     *
-     * @internal param string $input
+     * @param string $cacheId
      *
      * @return string $input with the given $namespace as a prefix
      */
