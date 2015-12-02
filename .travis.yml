@@ -26,14 +26,26 @@ env:
   - DOCTRINE_VERSION=1.4.1 ZEND_VERSION=2.4.2 DESARROLLA_VERSION=1.8.0 ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=1.5.0 ZEND_VERSION=2.5.0 DESARROLLA_VERSION=1.8.0 ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=1.5.1 ZEND_VERSION=2.5.1 DESARROLLA_VERSION=1.8.1 ZETA_VERSION=dev-master
-  - DOCTRINE_VERSION=1.5.*@dev ZEND_VERSION=2.5.2 DESARROLLA_VERSION=2.0.0 ZETA_VERSION=dev-master
+  - DOCTRINE_VERSION=1.5.*@dev ZEND_VERSION=2.5.1 DESARROLLA_VERSION=2.0.0 ZETA_VERSION=dev-master
+  - DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.2 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.3 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
 
-#matrix:
-#  exclude:
-#    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.2 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
-#    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+matrix:
+  exclude:
+    # require PHP 5.5
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.2 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.3
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.2 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.4
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.3 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.3
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.3 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.4
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.3
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.4
 
 before_script:
 #   Set Configuration
