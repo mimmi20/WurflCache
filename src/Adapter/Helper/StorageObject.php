@@ -45,6 +45,9 @@ class StorageObject
     private $value;
     private $expiringOn;
 
+    /**
+     * @param integer $expire
+     */
     public function __construct($value, $expire)
     {
         $this->value      = $value;
