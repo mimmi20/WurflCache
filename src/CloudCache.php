@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Base
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -35,10 +36,11 @@ use WurflCache\Adapter\Memory;
  * Class to use with the Wurfl Cloud
  *
  * @category   WurflCache
- * @package    Base
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class CloudCache implements CacheInterface
@@ -87,7 +89,7 @@ class CloudCache implements CacheInterface
         $data    = $this->getAdapter()->getItem($userAgent, $success);
 
         if (!$success) {
-            return null;
+            return;
         }
 
         return $data;
@@ -104,7 +106,7 @@ class CloudCache implements CacheInterface
         $data    = $this->getAdapter()->getItem($deviceId, $success);
 
         if (!$success) {
-            return null;
+            return;
         }
 
         return $data;
@@ -143,7 +145,7 @@ class CloudCache implements CacheInterface
     public function setCacheExpiration($time)
     {
         $this->getAdapter()->setExpiration($time);
-        
+
         return $this;
     }
 
@@ -157,7 +159,7 @@ class CloudCache implements CacheInterface
     public function setCachePrefix($prefix)
     {
         $this->getAdapter()->setNamespace($prefix);
-        
+
         return $this;
     }
 

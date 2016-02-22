@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Class NullStorage
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class NullStorage extends AbstractAdapter

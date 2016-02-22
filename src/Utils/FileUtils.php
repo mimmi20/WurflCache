@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Utils
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -35,16 +36,12 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * WURFL File Utilities
  *
- * @package    WURFL
- */
-/**
- * Base class for WurflCache Exceptions
- *
  * @category   WurflCache
- * @package    Utils
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class FileUtils
@@ -111,13 +108,13 @@ class FileUtils
     public static function read($file)
     {
         if (!is_readable($file) || !is_file($file)) {
-            return null;
+            return;
         }
 
         $data = file_get_contents($file);
 
         if ($data === false) {
-            return null;
+            return;
         }
 
         return $data;
@@ -126,9 +123,9 @@ class FileUtils
     /**
      * Serializes and saves $data in the file $path and sets the last modified time to $mtime
      *
-     * @param string  $filename filename to save data in
-     * @param mixed   $data     data to be serialized and saved
-     * @param integer $mtime    Last modified date in epoch time
+     * @param string $filename filename to save data in
+     * @param mixed  $data     data to be serialized and saved
+     * @param int    $mtime    Last modified date in epoch time
      *
      * @return bool
      */
@@ -223,7 +220,7 @@ class FileUtils
      *
      * @param string $file filename
      *
-     * @return boolean
+     * @return bool
      */
     public static function exists($file)
     {

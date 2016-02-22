@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Base
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -35,10 +36,11 @@ namespace WurflCache;
  * Base class for WurflCache Exceptions
  *
  * @category   WurflCache
- * @package    Base
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 interface CacheInterface
@@ -48,7 +50,7 @@ interface CacheInterface
      *
      * @param string $key User Agent
      *
-     * @return array|boolean Capabilities array or boolean false
+     * @return array|bool Capabilities array or boolean false
      */
     public function getDevice($key);
 
@@ -57,7 +59,7 @@ interface CacheInterface
      *
      * @param string $key WURFL Device ID
      *
-     * @return array|boolean Capabilities array or boolean false
+     * @return array|bool Capabilities array or boolean false
      */
     public function getDeviceFromID($key);
 
@@ -67,7 +69,7 @@ interface CacheInterface
      * @param string $key   User Agent
      * @param array  $value Capabilities
      *
-     * @return boolean Success
+     * @return bool Success
      */
     public function setDevice($key, array $value);
 
@@ -77,7 +79,7 @@ interface CacheInterface
      * @param string $key   WURFL Device ID
      * @param array  $value Capabilities
      *
-     * @return boolean Success
+     * @return bool Success
      */
     public function setDeviceFromID($key, array $value);
 

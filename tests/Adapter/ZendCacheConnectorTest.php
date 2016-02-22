@@ -1,4 +1,5 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
 use WurflCache\Adapter\ZendCacheConnector;
@@ -29,11 +30,13 @@ use Zend\Cache\Exception\LogicException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  Copyright (c) 2013 Thomas Müller
+ *
  * @version    1.0
+ *
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
 class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
@@ -77,7 +80,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::throwException(new LogicException));
+            ->will(self::throwException(new LogicException()));
 
         $object = new ZendCacheConnector($mock);
         self::assertNull($object->getItem('test'));
@@ -120,7 +123,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('hasItem')
-            ->will(self::throwException(new LogicException));
+            ->will(self::throwException(new LogicException()));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->hasItem('test'));
     }
@@ -148,7 +151,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('setItem')
-            ->will(self::throwException(new LogicException));
+            ->will(self::throwException(new LogicException()));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->setItem('test', 'testValue'));
     }
@@ -176,7 +179,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('removeItem')
-            ->will(self::throwException(new LogicException));
+            ->will(self::throwException(new LogicException()));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->removeItem('test'));
     }
@@ -218,7 +221,7 @@ class ZendCacheConnectorTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('flush')
-            ->will(self::throwException(new LogicException));
+            ->will(self::throwException(new LogicException()));
         $object = new ZendCacheConnector($mock);
         self::assertFalse($object->flush());
     }

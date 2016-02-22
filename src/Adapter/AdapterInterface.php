@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Interface AdapterInterface
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 interface AdapterInterface
@@ -44,8 +46,8 @@ interface AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string $key
-     * @param  bool   $success
+     * @param string $key
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -54,7 +56,7 @@ interface AdapterInterface
     /**
      * Test if an item exists.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return bool
      */
@@ -63,8 +65,8 @@ interface AdapterInterface
     /**
      * Store an item.
      *
-     * @param  string $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -73,7 +75,7 @@ interface AdapterInterface
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return bool
      */
@@ -89,7 +91,7 @@ interface AdapterInterface
     /**
      * set the expiration time
      *
-     * @param integer $expiration
+     * @param int $expiration
      *
      * @return AdapterInterface
      */

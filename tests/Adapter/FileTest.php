@@ -1,18 +1,18 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
-/**
+/*
  * test case
  */
-use WurflCache\Adapter\File;
 use org\bovigo\vfs\vfsStream;
+use WurflCache\Adapter\File;
 
 /**
  * test case.
  */
 class FileTest extends \PHPUnit_Framework_TestCase
 {
-
     const STORAGE_DIR = 'storage';
 
     /**
@@ -28,7 +28,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testShouldTryToCreateTheStorage()
     {
         $params = array(
-            'dir' => vfsStream::url(self::STORAGE_DIR)
+            'dir' => vfsStream::url(self::STORAGE_DIR),
         );
 
         new File($params);
@@ -43,7 +43,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'      => vfsStream::url(self::STORAGE_DIR . DIRECTORY_SEPARATOR . 'test'),
-            'readonly' => true
+            'readonly' => true,
         );
 
         new File($params);
@@ -58,7 +58,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0
+            'expiration' => 0,
         );
 
         $storage = new File($params);
@@ -70,7 +70,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0
+            'expiration' => 0,
         );
 
         $storage = new File($params);
@@ -84,7 +84,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 1
+            'expiration' => 1,
         );
 
         $storage = new File($params);
@@ -102,7 +102,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0
+            'expiration' => 0,
         );
 
         $storage = new File($params);
@@ -121,7 +121,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $params = array(
             'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0
+            'expiration' => 0,
         );
 
         $storage = new File($params);

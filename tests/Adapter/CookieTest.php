@@ -1,7 +1,8 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
-/**
+/*
  * This software is the Copyright of ScientiaMobile, Inc.
  *
  * Please refer to the LICENSE.txt file distributed with the software for licensing information.
@@ -13,9 +14,6 @@ use WurflCache\Adapter\Cookie;
 
 /**
  * Cookie cache provider
- *
- * @package    ScientiaMobile\WurflCloud
- * @subpackage Cache
  */
 class CookieTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +25,6 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
-     *
      */
     protected function setUp()
     {

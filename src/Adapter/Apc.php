@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Adapter to use a APC Instance for caching
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class Apc extends AbstractAdapter implements AdapterInterface
@@ -51,7 +53,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
      */
     private $defaultParams = array(
         'namespace'       => 'wurfl',
-        'cacheExpiration' => 0
+        'cacheExpiration' => 0,
     );
 
     /**
@@ -73,8 +75,8 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -84,23 +86,25 @@ class Apc extends AbstractAdapter implements AdapterInterface
 
         $storedValue = apc_fetch($cacheId, $success);
         if (false === $success) {
-            return null;
+            return;
         }
 
         $value = $this->extract($storedValue);
         if ($value === null) {
             $success = false;
-            return null;
+
+            return;
         }
 
         $success = true;
+
         return $value;
     }
 
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -114,8 +118,8 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * Store an item.
      *
-     * @param  string $cacheId
-     * @param  mixed  $value
+     * @param string $cacheId
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -133,7 +137,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */

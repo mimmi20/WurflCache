@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -35,10 +36,11 @@ use WurflCache\Utils\FileUtils;
  * Adapter to use Files for caching
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class File extends AbstractAdapter
@@ -58,7 +60,7 @@ class File extends AbstractAdapter
     private $root;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $readonly = false;
 
@@ -87,8 +89,8 @@ class File extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -97,7 +99,7 @@ class File extends AbstractAdapter
         $success = false;
 
         if (!$this->hasItem($cacheId)) {
-            return null;
+            return;
         }
 
         $path = $this->keyPath($cacheId);
@@ -105,7 +107,7 @@ class File extends AbstractAdapter
         /** @var $value Helper\StorageObject */
         $value = $this->extract(FileUtils::read($path));
         if ($value === null) {
-            return null;
+            return;
         }
 
         $success = true;
@@ -116,7 +118,7 @@ class File extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -130,8 +132,8 @@ class File extends AbstractAdapter
     /**
      * Store an item.
      *
-     * @param  string $cacheId
-     * @param  mixed  $value
+     * @param string $cacheId
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -150,7 +152,7 @@ class File extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -252,7 +254,7 @@ class File extends AbstractAdapter
     ) {
         $path = '';
 
-        for ($i = 0; $i < $splitCount; $i++) {
+        for ($i = 0; $i < $splitCount; ++$i) {
             $path .= $md5 [$i] . '/';
         }
 

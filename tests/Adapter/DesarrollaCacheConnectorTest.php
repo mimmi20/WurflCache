@@ -1,4 +1,5 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
 use WurflCache\Adapter\DesarrollaCacheConnector;
@@ -28,11 +29,13 @@ use WurflCache\Adapter\DesarrollaCacheConnector;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  Copyright (c) 2013 Thomas Müller
+ *
  * @version    1.0
+ *
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
 class DesarrollaCacheConnectorTest extends \PHPUnit_Framework_TestCase

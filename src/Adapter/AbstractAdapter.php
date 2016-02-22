@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Base class for all Adapters
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 abstract class AbstractAdapter implements AdapterInterface
@@ -44,7 +46,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * the time until the cache expires
      *
-     * @var integer
+     * @var int
      */
     protected $cacheExpiration = 86400;
 
@@ -63,15 +65,16 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Get an item.
      *
-     * @param  string $key
-     * @param  bool   $success
+     * @param string $key
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
     public function getItem($key, & $success = null)
     {
         $success = false;
-        return null;
+
+        return;
     }
 
     /**
@@ -80,7 +83,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param string $cacheId The cache id
      * @param mixed  $content The content to store
      *
-     * @return boolean whether the content was stored
+     * @return bool whether the content was stored
      */
     public function setItem($cacheId, $content)
     {
@@ -90,7 +93,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -102,7 +105,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Remove an item.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return bool
      */
@@ -172,6 +175,7 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         /** @var $object Helper\StorageObject */
         $object = new Helper\StorageObject($content, $this->cacheExpiration);
+
         return serialize($object);
     }
 
@@ -187,15 +191,15 @@ abstract class AbstractAdapter implements AdapterInterface
         /** @var $object Helper\StorageObject */
         $object = unserialize($value);
         if ($value === $object) {
-            return null;
+            return;
         }
 
         if (!($object instanceof Helper\StorageObject)) {
-            return null;
+            return;
         }
 
         if ($object->isExpired()) {
-            return null;
+            return;
         }
 
         return $object->value();

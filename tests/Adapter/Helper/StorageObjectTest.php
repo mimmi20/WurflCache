@@ -1,7 +1,8 @@
 <?php
+
 namespace WurflCacheTest\Adapter\Helper;
 
-/**
+/*
  * Copyright (c) 2012 ScientiaMobile, Inc.
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,10 +23,11 @@ use WurflCache\Adapter\Helper\StorageObject;
  * A Skeleton implementation of the Storage Interface
  *
  * @category   WURFL
- * @package    \Wurfl\Storage
+ *
  * @copyright  ScientiaMobile, Inc.
  * @license    GNU Affero General Public License
  * @author     Fantayeneh Asres Gizaw
+ *
  * @version    $id$
  */
 class StorageObjectTest extends \PHPUnit_Framework_TestCase

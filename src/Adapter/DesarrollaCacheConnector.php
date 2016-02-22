@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -35,10 +36,11 @@ use Desarrolla2\Cache\CacheInterface as DesarrollaInterface;
  * Connector class to use the Desarrolla2 cache
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class DesarrollaCacheConnector extends AbstractAdapter
@@ -66,8 +68,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -81,7 +83,8 @@ class DesarrollaCacheConnector extends AbstractAdapter
         }
 
         $success = false;
-        return null;
+
+        return;
     }
 
     /**
@@ -102,7 +105,7 @@ class DesarrollaCacheConnector extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -116,7 +119,7 @@ class DesarrollaCacheConnector extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */

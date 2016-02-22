@@ -1,7 +1,8 @@
 <?php
+
 namespace WurflCacheTest\Adapter\Helper;
 
-/**
+/*
  * Copyright (c) 2012 ScientiaMobile, Inc.
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,10 +23,11 @@ use WurflCache\Adapter\Helper\IdGenerator;
  * A Skeleton implementation of the Storage Interface
  *
  * @category   WURFL
- * @package    \Wurfl\Storage
+ *
  * @copyright  ScientiaMobile, Inc.
  * @license    GNU Affero General Public License
  * @author     Fantayeneh Asres Gizaw
+ *
  * @version    $id$
  */
 class IdGeneratorTest extends \PHPUnit_Framework_TestCase
@@ -38,7 +40,6 @@ class IdGeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
-     *
      */
     protected function setUp()
     {
@@ -67,8 +68,6 @@ class IdGeneratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Encode the Object Id using the Persistence Identifier
-     *
-     *
      */
     public function testEncode()
     {

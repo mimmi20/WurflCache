@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter\Helper
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,20 +34,20 @@ namespace WurflCache\Adapter\Helper;
  * A Storage Container
  *
  * @category   WurflCache
- * @package    Adapter\Helper
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class StorageObject
 {
-
     private $value;
     private $expiringOn;
 
     /**
-     * @param integer $expire
+     * @param int $expire
      */
     public function __construct($value, $expire)
     {

@@ -21,27 +21,24 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Utils
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
 namespace WurflCache\Utils;
 
 /**
- * Base class for WURFL Exceptions
- *
- * @package    WURFL
- */
-/**
  * Base class for WurflCache Exceptions
  *
  * @category   WurflCache
- * @package    Utils
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class Exception extends \WurflCache\Exception

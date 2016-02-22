@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Adapter to use a Memcache Server for caching
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class Memcached extends AbstractAdapter
@@ -70,7 +72,7 @@ class Memcached extends AbstractAdapter
         'host'       => '127.0.0.1',
         'port'       => self::DEFAULT_PORT,
         'namespace'  => 'wurfl',
-        'expiration' => 0
+        'expiration' => 0,
     );
 
     /**
@@ -109,8 +111,8 @@ class Memcached extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -121,22 +123,23 @@ class Memcached extends AbstractAdapter
 
         $storedValue = $this->memcached->get($cacheId);
         if (\Memcached::RES_SUCCESS !== $this->memcached->getResultCode()) {
-            return null;
+            return;
         }
 
         $value = $this->extract($storedValue);
         if ($value === null) {
-            return null;
+            return;
         }
 
         $success = true;
+
         return $value;
     }
 
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -150,8 +153,8 @@ class Memcached extends AbstractAdapter
     /**
      * Store an item.
      *
-     * @param  string $cacheId
-     * @param  mixed  $value
+     * @param string $cacheId
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -171,7 +174,7 @@ class Memcached extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -208,7 +211,6 @@ class Memcached extends AbstractAdapter
 
     /**
      * Initializes the Memcache Module
-
      */
     private function initializeMemCached()
     {

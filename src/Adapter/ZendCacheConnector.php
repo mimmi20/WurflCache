@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -38,10 +39,11 @@ use Zend\Cache\Storage\Plugin\Serializer;
  * Connector class to use the Zend Cache
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class ZendCacheConnector extends AbstractAdapter
@@ -67,8 +69,8 @@ class ZendCacheConnector extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -84,7 +86,8 @@ class ZendCacheConnector extends AbstractAdapter
             $content = $cache->getItem($cacheId, $success, $casToken);
         } catch (ZendException\ExceptionInterface $ex) {
             $success = false;
-            return null;
+
+            return;
         }
 
         if (!$cache->hasPlugin(new Serializer())) {
@@ -100,7 +103,7 @@ class ZendCacheConnector extends AbstractAdapter
      * @param string $cacheId The cache id
      * @param mixed  $content The content to store
      *
-     * @return boolean whether the content was stored
+     * @return bool whether the content was stored
      */
     public function setItem($cacheId, $content)
     {
@@ -123,7 +126,7 @@ class ZendCacheConnector extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -163,7 +166,7 @@ class ZendCacheConnector extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */

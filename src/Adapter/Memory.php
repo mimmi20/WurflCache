@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -33,10 +34,11 @@ namespace WurflCache\Adapter;
  * Adapter to use the Memory for caching
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class Memory extends AbstractAdapter
@@ -49,8 +51,8 @@ class Memory extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -60,15 +62,16 @@ class Memory extends AbstractAdapter
         $success = false;
 
         if (!isset($this->map[$cacheId])) {
-            return null;
+            return;
         }
 
         $value = $this->extract($this->map[$cacheId]);
         if ($value === null) {
-            return null;
+            return;
         }
 
         $success = true;
+
         return $value;
     }
 
@@ -78,7 +81,7 @@ class Memory extends AbstractAdapter
      * @param string $cacheId The cache id
      * @param mixed  $content The content to store
      *
-     * @return boolean whether the content was stored
+     * @return bool whether the content was stored
      */
     public function setItem($cacheId, $content)
     {
@@ -106,7 +109,7 @@ class Memory extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */

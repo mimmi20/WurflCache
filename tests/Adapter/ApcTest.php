@@ -1,7 +1,8 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
-/**
+/*
  * test case
  */
 use WurflCache\Adapter\Apc;

@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -36,10 +37,11 @@ use ezcCacheStorage;
  * Connector class to use the zeta cache
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class ZetaCacheConnector extends AbstractAdapter
@@ -67,8 +69,8 @@ class ZetaCacheConnector extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -78,10 +80,12 @@ class ZetaCacheConnector extends AbstractAdapter
 
         try {
             $success = true;
+
             return unserialize($this->cache->restore($cacheId, true));
         } catch (ezcBaseException $ex) {
             $success = false;
-            return null;
+
+            return;
         }
     }
 
@@ -91,7 +95,7 @@ class ZetaCacheConnector extends AbstractAdapter
      * @param string $cacheId The cache id
      * @param mixed  $content The content to store
      *
-     * @return boolean whether the content was stored
+     * @return bool whether the content was stored
      */
     public function setItem($cacheId, $content)
     {
@@ -107,7 +111,7 @@ class ZetaCacheConnector extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -125,7 +129,7 @@ class ZetaCacheConnector extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */

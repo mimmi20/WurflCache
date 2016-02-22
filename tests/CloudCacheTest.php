@@ -1,7 +1,7 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
-use WurflCache\Adapter\Memory;
 use WurflCache\CloudCache;
 
 /**
@@ -29,11 +29,13 @@ use WurflCache\CloudCache;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package    Browscap
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  Copyright (c) 2013 Thomas Müller
+ *
  * @version    1.0
+ *
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/phpbrowscap/
  */
 class CloudCacheTest extends \PHPUnit_Framework_TestCase
@@ -46,17 +48,16 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
-     *
      */
     protected function setUp()
     {
         $this->object = new CloudCache();
     }
-    
+
     public function callbackGetOk($deviceId, &$success)
     {
         $success = true;
-        
+
         return array('a' => 12, 'b' => 42);
     }
 
@@ -66,12 +67,12 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
     public function testSetGetAdapter()
     {
         self::assertInstanceOf('\WurflCache\Adapter\Memory', $this->object->getAdapter());
-        
+
         $adapter = $this->getMock('\WurflCache\Adapter\Memory', array(), array(), '', false);
-        
+
         self::assertSame($this->object, $this->object->setAdapter($adapter));
         self::assertSame($adapter, $this->object->getAdapter());
-        
+
         self::assertSame($this->object, $this->object->setCacheExpiration(0));
         self::assertSame($this->object, $this->object->setCachePrefix('test'));
     }
@@ -101,8 +102,7 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
         $adapter
             ->expects(self::once())
             ->method('setItem')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $this->object->setAdapter($adapter);
         self::assertTrue($this->object->setDeviceFromID('test', array('testValue')));
     }
@@ -116,8 +116,7 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
         $adapter
             ->expects(self::once())
             ->method('setItem')
-            ->will(self::returnValue(true))
-        ;
+            ->will(self::returnValue(true));
         $this->object->setAdapter($adapter);
         self::assertTrue($this->object->setDevice('test', array('testValue')));
     }
@@ -128,13 +127,12 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
     public function testGetDeviceFromID()
     {
         $capabilities = array('a' => 12, 'b' => 42);
-        
+
         $adapter = $this->getMock('\WurflCache\Adapter\Memory', array(), array(), '', false);
         $adapter
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::returnCallback(array($this, 'callbackGetOk')))
-        ;
+            ->will(self::returnCallback(array($this, 'callbackGetOk')));
         $this->object->setAdapter($adapter);
         self::assertSame($capabilities, $this->object->getDeviceFromID('test'));
     }
@@ -145,13 +143,12 @@ class CloudCacheTest extends \PHPUnit_Framework_TestCase
     public function testGetDevice()
     {
         $capabilities = array('a' => 12, 'b' => 42);
-        
+
         $adapter = $this->getMock('\WurflCache\Adapter\Memory', array(), array(), '', false);
         $adapter
             ->expects(self::once())
             ->method('getItem')
-            ->will(self::returnCallback(array($this, 'callbackGetOk')))
-        ;
+            ->will(self::returnCallback(array($this, 'callbackGetOk')));
         $this->object->setAdapter($adapter);
         self::assertSame($capabilities, $this->object->getDevice('test'));
     }

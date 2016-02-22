@@ -1,4 +1,5 @@
 <?php
+
 namespace WurflCacheTest\Adapter;
 
 use WurflCache\Adapter\Memcached;
@@ -31,7 +32,7 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
     public function testMultipleServerConfiguration()
     {
         $params = array(
-            'host' => '127.0.0.1;127.0.0.2'
+            'host' => '127.0.0.1;127.0.0.2',
         );
 
         new Memcached($params);
@@ -102,7 +103,7 @@ class MemcachedTest extends \PHPUnit_Framework_TestCase
             'actually this test will fail'
         );
 
-        /** @var $object \Memcached */
+        /* @var $object \Memcached */
         $mock = $this->getMock('\Memcached', array('get'));
         $mock
             ->expects(self::once())
