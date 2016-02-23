@@ -58,6 +58,14 @@ matrix:
       php: 5.3
     - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.5.3 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
       php: 5.4
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.6.0 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.3
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.6.0 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.4
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.6.1 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.3
+    - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=2.6.1 DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
+      php: 5.4
     - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
       php: 5.3
     - env: DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
