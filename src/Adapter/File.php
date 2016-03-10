@@ -160,6 +160,10 @@ class File extends AbstractAdapter
     {
         $path = $this->keyPath($cacheId);
 
+        if (!FileUtils::exists($path)) {
+            return true;
+        }
+
         return unlink($path);
     }
 
