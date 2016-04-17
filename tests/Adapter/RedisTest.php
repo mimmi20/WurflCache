@@ -61,6 +61,10 @@ class RedisTest extends \PHPUnit_Framework_TestCase
 
     public function testParametersAreOverridden()
     {
+        if (!class_exists('\Predis\Client')) {
+            self::markTestSkipped('Predis library not present');
+        }
+
         $params              = array();
         $params['redis']     = $this->getMockRedisObject();
         $params['host']      = '129.0.0.1';
@@ -70,7 +74,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
         $params['client']    = 'predis';
 
         $redisStorage = new Redis($params);
-        self::assertInstanceOf('Redis', $redisStorage);
+        self::assertInstanceOf('\WurflCache\Adapter\Redis', $redisStorage);
     }
 
     /**
@@ -101,7 +105,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
 
             try {
                 $redisStorage = new Redis($params);
-                self::assertInstanceOf('Redis', $redisStorage);
+                self::assertInstanceOf('\WurflCache\Adapter\Redis', $redisStorage);
             } catch (\Predis\Connection\ConnectionException $e) {
                 self::markTestIncomplete(
                     'Could not establish connection to Redis using Predis - This test only works' . 'with the standard address of 127.0.0.1:6379 for the Redis server'
@@ -118,7 +122,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
 
             try {
                 $redisStorage = new Redis($params);
-                self::assertInstanceOf('\Redis', $redisStorage);
+                self::assertInstanceOf('\WurflCache\Adapter\Redis', $redisStorage);
             } catch (\RedisException $e) {
                 self::markTestIncomplete(
                     'Could not establish connection to Redis using phpredis. This test only works' . 'with the standard address of 127.0.0.1:6379 for the Redis server'
