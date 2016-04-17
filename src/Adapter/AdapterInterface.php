@@ -105,4 +105,11 @@ interface AdapterInterface
      * @return AdapterInterface
      */
     public function setNamespace($namespace);
+
+    /**
+     * @param string $cacheVersion
+     *
+     * @return AdapterInterface
+     */
+    public function setCacheVersion($cacheVersion);
 }

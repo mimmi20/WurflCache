@@ -84,7 +84,7 @@ class DesarrollaCacheConnector extends AbstractAdapter
 
         $success = false;
 
-        return;
+        return null;
     }
 
     /**

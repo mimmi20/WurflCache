@@ -28,7 +28,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testShouldTryToCreateTheStorage()
     {
         $params = array(
-            'dir' => vfsStream::url(self::STORAGE_DIR),
+            File::DIR => vfsStream::url(self::STORAGE_DIR),
         );
 
         new File($params);
@@ -42,7 +42,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testShouldTryToCreateTheReadonlyStorage()
     {
         $params = array(
-            'dir'      => vfsStream::url(self::STORAGE_DIR . DIRECTORY_SEPARATOR . 'test'),
+            File::DIR  => vfsStream::url(self::STORAGE_DIR . DIRECTORY_SEPARATOR . 'test'),
             'readonly' => true,
         );
 
@@ -57,8 +57,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testNotFoundItems()
     {
         $params = array(
-            'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0,
+            File::DIR         => vfsStream::url(self::STORAGE_DIR),
+            'cacheExpiration' => 0,
         );
 
         $storage = new File($params);
@@ -69,8 +69,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testNeverToExpireItems()
     {
         $params = array(
-            'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0,
+            File::DIR         => vfsStream::url(self::STORAGE_DIR),
+            'cacheExpiration' => 0,
         );
 
         $storage = new File($params);
@@ -83,8 +83,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testShouldRemoveTheExpiredItem()
     {
         $params = array(
-            'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 1,
+            File::DIR         => vfsStream::url(self::STORAGE_DIR),
+            'cacheExpiration' => 1,
         );
 
         $storage = new File($params);
@@ -101,8 +101,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testflush()
     {
         $params = array(
-            'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0,
+            File::DIR         => vfsStream::url(self::STORAGE_DIR),
+            'cacheExpiration' => 0,
         );
 
         $storage = new File($params);
@@ -120,8 +120,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
     public function testRemoveItemException()
     {
         $params = array(
-            'dir'        => vfsStream::url(self::STORAGE_DIR),
-            'expiration' => 0,
+            File::DIR         => vfsStream::url(self::STORAGE_DIR),
+            'cacheExpiration' => 0,
         );
 
         $storage = new File($params);

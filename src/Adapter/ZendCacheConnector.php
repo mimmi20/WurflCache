@@ -87,7 +87,7 @@ class ZendCacheConnector extends AbstractAdapter
         } catch (ZendException\ExceptionInterface $ex) {
             $success = false;
 
-            return;
+            return null;
         }
 
         if (!$cache->hasPlugin(new Serializer())) {

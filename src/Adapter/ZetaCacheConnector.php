@@ -85,7 +85,7 @@ class ZetaCacheConnector extends AbstractAdapter
         } catch (ezcBaseException $ex) {
             $success = false;
 
-            return;
+            return null;
         }
     }
 

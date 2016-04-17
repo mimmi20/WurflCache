@@ -48,22 +48,24 @@ class IdGeneratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Encode the Object Id using the Persistence Identifier
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
      */
-    public function testEncodeError1()
+    public function testEncodeWithoutParams()
     {
-        $this->object->encode();
+        self::assertSame(
+            '617e8d8b5ac122f8f2a237e2225dbae538763ca864b5bbb29f27d8d04bae40d3bb519c16fb59cda0fa8e34d8757b2a9b9d719a0f0607493044cd3e2a2836cf47',
+            $this->object->encode()
+        );
     }
 
     /**
      * Encode the Object Id using the Persistence Identifier
-     *
-     * @expectedException \PHPUnit_Framework_Error_Warning
      */
-    public function testEncodeError2()
+    public function testEncodeWithoutCacheId()
     {
-        self::assertTrue($this->object->encode('test'));
+        self::assertSame(
+            '7b99a2477d05181d9572c7f2fb40513e127522f34be5efc4cf3a3c8e6782019d41b38963321452cb4b52736f6140f2abf02399da224cc504aca86274e3560cac',
+            $this->object->encode('test')
+        );
     }
 
     /**
@@ -72,8 +74,7 @@ class IdGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testEncode()
     {
         self::assertSame(
-            '4ed727fa6a2dcc72e95e08559129b2cc6ca9bf7210052c4d832c7b6f4250715113cc5ef99adeb19234545febf150b9b9bdd069a1'
-            . '6c902179e74b97fecff02018',
+            '1fc1cef6f6fc08a4f9f1c56aff2bb23f16690432ca2ac89a574400afd3b529962f34d9c0467581c09b0c7a12e80ab21368bcb57884f93165a3b9154e55789767',
             $this->object->encode('test', 'testValue')
         );
     }

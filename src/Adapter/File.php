@@ -30,6 +30,7 @@
 
 namespace WurflCache\Adapter;
 
+use Wurfl\WurflConstants;
 use WurflCache\Utils\FileUtils;
 
 /**
@@ -46,12 +47,19 @@ use WurflCache\Utils\FileUtils;
 class File extends AbstractAdapter
 {
     /**
+     * @var string
+     */
+    const DIR = 'dir';
+
+    /**
      * @var array
      */
-    private $defaultParams = array(
-        'dir'        => '/tmp',
-        'expiration' => 0,
-        'readonly'   => 'false',
+    protected $defaultParams = array(
+        self::DIR         => '/tmp',
+        'namespace'       => 'wurfl',
+        'cacheExpiration' => 0,
+        'readonly'        => false,
+        'cacheVersion'     => WurflConstants::API_NAMESPACE,
     );
 
     /**
@@ -65,11 +73,6 @@ class File extends AbstractAdapter
     private $readonly = false;
 
     /**
-     * @var string
-     */
-    const DIR = 'dir';
-
-    /**
      * @param $params
      */
     public function __construct($params)
@@ -77,10 +80,7 @@ class File extends AbstractAdapter
         $currentParams = $this->defaultParams;
 
         if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge(
-                $currentParams,
-                $params
-            );
+            $currentParams = array_merge($currentParams, $params);
         }
 
         $this->initialize($currentParams);
@@ -99,7 +99,7 @@ class File extends AbstractAdapter
         $success = false;
 
         if (!$this->hasItem($cacheId)) {
-            return;
+            return null;
         }
 
         $path = $this->keyPath($cacheId);
@@ -107,7 +107,7 @@ class File extends AbstractAdapter
         /** @var $value Helper\StorageObject */
         $value = $this->extract(FileUtils::read($path));
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;
@@ -182,9 +182,10 @@ class File extends AbstractAdapter
      */
     private function initialize($params)
     {
-        $this->root            = $params[self::DIR];
-        $this->cacheExpiration = $params['expiration'];
-        $this->readonly        = ($params['readonly'] === 'true' || $params['readonly'] === true);
+        $this->toFields($params);
+
+        $this->root     = $params[self::DIR];
+        $this->readonly = ($params['readonly'] === 'true' || $params['readonly'] === true);
 
         $this->createRootDirIfNotExist();
     }

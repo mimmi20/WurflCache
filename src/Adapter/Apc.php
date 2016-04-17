@@ -44,17 +44,9 @@ namespace WurflCache\Adapter;
 class Apc extends AbstractAdapter implements AdapterInterface
 {
     /**
-     *
+     * the apc PHP module is required
      */
     const EXTENSION_MODULE_NAME = 'apc';
-
-    /**
-     * @var array
-     */
-    private $defaultParams = array(
-        'namespace'       => 'wurfl',
-        'cacheExpiration' => 0,
-    );
 
     /**
      * @param array $params
@@ -63,13 +55,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
     {
         $this->ensureModuleExistence();
 
-        $currentParams = $this->defaultParams;
-
-        if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($currentParams, $params);
-        }
-
-        $this->toFields($currentParams);
+        parent:: __construct($params);
     }
 
     /**
@@ -86,14 +72,16 @@ class Apc extends AbstractAdapter implements AdapterInterface
 
         $storedValue = apc_fetch($cacheId, $success);
         if (false === $success) {
-            return;
+            $success = false;
+
+            return null;
         }
 
         $value = $this->extract($storedValue);
         if ($value === null) {
             $success = false;
 
-            return;
+            return null;
         }
 
         $success = true;
@@ -130,7 +118,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
         return apc_store(
             $cacheId,
             $this->compact($value),
-            $this->expiration
+            $this->cacheExpiration
         );
     }
 
@@ -161,22 +149,12 @@ class Apc extends AbstractAdapter implements AdapterInterface
     /**
      * Ensures the existence of the the PHP Extension apc
      *
-     * @throws Exception required extension is unavailable
+     * @throws \WurflCache\Adapter\Exception required extension is unavailable
      */
     private function ensureModuleExistence()
     {
         if (!(extension_loaded(self::EXTENSION_MODULE_NAME) && ini_get('apc.enabled'))) {
             throw new Exception('The PHP extension apc must be installed, loaded and enabled.');
-        }
-    }
-
-    /**
-     * @param $params
-     */
-    private function toFields($params)
-    {
-        foreach ($params as $cacheId => $value) {
-            $this->$cacheId = $value;
         }
     }
 }

@@ -30,6 +30,8 @@
 
 namespace WurflCache\Adapter;
 
+use Wurfl\WurflConstants;
+
 /**
  * Adapter to use a Memcache Server for caching
  *
@@ -71,11 +73,12 @@ class Memcache extends AbstractAdapter
     /**
      * @var array
      */
-    private $defaultParams = array(
-        'host'       => '127.0.0.1',
-        'port'       => self::DEFAULT_PORT,
-        'namespace'  => 'wurfl',
-        'expiration' => 0,
+    protected $defaultParams = array(
+        'host'            => '127.0.0.1',
+        'port'            => self::DEFAULT_PORT,
+        'namespace'       => 'wurfl',
+        'cacheExpiration' => 0,
+        'cacheVersion'     => WurflConstants::API_NAMESPACE,
     );
 
     /**
@@ -88,13 +91,7 @@ class Memcache extends AbstractAdapter
     {
         $this->ensureModuleExistence();
 
-        $currentParams = $this->defaultParams;
-
-        if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($this->defaultParams, $params);
-        }
-
-        $this->toFields($currentParams);
+        parent:: __construct($params);
 
         if (null === $memCache) {
             $this->initializeMemCache();
@@ -126,7 +123,7 @@ class Memcache extends AbstractAdapter
 
         $value = $this->extract($this->memcache->get($cacheId));
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;
@@ -147,7 +144,7 @@ class Memcache extends AbstractAdapter
             $this->normalizeKey($cacheId),
             '',
             0,
-            $this->expiration
+            $this->cacheExpiration
         );
 
         if (false === $tempData) {
@@ -175,7 +172,7 @@ class Memcache extends AbstractAdapter
             $cacheId,
             $this->compact($value),
             0,
-            $this->expiration
+            $this->cacheExpiration
         );
     }
 
@@ -203,16 +200,6 @@ class Memcache extends AbstractAdapter
         $this->memcache->flush();
 
         return true;
-    }
-
-    /**
-     * @param $params
-     */
-    private function toFields($params)
-    {
-        foreach ($params as $cacheId => $value) {
-            $this->$cacheId = $value;
-        }
     }
 
     /**

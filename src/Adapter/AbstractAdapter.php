@@ -30,6 +30,8 @@
 
 namespace WurflCache\Adapter;
 
+use Wurfl\WurflConstants;
+
 /**
  * Base class for all Adapters
  *
@@ -43,6 +45,8 @@ namespace WurflCache\Adapter;
  */
 abstract class AbstractAdapter implements AdapterInterface
 {
+    const DEFAULT_NAMESPACE = 'wurfl';
+
     /**
      * the time until the cache expires
      *
@@ -58,9 +62,34 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $namespace = '';
 
     /**
-     * @var int
+     * cache prefix used to build the internal cache id
+     *
+     * @var string
      */
-    protected $expiration = 0;
+    protected $cacheVersion = '';
+
+    /**
+     * @var array
+     */
+    protected $defaultParams = array(
+        'namespace'       => self::DEFAULT_NAMESPACE,
+        'cacheExpiration' => 0,
+        'cacheVersion'    => WurflConstants::API_NAMESPACE,
+    );
+
+    /**
+     * @param array $params
+     */
+    public function __construct(array $params = array())
+    {
+        $currentParams = $this->defaultParams;
+
+        if (is_array($params) && !empty($params)) {
+            $currentParams = array_merge($currentParams, $params);
+        }
+
+        $this->toFields($currentParams);
+    }
 
     /**
      * Get an item.
@@ -153,6 +182,18 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * @param string $cacheVersion
+     *
+     * @return AdapterInterface
+     */
+    public function setCacheVersion($cacheVersion)
+    {
+        $this->cacheVersion = $cacheVersion;
+
+        return $this;
+    }
+
+    /**
      * normalizes the cache id for the cache
      *
      * @param string $cacheId The cache id
@@ -161,7 +202,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected function normalizeKey($cacheId)
     {
-        return Helper\IdGenerator::encode($this->namespace, $cacheId);
+        return Helper\IdGenerator::encode($this->cacheVersion, $this->namespace, $cacheId);
     }
 
     /**
@@ -191,17 +232,35 @@ abstract class AbstractAdapter implements AdapterInterface
         /** @var $object Helper\StorageObject */
         $object = unserialize($value);
         if ($value === $object) {
-            return;
+            return null;
         }
 
         if (!($object instanceof Helper\StorageObject)) {
-            return;
+            return null;
         }
 
         if ($object->isExpired()) {
-            return;
+            return null;
         }
 
         return $object->value();
+    }
+
+    /**
+     * @param $params
+     */
+    protected function toFields($params)
+    {
+        if (isset($params['namespace'])) {
+            $this->setNamespace($params['namespace']);
+        }
+
+        if (isset($params['cacheExpiration'])) {
+            $this->setExpiration($params['cacheExpiration']);
+        }
+
+        if (isset($params['cacheVersion'])) {
+            $this->setCacheVersion($params['cacheVersion']);
+        }
     }
 }

@@ -30,6 +30,8 @@
 
 namespace WurflCache\Adapter;
 
+use Wurfl\WurflConstants;
+
 /**
  * Adapter to use a Memcache Server for caching
  *
@@ -68,11 +70,12 @@ class Memcached extends AbstractAdapter
     /**
      * @var array
      */
-    private $defaultParams = array(
-        'host'       => '127.0.0.1',
-        'port'       => self::DEFAULT_PORT,
-        'namespace'  => 'wurfl',
-        'expiration' => 0,
+    protected $defaultParams = array(
+        'host'            => '127.0.0.1',
+        'port'            => self::DEFAULT_PORT,
+        'namespace'       => 'wurfl',
+        'cacheExpiration' => 0,
+        'cacheVersion'     => WurflConstants::API_NAMESPACE,
     );
 
     /**
@@ -85,13 +88,7 @@ class Memcached extends AbstractAdapter
     {
         $this->ensureModuleExistence();
 
-        $currentParams = $this->defaultParams;
-
-        if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge($currentParams, $params);
-        }
-
-        $this->toFields($currentParams);
+        parent:: __construct($params);
 
         if (null === $memCache) {
             $this->initializeMemCached();
@@ -123,12 +120,12 @@ class Memcached extends AbstractAdapter
 
         $storedValue = $this->memcached->get($cacheId);
         if (\Memcached::RES_SUCCESS !== $this->memcached->getResultCode()) {
-            return;
+            return null;
         }
 
         $value = $this->extract($storedValue);
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;
@@ -165,7 +162,7 @@ class Memcached extends AbstractAdapter
         $this->memcached->set(
             $cacheId,
             $this->compact($value),
-            $this->expiration
+            $this->cacheExpiration
         );
 
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
@@ -197,16 +194,6 @@ class Memcached extends AbstractAdapter
         $this->memcached->flush();
 
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());
-    }
-
-    /**
-     * @param $params
-     */
-    private function toFields($params)
-    {
-        foreach ($params as $cacheId => $value) {
-            $this->$cacheId = $value;
-        }
     }
 
     /**

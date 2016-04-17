@@ -76,7 +76,7 @@ class DoctrineCacheConnector extends AbstractAdapter
         if (!$this->hasItem($cacheId)) {
             $success = false;
 
-            return;
+            return null;
         }
 
         $cacheId = $this->normalizeKey($cacheId);

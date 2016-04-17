@@ -30,6 +30,9 @@
 
 namespace WurflCache\Adapter\Helper;
 
+use Wurfl\WurflConstants;
+use WurflCache\Adapter\AbstractAdapter;
+
 /**
  * A Helper to generate Cache Ids
  *
@@ -46,14 +49,18 @@ class IdGenerator
     /**
      * Encode the Object Id using the Persistence Identifier
      *
+     * @param string $cacheVersion
      * @param string $namespace
      * @param string $cacheId
      *
      * @return string $input with the given $namespace as a prefix
      */
-    public static function encode($namespace, $cacheId)
-    {
-        $cacheId = implode(':', array('Wurfl', $namespace, $cacheId));
+    public static function encode(
+        $cacheVersion = WurflConstants::API_NAMESPACE,
+        $namespace = AbstractAdapter::DEFAULT_NAMESPACE,
+        $cacheId = ''
+    ) {
+        $cacheId = implode(':', array($cacheVersion, $namespace, $cacheId));
 
         return hash('sha512', $cacheId);
     }

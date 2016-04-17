@@ -62,12 +62,12 @@ class Memory extends AbstractAdapter
         $success = false;
 
         if (!isset($this->map[$cacheId])) {
-            return;
+            return null;
         }
 
         $value = $this->extract($this->map[$cacheId]);
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;

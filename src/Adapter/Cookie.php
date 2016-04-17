@@ -57,12 +57,12 @@ class Cookie extends AbstractAdapter
         $cacheId = $this->normalizeKey($cacheId);
 
         if (!isset($_COOKIE[$cacheId])) {
-            return;
+            return null;
         }
 
         $value = $this->extract($_COOKIE[$cacheId]);
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;
@@ -98,7 +98,12 @@ class Cookie extends AbstractAdapter
     {
         $cacheId = $this->normalizeKey($cacheId);
 
-        return setcookie($cacheId, $this->compact($value), time() + $this->expiration);
+        $valueToCache = $this->compact($value);
+
+        // the value set by setcookie is not available before the next request
+        // for the actual request we set the value to $_COOKIE directly
+        $_COOKIE[$cacheId] = $valueToCache;
+        return setcookie($cacheId, $valueToCache, time() + $this->cacheExpiration);
     }
 
     /**
