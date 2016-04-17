@@ -55,10 +55,10 @@ class File extends AbstractAdapter
      * @var array
      */
     protected $defaultParams = array(
-        self::DIR         => '/tmp',
-        'namespace'       => 'wurfl',
-        'cacheExpiration' => 0,
-        'readonly'        => false,
+        self::DIR          => '/tmp',
+        'namespace'        => 'wurfl',
+        'cacheExpiration'  => 0,
+        'readonly'         => false,
         'cacheVersion'     => WurflConstants::API_NAMESPACE,
     );
 

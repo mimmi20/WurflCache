@@ -71,10 +71,10 @@ class Memcached extends AbstractAdapter
      * @var array
      */
     protected $defaultParams = array(
-        'host'            => '127.0.0.1',
-        'port'            => self::DEFAULT_PORT,
-        'namespace'       => 'wurfl',
-        'cacheExpiration' => 0,
+        'host'             => '127.0.0.1',
+        'port'             => self::DEFAULT_PORT,
+        'namespace'        => 'wurfl',
+        'cacheExpiration'  => 0,
         'cacheVersion'     => WurflConstants::API_NAMESPACE,
     );
 
