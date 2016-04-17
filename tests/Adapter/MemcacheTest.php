@@ -55,7 +55,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldRemoveTheExpiredItem()
     {
-        $params  = array('expiration' => 1);
+        $params  = array('cacheExpiration' => 1);
         $storage = new Memcache($params);
         $storage->setItem('key', 'value');
         sleep(2);
