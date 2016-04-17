@@ -249,4 +249,20 @@ class Memcache extends AbstractAdapter
             );
         }
     }
+
+    /**
+     * @param array $params
+     */
+    protected function toFields(array $params)
+    {
+        parent::toFields($params);
+
+        if (isset($params['host'])) {
+            $this->host = $params['host'];
+        }
+
+        if (isset($params['port'])) {
+            $this->port = $params['port'];
+        }
+    }
 }

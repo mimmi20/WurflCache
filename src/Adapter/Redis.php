@@ -46,37 +46,6 @@ class Redis extends AbstractAdapter
     private $hashName;
     private $client;
 
-    protected $supports_secondary_caching = true;
-
-    /**
-     * @param $params
-     *
-     * @throws \WurflCache\Adapter\Exception
-     */
-    public function __construct($params)
-    {
-        parent:: __construct($params);
-
-        $this->host     = $params['host'];
-        $this->port     = $params['port'];
-        $this->hashName = $params['hash_name'];
-        $this->database = $params['database'];
-        $this->client   = $this->checkClient($params['client']);
-
-        if ((null !== $params['redis']) && $this->ensureModuleExistence($params['redis'])) {
-            // when using this parameter, the Redis object has to be connected
-            // and with the correct database selected
-            $this->redis = $params['redis'];
-        } else {
-            $this->redis = $this->buildRedisObject(
-                $this->client,
-                $this->host,
-                $this->port,
-                $this->database
-            );
-        }
-    }
-
     /**
      * Get an item.
      *
@@ -223,5 +192,32 @@ class Redis extends AbstractAdapter
         }
 
         return $client;
+    }
+
+    /**
+     * @param array $params
+     */
+    protected function toFields(array $params)
+    {
+        parent::toFields($params);
+
+        $this->host     = $params['host'];
+        $this->port     = $params['port'];
+        $this->hashName = $params['hash_name'];
+        $this->database = $params['database'];
+        $this->client   = $this->checkClient($params['client']);
+
+        if ((null !== $params['redis']) && $this->ensureModuleExistence($params['redis'])) {
+            // when using this parameter, the Redis object has to be connected
+            // and with the correct database selected
+            $this->redis = $params['redis'];
+        } else {
+            $this->redis = $this->buildRedisObject(
+                $this->client,
+                $this->host,
+                $this->port,
+                $this->database
+            );
+        }
     }
 }

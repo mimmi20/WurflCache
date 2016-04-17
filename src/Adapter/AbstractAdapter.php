@@ -247,9 +247,9 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param $params
+     * @param array $params
      */
-    protected function toFields($params)
+    protected function toFields(array $params)
     {
         if (isset($params['namespace'])) {
             $this->setNamespace($params['namespace']);
