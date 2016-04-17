@@ -118,7 +118,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
 
             try {
                 $redisStorage = new Redis($params);
-                self::assertInstanceOf('Redis', $redisStorage);
+                self::assertInstanceOf('\Redis', $redisStorage);
             } catch (\RedisException $e) {
                 self::markTestIncomplete(
                     'Could not establish connection to Redis using phpredis. This test only works' . 'with the standard address of 127.0.0.1:6379 for the Redis server'
@@ -133,7 +133,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
         $value->value = 1;
         $mockRedis    = $this->getMockRedisObject();
         $mockRedis->expects(self::once())
-            ->method('hset')
+            ->method('set')
             ->with(
                 $this->equalTo('FAKE'),
                 $this->equalTo('TEST'),
@@ -142,7 +142,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true);
 
         $mockRedis->expects(self::once())
-            ->method('hget')
+            ->method('get')
             ->with(
                 $this->equalTo('FAKE'),
                 $this->equalTo('TEST')
@@ -164,7 +164,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
         $object    = new StorageObject($value, 0);
         $mockRedis = $this->getMockRedisObject();
         $mockRedis->expects(self::once())
-            ->method('hset')
+            ->method('set')
             ->with(
                 $this->equalTo('FAKE'),
                 $this->equalTo('TEST_VALUE_STORAGE_OBJECT'),
@@ -173,7 +173,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true);
 
         $mockRedis->expects(self::once())
-            ->method('hget')
+            ->method('get')
             ->with(
                 $this->equalTo('FAKE'),
                 $this->equalTo('TEST_VALUE_STORAGE_OBJECT')
@@ -218,23 +218,22 @@ class RedisTest extends \PHPUnit_Framework_TestCase
      * Returns a Predis\Client if predis is present, or Redis object if predis is absent
      * and redis extension is present
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     * @throws \Exception
+     * @return \PHPUnit_Framework_MockObject_MockObject|void
      */
     private function getMockRedisObject()
     {
         if (class_exists('\Predis\Client')) {
-            $mockRedis = $this->getMockBuilder('\Predis\Client')
-                ->setMethods(array('hset', 'hget', 'del'))
+            return $this->getMockBuilder('\Predis\Client')
+                ->setMethods(array('set', 'get', 'del'))
                 ->getMock();
-        } elseif (extension_loaded('redis')) {
-            $mockRedis = $this->getMockBuilder('\Redis')
-                ->setMethods(array('hset', 'hget', 'del'))
-                ->getMock();
-        } else {
-            throw new \Exception('invalid client given');
         }
 
-        return $mockRedis;
+        if (extension_loaded('redis')) {
+            return $this->getMockBuilder('\Redis')
+                ->setMethods(array('set', 'get', 'del'))
+                ->getMock();
+        }
+
+        self::markTestSkipped('required Redisclients not loaded');
     }
 }

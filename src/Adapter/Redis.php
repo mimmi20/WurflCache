@@ -136,7 +136,7 @@ class Redis extends AbstractAdapter
      */
     private function ensureModuleExistence($redis)
     {
-        if (extension_loaded(self::EXTENSION_MODULE_NAME) && ($redis instanceof Redis)) {
+        if (extension_loaded(self::EXTENSION_MODULE_NAME) && ($redis instanceof \Redis)) {
             return;
         }
 
