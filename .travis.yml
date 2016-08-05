@@ -47,6 +47,11 @@ env:
   - DOCTRINE_VERSION=dev-master ZEND_VERSION=dev-master DESARROLLA_VERSION=dev-master ZETA_VERSION=dev-master
 
 matrix:
+  allow_failures:
+  # may fail due a segmentation fault
+    - php: nightly
+  # the tests may require > 4.8GB ram on hhvm, this exeeds the memory limit on the travis-ci boxes so we allow to fail these builds
+    - php: hhvm
   exclude:
     # require PHP 5.4
     - env: DOCTRINE_VERSION=1.5.4 ZEND_VERSION=2.5.1 DESARROLLA_VERSION=2.0.0 ZETA_VERSION=dev-master
