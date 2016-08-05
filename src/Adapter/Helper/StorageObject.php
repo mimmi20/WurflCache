@@ -43,11 +43,19 @@ namespace WurflCache\Adapter\Helper;
  */
 class StorageObject
 {
+    /**
+     * @var mixed
+     */
     private $value;
+
+    /**
+     * @var int
+     */
     private $expiringOn;
 
     /**
-     * @param int $expire
+     * @param mixed $value
+     * @param int   $expire
      */
     public function __construct($value, $expire)
     {
@@ -55,11 +63,17 @@ class StorageObject
         $this->expiringOn = ($expire === 0) ? $expire : time() + $expire;
     }
 
+    /**
+     * @return mixed
+     */
     public function value()
     {
         return $this->value;
     }
 
+    /**
+     * @return bool
+     */
     public function isExpired()
     {
         if ($this->expiringOn === 0) {
@@ -69,6 +83,9 @@ class StorageObject
         return $this->expiringOn < time();
     }
 
+    /**
+     * @return int
+     */
     public function expiringOn()
     {
         return $this->expiringOn;

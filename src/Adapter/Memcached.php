@@ -158,11 +158,12 @@ class Memcached extends AbstractAdapter
     public function setItem($cacheId, $value)
     {
         $cacheId = $this->normalizeKey($cacheId);
+        $expire  = $this->cacheExpiration;
 
         $this->memcached->set(
             $cacheId,
             $this->compact($value),
-            $this->cacheExpiration
+            ($expire === 0) ? $expire : time() + $expire
         );
 
         return (\Memcached::RES_SUCCESS === $this->memcached->getResultCode());

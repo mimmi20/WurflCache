@@ -78,6 +78,7 @@ class Apc extends AbstractAdapter implements AdapterInterface
         }
 
         $value = $this->extract($storedValue);
+
         if ($value === null) {
             $success = false;
 

@@ -103,8 +103,9 @@ class Cookie extends AbstractAdapter
         // the value set by setcookie is not available before the next request
         // for the actual request we set the value to $_COOKIE directly
         $_COOKIE[$cacheId] = $valueToCache;
+        $expire            = $this->cacheExpiration;
 
-        return setcookie($cacheId, $valueToCache, time() + $this->cacheExpiration);
+        return setcookie($cacheId, $valueToCache, ($expire === 0) ? $expire : time() + $expire);
     }
 
     /**
