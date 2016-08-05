@@ -33,22 +33,6 @@ use WurflCache\Adapter\Helper\StorageObject;
 class StorageObjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testConstructorError1()
-    {
-        new StorageObject();
-    }
-
-    /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testConstructorError2()
-    {
-        new StorageObject('testValue');
-    }
-
-    /**
      *
      */
     public function testValue()
