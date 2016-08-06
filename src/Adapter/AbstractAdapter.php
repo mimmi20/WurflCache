@@ -52,7 +52,7 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @var int
      */
-    protected $cacheExpiration = 86400;
+    protected $cacheExpiration = 0;
 
     /**
      * the namespace used to build the internal cache id

@@ -140,11 +140,13 @@ class Memcache extends AbstractAdapter
      */
     public function hasItem($cacheId)
     {
+        $expire = $this->cacheExpiration;
+
         $tempData = $this->memcache->set(
             $this->normalizeKey($cacheId),
             '',
             0,
-            $this->cacheExpiration
+            ($expire === 0) ? $expire : time() + $expire
         );
 
         if (false === $tempData) {
@@ -167,12 +169,13 @@ class Memcache extends AbstractAdapter
     public function setItem($cacheId, $value)
     {
         $cacheId = $this->normalizeKey($cacheId);
+        $expire  = $this->cacheExpiration;
 
         return $this->memcache->set(
             $cacheId,
             $this->compact($value),
             0,
-            $this->cacheExpiration
+            ($expire === 0) ? $expire : time() + $expire
         );
     }
 
